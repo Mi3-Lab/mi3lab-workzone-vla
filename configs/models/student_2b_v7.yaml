@@ -1,0 +1,3 @@
+_target_: alpamayo1_5_sft.models.sft_base_model.TrainableReasoningVLA.from_alpamayo_checkpoint
+checkpoint_path: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_stage5_1_signs/checkpoint-2472
+vlm_name_or_path: /data/wesleyferreiramaia/wokzone-alpamayo/models/Cosmos-Reason2-2B

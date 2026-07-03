@@ -1,0 +1,73 @@
+defaults:
+  - sft_base
+  - /models/student_2b_v6@model
+  - override /vla_processor@data.train_dataset.vla_preprocess_args: vqa
+  - override /vla_processor@data.val_dataset.vla_preprocess_args: vqa
+  - _self_
+
+# Stage 5: estado EGO-CÊNTRICO. Continua do checkpoint-8622 (stage4_v4).
+# Dado: lingoqa_egomix_v2 = 8k roadwork Q&A (retenção) + egostate ×4 (novo).
+# Labels egostate auto-derivados da geometria das anotações (proximity proxy).
+
+data:
+  train_dataset:
+    _target_: alpamayo.data.lingoqa.LingoQADataset
+    local_dir: null
+    data_root: /data/wesleyferreiramaia/wokzone-alpamayo/data/roadwork/lingoqa_egomix_v2
+    parquet_name: train.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+  val_dataset:
+    _target_: alpamayo.data.lingoqa.LingoQADataset
+    local_dir: null
+    data_root: /data/wesleyferreiramaia/wokzone-alpamayo/data/roadwork/lingoqa_egomix_v2
+    parquet_name: val.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+trainer:
+  lr_multiplier:
+    vlm.model.visual: 0.1
+    vlm.model.language_model.embed_tokens: 0.0
+    expert: 0.0
+
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 4
+
+  # Refinamento: LR menor que o stage4 (5e-5) para não degradar o já aprendido
+  learning_rate: 1.5e-5
+  lr_scheduler_type: cosine_warmup_with_min_lr
+  lr_scheduler_kwargs:
+    min_lr: 2e-6
+  warmup_steps: 100
+
+  num_train_epochs: 2
+
+  save_steps: 400
+  save_total_limit: 3
+  logging_steps: 10
+
+  eval_strategy: "no"
+  load_best_model_at_end: false
+
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+
+  deepspeed: configs/deepspeed/zero2_fast.json
+
+  ddp_find_unused_parameters: false
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_stage5_1_signs
+
+task_name: alpamayo_stage5_1_signs

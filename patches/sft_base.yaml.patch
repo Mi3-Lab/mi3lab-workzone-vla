@@ -1,0 +1,16 @@
+diff --git a/recipes/alpamayo1_5_sft/configs/sft_base.yaml b/recipes/alpamayo1_5_sft/configs/sft_base.yaml
+index 8c93f06..c0fb6fd 100644
+--- a/recipes/alpamayo1_5_sft/configs/sft_base.yaml
++++ b/recipes/alpamayo1_5_sft/configs/sft_base.yaml
+@@ -49,6 +49,11 @@ trainer:
+   logging_steps: 5
+   save_steps: 500
+   save_total_limit: 2
++  # Otimizador DeepSpeed nunca é lido por from_alpamayo_checkpoint (só
++  # model.safetensors) — guardá-lo custa ~10x o tamanho do modelo por
++  # checkpoint e já causou 2 estouros de cota. Resume ainda funciona
++  # (trainer_state.json preservado), só perde o momentum exato do Adam.
++  save_only_model: true
+   num_train_epochs: 3
+   bf16: True
+   dataloader_pin_memory: True

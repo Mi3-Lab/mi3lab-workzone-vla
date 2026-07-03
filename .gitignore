@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Saidas geradas (dados/checkpoints/modelos ficam FORA deste repo, mas por
+# seguranca ignoramos qualquer coisa gerada que acabe caindo aqui)
+outputs/
+*.mp4
+*.jpg
+*.jpeg
+*.png
+*.pt
+*.safetensors
+*.zip
+
+.ipynb_checkpoints/

@@ -1,0 +1,61 @@
+defaults:
+  - sft_base
+  - /models/ar1_5_base@model
+  - override /vla_processor@data.train_dataset.vla_preprocess_args: vqa
+  - override /vla_processor@data.val_dataset.vla_preprocess_args: vqa
+  - _self_
+
+data:
+  train_dataset:
+    _target_: alpamayo.data.lingoqa.LingoQADataset
+    local_dir: null
+    data_root: /data/wesleyferreiramaia/wokzone-alpamayo/data/roadwork/lingoqa_combined
+    parquet_name: train.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+  val_dataset:
+    _target_: alpamayo.data.lingoqa.LingoQADataset
+    local_dir: null
+    data_root: /data/wesleyferreiramaia/wokzone-alpamayo/data/roadwork/lingoqa_combined
+    parquet_name: val.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+trainer:
+  # Visual encoder: 0.1x LR (not frozen) — model learns work zone visual features
+  # Expert: frozen (trajectory expert trained separately in Stage 2)
+  lr_multiplier:
+    vlm.model.visual: 0.1
+    expert: 0.0
+
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 7e-6
+  warmup_steps: 100
+  num_train_epochs: 4
+  save_steps: 1000
+  save_total_limit: 3
+  logging_steps: 10
+  eval_steps: 1000
+  eval_strategy: steps
+  load_best_model_at_end: true
+  metric_for_best_model: eval_loss
+  greater_is_better: false
+  dataloader_num_workers: 8
+  dataloader_prefetch_factor: 4
+  dataloader_persistent_workers: true
+  deepspeed: null
+  ddp_find_unused_parameters: false
+  report_to: wandb
+
+# Disable trajectory metric_runner — VQA uses only eval_loss
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_stage1_roadwork_v3
+
+task_name: alpamayo_1_5_sft_stage1_roadwork_v3

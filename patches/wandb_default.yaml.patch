@@ -1,0 +1,13 @@
+diff --git a/recipes/alpamayo1_5_sft/configs/wandb/default.yaml b/recipes/alpamayo1_5_sft/configs/wandb/default.yaml
+index b71481d..dcd9595 100644
+--- a/recipes/alpamayo1_5_sft/configs/wandb/default.yaml
++++ b/recipes/alpamayo1_5_sft/configs/wandb/default.yaml
+@@ -1,6 +1,6 @@
+ key: null
+-team: ???
+-project: ???
++team: usp
++project: wokzone-alpamayo
+ group: ${run_name}
+ name: ${run_name}
+ output_dir: ${paths.output_dir}

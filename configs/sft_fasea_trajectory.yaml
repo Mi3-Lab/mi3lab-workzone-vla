@@ -1,0 +1,86 @@
+defaults:
+  - sft_base
+  - /models/student_2b_v4@model
+  - override /vla_processor@data.train_dataset.vla_preprocess_args: nav
+  - override /vla_processor@data.val_dataset.vla_preprocess_args: nav
+  - _self_
+
+# Fase A — SFT de trajetória no ground truth real (PhysicalAI-AV), não KD.
+# Decisão do usuário: a trajetória real do dataset (ego_future_xyz) é melhor
+# alvo que imitar o professor 10B via logits — o professor às vezes erra
+# (minADE 0.35-1.97m no teste job 170613), e SFT direto é mais simples.
+#
+# Modelo: Cosmos-2B LIMPO (student_2b_clean_init), NÃO continua do checkpoint
+# work-zone (sft_stage6_general) — decisão do usuário: primeiro restaurar a
+# capacidade de direção geral, work-zone entra depois via fine-tune leve.
+#
+# Dado: 39 chunks PhysicalAI-AV já baixados (19 oficiais + 20 densos em
+# reasoning) — 1.877+ clipes válidos, 4 câmeras, trajetória real GT 6.4s.
+
+data:
+  train_dataset:
+    _target_: alpamayo.data.pai.PAIDataset
+    _recursive_: false
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [214, 224, 276, 317, 420, 727, 728, 968, 982,
+                1519, 1657, 1984, 2277, 2368, 2372, 2447, 2599, 2634, 2868,
+                15, 17, 34, 120, 133, 137, 139, 148, 149, 153,
+                174, 270, 609, 1786, 1790, 1799, 1862, 2443, 3125, 3126]
+    reasoning_metadata: reasoning/ood_reasoning.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+  val_dataset:
+    _target_: alpamayo.data.pai.PAIDataset
+    _recursive_: false
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [2868, 3126]
+    reasoning_metadata: reasoning/ood_reasoning.parquet
+    vla_preprocess_args:
+      generation_mode: true
+
+trainer:
+  lr_multiplier:
+    vlm.model.visual: 0.1
+    vlm.model.language_model.embed_tokens: 0.0
+    expert: 0.0
+
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8
+
+  learning_rate: 3e-5
+  lr_scheduler_type: cosine_warmup_with_min_lr
+  lr_scheduler_kwargs:
+    min_lr: 3e-6
+  warmup_steps: 150
+
+  num_train_epochs: 3
+
+  save_steps: 500
+  save_total_limit: 2
+  save_only_model: true
+  logging_steps: 10
+
+  eval_strategy: "no"
+  load_best_model_at_end: false
+
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+
+  deepspeed: configs/deepspeed/zero2_fast.json
+
+  ddp_find_unused_parameters: false
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_fasea_trajectory
+
+task_name: alpamayo_fasea_trajectory
