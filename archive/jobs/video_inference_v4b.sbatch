@@ -25,7 +25,7 @@ echo "Node : $SLURMD_NODENAME"
 echo "GPU  : $(nvidia-smi --query-gpu=name --format=csv,noheader)"
 echo ""
 
-cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/inference/archive
+cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/archive/inference
 for CITY in boston denver chicago; do
     echo ">>> [$CITY] starting..."
     python video_inference_v4.py \

@@ -18,6 +18,6 @@ export WANDB_DISABLED=true
 
 echo "=== Alpamayo 2B trajectory test ==="
 echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader)"
-cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/diagnostics
+cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/archive/diagnostics
 python test_2b_traj_v3.py
 echo "=== DONE ==="

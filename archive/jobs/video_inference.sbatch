@@ -31,4 +31,4 @@ echo "CKPT  : $CKPT"
 echo "================================="
 
 STRIDE=${4:-3}
-python $BASE/mi3lab-workzone-vla/inference/archive/video_inference_v1.py "$VIDEO_IN" "$VIDEO_OUT" "$CKPT" "$STRIDE"
+python $BASE/mi3lab-workzone-vla/archive/inference/video_inference_v1.py "$VIDEO_IN" "$VIDEO_OUT" "$CKPT" "$STRIDE"

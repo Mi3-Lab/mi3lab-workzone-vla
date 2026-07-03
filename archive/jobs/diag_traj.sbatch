@@ -17,6 +17,6 @@ export CUDA_LAUNCH_BLOCKING=1
 export WANDB_DISABLED=true
 
 echo "=== Alpamayo 10B trajectory diagnostic ==="
-cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/diagnostics
+cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/archive/diagnostics
 python diag_traj.py
 echo "=== DONE ==="

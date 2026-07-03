@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=alp_egoshort
+#SBATCH --job-name=alp_ocr10b
 #SBATCH --partition=cenvalarc.gpu
 #SBATCH --gres=gpu:l40s:1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=40G
-#SBATCH --time=00:40:00
+#SBATCH --mem=80G
+#SBATCH --time=01:00:00
 #SBATCH --output=/data/wesleyferreiramaia/wokzone-alpamayo/slurm-logs/video/state_zeroshot_%j.out
 #SBATCH --error=/data/wesleyferreiramaia/wokzone-alpamayo/slurm-logs/video/state_zeroshot_%j.err
 
@@ -17,6 +17,6 @@ export WANDB_DISABLED=true
 
 echo "=== Zero-shot work zone state via logprobs + HMM ==="
 echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader)"
-cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/diagnostics
-python test_ego_shortlabel.py
+cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/archive/diagnostics
+python test_sign_ocr_10b.py
 echo "=== DONE ==="

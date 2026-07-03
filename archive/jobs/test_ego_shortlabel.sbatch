@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=alp_egogen
+#SBATCH --job-name=alp_egoshort
 #SBATCH --partition=cenvalarc.gpu
 #SBATCH --gres=gpu:l40s:1
 #SBATCH --cpus-per-task=4
@@ -17,6 +17,6 @@ export WANDB_DISABLED=true
 
 echo "=== Zero-shot work zone state via logprobs + HMM ==="
 echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader)"
-cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/diagnostics
-python test_ego_generate.py
+cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/archive/diagnostics
+python test_ego_shortlabel.py
 echo "=== DONE ==="

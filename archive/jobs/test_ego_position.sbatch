@@ -17,6 +17,6 @@ export WANDB_DISABLED=true
 
 echo "=== Zero-shot work zone state via logprobs + HMM ==="
 echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader)"
-cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/diagnostics
+cd /data/wesleyferreiramaia/wokzone-alpamayo/mi3lab-workzone-vla/archive/diagnostics
 python test_ego_position.py
 echo "=== DONE ==="
