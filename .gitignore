@@ -1,17 +1,49 @@
 __pycache__/
 *.pyc
 .venv/
+venv/
 *.egg-info/
+.ipynb_checkpoints/
+.DS_Store
 
-# Saidas geradas (dados/checkpoints/modelos ficam FORA deste repo, mas por
-# seguranca ignoramos qualquer coisa gerada que acabe caindo aqui)
+# Segredos / credenciais — nunca devem ir pro repo
+.env
+*.env
+.hf_cache/
+*token*
+*.pem
+*.key
+
+# Pesos de modelo, checkpoints, dados — vivem FORA deste repo (em
+# checkpoints/, data/, models/ na raiz do projeto, um nivel acima), mas por
+# seguranca ignoramos qualquer coisa desse tipo que acabe caindo aqui
+checkpoints/
+data/
+models/
+videos/
 outputs/
+logs/
+slurm-logs/
+/wandb/
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.bin
+*.onnx
+*.h5
+*.npz
+*.npy
+*.parquet
+*.zip
+*.tar
+*.tar.gz
+*.whl
+
+# Midia/imagens geradas (frames de debug, videos de inferencia)
 *.mp4
+*.avi
 *.jpg
 *.jpeg
 *.png
-*.pt
-*.safetensors
-*.zip
-
-.ipynb_checkpoints/
+*.gif
