@@ -1,202 +1,130 @@
-# Pipeline de Treinamento — Alpamayo Work Zone Safety
+# Pipeline de Treinamento — Mi3 Lab Work Zone VLA
 
 **UC Merced | Edge-Deployed Multimodal Safety Reasoning for Autonomous Vehicles**
 
 ---
 
-## Arquitetura do Alpamayo 1.5-10B
+## Arquitetura
 
-O Alpamayo é um VLA (Vision-Language-Action model) com dois componentes independentes:
+O Alpamayo 1.5 (NVIDIA) é um VLA cujo backbone é um Qwen3-VL
+(Cosmos-Reason2) com o vocabulário expandido por tokens discretos de
+trajetória:
 
 ```
-Imagem → [vlm.*]  Cosmos-Reason2-8B    → texto de reasoning
-          [expert.*] Trajectory diffusion → 20 waypoints (x,y) pixel space
+Imagens (4 câmeras × 4 frames) ─┐
+Histórico de trajetória (48 tok)─┤→ [vlm: Cosmos-Reason2] → CoT (texto) + trajetória futura (128 tok)
+Rota                            ─┘                                    │
+                                              DiscreteTrajectoryTokenizer.decode → waypoints (x,y,z)
 ```
 
-- `vlm.*` — backbone de linguagem+visão; treinado no Stage 1
-- `expert.*` — diffusion head que prediz trajetórias; treinado no Stage 2
-- Os dois módulos compartilham os embeddings visuais do VLM
+O nosso student 2B (`kd_model.build_student_model`) usa a **mesma
+arquitetura** com o backbone Cosmos-Reason2-2B: mesmo tokenizer de
+trajetória (vocab 4000), mesmos 48/128 tokens de história/futuro, mesmo
+vocabulário final (155.697 — idêntico ao teacher, o que permite KD de
+logits direto).
 
 ---
 
-## Stage 1 — SFT VLM (Fine-tuning do Backbone de Linguagem)
+## Histórico — como chegamos ao 2B atual
 
-### Objetivo
+### Stages 1–3 no 10B (superados, ver `archive/`)
 
-Ensinar o Cosmos-Reason2-8B a reconhecer e descrever elementos de zonas de obra: cones, barreiras, trabalhadores, arrow boards, TTC signs, travel alterations. Sem esse conhecimento visual, o expert de trajetória do Stage 2 toma decisões com base numa percepção errada da cena.
+- **Stage 1 v1** (10B, labels sintéticos) — falhou: dizia "dangerous work
+  zone" pra tudo. Lições: labels reais, negativos, encoder visual em 0.1x.
+- **Stage 1 v2/v3** (10B, labels humanos reais do ROADWork) — convergiu
+  (eval_loss 0.260), mas o 10B é grande demais pro Jetson.
+- **Stage 3 KD v1** (10B fine-tuned → 2B via LingoQA) — abandonado em favor
+  de treinar o 2B diretamente nos dados (mais simples, mesmo resultado).
 
-### O que fica congelado e o que treina
+**Decisão estrutural**: treinar o **2B diretamente** (student_2b_clean_init
+= Cosmos-Reason2-2B + arquitetura Alpamayo, embeddings redimensionados) e
+usar o 10B só como teacher/referência.
 
-| Módulo | LR multiplier | Justificativa |
-|--------|-------------|---------------|
-| `vlm.model.visual.*` (SigLIP2 encoder) | 0.1x | Parcialmente descongelado — aprende features visuais de work zones |
-| `vlm.model.language_model.*` | 1.0x (5e-6) | Treina normalmente |
-| `expert.*` (trajectory diffusion) | 0.0 | Congelado — treinado só no Stage 2 |
+### Stages 4–6 no 2B (lineage ativa) ✅
 
-### Lição aprendida: v1 falhou
+| Stage | Checkpoint | O que ensinou |
+|-------|-----------|----------------|
+| 4 v4 | `sft_stage4_v4/checkpoint-8622` | VQA work zone (ROADWork pathways+scene, 30k pares, labels reais, ~10% negativos) |
+| 5 | `sft_stage5_egostate/checkpoint-1700` | Estado ego-cêntrico: OUTSIDE/APPROACHING/INSIDE (posição do ego vs início da zona, não conteúdo da cena) |
+| 5.1 | `sft_stage5_1_signs/checkpoint-2472` | Leitura de placas TTC ("ROAD WORK AHEAD", "UTILITY WORK"…) |
+| 6 | `sft_stage6_general/checkpoint-2194` | Retenção de direção geral (mix anti-esquecimento) ← **ATUAL** |
 
-A primeira tentativa (v1) produziu um modelo que dizia "dangerous work zone — reduce speed immediately" para **todos** os frames, inclusive asfalto vazio. Motivos:
+### Inferência em vídeo (v16) ✅
 
-1. **Labels sintéticos** — Q&A gerado automaticamente dos bboxes COCO com 10 templates rígidos. Sem negativos. Modelo decorou o template, não aprendeu a ver a cena.
-2. **Visual encoder congelado** (0.0x LR) — o modelo nunca aprendeu a olhar para a imagem.
-3. **Sem exemplos negativos** — 100% das amostras descreviam perigo. Modelo aprendeu a sempre dizer "perigo".
-
-### Solução: v2 com labels reais
-
-O ROADWork paper tem dois campos de labels reais que não estávamos usando:
-
-- `pathways/annotations/trajectories_*.json` → campo `description`: texto humano real descrevendo a cena
-- `scene/annotations/instances_*.json` → campo `scene_description`: idem, mais `travel_alteration` (Partially Blocked, Fully Blocked, Lane Shift, None)
-
-### Dataset Stage 1
-
-**v2** — só `pathways/`:
-- 3.117 imagens de treino → 9.124 pares Q&A
-- 2.313 imagens de val → 6.721 pares Q&A
-- ~8% negativos ("No Description" = cena sem work zone)
-
-**v3** — `pathways/` + `scene/` combinados:
-- 8.435 imagens de treino → 30.395 pares Q&A (3.3× mais que v2)
-- 4.411 imagens de val → 15.113 pares Q&A
-- ~9.6% negativos
-- W&B habilitado (projeto `wokzone-alpamayo`, equipe `usp`)
-
-### Tipos de Q&A gerados por imagem
-
-| Tipo | Pergunta | Fonte do label |
-|------|----------|---------------|
-| Descrição da cena | "Describe the work zone elements visible in this scene." | `description` / `scene_description` |
-| Inventário de objetos | "What objects are present and where?" | COCO detections |
-| Ativo vs. passivo | "Are workers present? What does this mean for vehicle speed?" | COCO categories (Worker, Police Officer) |
-| Travel alteration (só scene/) | "How is traffic flow affected?" | `travel_alteration` tag |
-| Negativo | "Is there active road work?" | Amostras sem descrição / travel_alteration=None |
-
-### Configuração técnica
-
-| Parâmetro | Valor |
-|-----------|-------|
-| Modelo base | `Alpamayo-1.5-10B-A1-format` |
-| VLM backbone | `Cosmos-Reason2-8B` |
-| Hardware | 2× H200 NVL (141 GB VRAM cada) |
-| Batch efetivo | 8 (2 GPUs × 1 sample × GA=4) |
-| Learning rate | 5e-6, cosine decay |
-| Warmup | 100 steps |
-| Épocas | 4 |
-| eval_steps | 500 |
-| Melhor checkpoint | `load_best_model_at_end=True` por `eval_loss` |
-
-### Resultados
-
-**v2 — convergido (job 166121, gnode028):**
-
-| Step | Epoch | eval_loss |
-|------|-------|-----------|
-| 500  | 0.44  | 0.472 |
-| 1000 | 0.88  | 0.328 |
-| 1500 | 1.31  | 0.289 |
-| 2000 | 1.75  | 0.271 |
-| 2500 | 2.19  | 0.264 |
-| 3000 | 2.63  | 0.262 |
-| 3500 | 3.07  | 0.261 |
-| 4000 | 3.51  | 0.260 |
-| 4500 | 3.94  | **0.260** ← best |
-
-- Sem overfitting: train_loss ≈ eval_loss durante todo o treino
-- Best checkpoint: `checkpoints/sft_stage1_roadwork_v2/checkpoint-4500`
-
-**v3 — em andamento (job 166310, gnode028):**
-- Dataset: `lingoqa_combined/` (pathways + scene)
-- W&B: projeto `wokzone-alpamayo`, equipe `usp`
-
-### Inferência em vídeo (Stage 1)
-
-O script `video_inference.py` roda o VLM frame a frame em qualquer vídeo. Pergunta usada na inferência: *"Describe the work zone elements visible in this scene."* — a mesma do treino.
-
-```bash
-sbatch video_inference.sbatch <video.mp4> <output.mp4> <checkpoint_path>
-```
-
-Nota: este script testa APENAS o VLM (linguagem). O expert de trajetória não é chamado — isso é Stage 2.
+`inference/video_inference_v16.py` — 4 perguntas VQA por ciclo (estado ego,
+fluxo de tráfego, ativo/passivo, leitura de placa) viram emissões de um
+filtro Bayesiano (HMM 4 estados); a exibição usa `DisplayPolicy` com
+histerese (COMMIT=0.60), refutação (REFUTE=0.15) e transições só entre
+estados fisicamente adjacentes. Validado em Boston/Denver/Chicago/Seattle.
 
 ---
 
-## Stage 2 — SFT Trajectory Expert
+## Fase VLA (atual) — dar "ação" ao 2B
 
-### Objetivo
+A porta de trajetória do 2B existe mas nunca foi treinada (loss ~25 em
+traj_future no smoke test = chute aleatório). Plano:
 
-Descongelar o `expert.*` (diffusion head) e treiná-lo para gerar trajetórias seguras em work zones. O VLM (Stage 1) fornece os embeddings visuais corretos; o expert aprende a reagir a eles.
+### 1. Trajetória — SFT + KD (em andamento)
 
-### Dataset
+- **Config**: `configs/sft_kd_general_driving.yaml`
+- **Dados**: PhysicalAI-AV, 39 chunks (19 oficiais + 20 reasoning-dense),
+  3.744 clipes válidos, keyframe fixo t=5.1s (`use_default_keyframe`).
+  **Sem** `reasoning_metadata` — o filtro de eventos derruba 3.744→103
+  clipes (bug descoberto na Fase A: chunk 214 → 0 clipes).
+- **Loss**: `L = 0.5·L_SFT + 0.5·τ²·KL(teacher‖student)`, τ=0.7,
+  **KL restrita aos tokens supervisionados** (`labels_mask`) — sem a
+  máscara a KL soma sobre os 3.204 tokens da sequência (imagem+prompt) e
+  infla ~480x (11.855 vs 5.81 medido), afogando o sinal SFT.
+- **Teacher**: Alpamayo-1.5-10B-A1-format **original** (sem fine-tune) —
+  17.6 GB VRAM congelado; student treina com visual em 0.1x, expert 0.0x.
+- **Validação**: smoke test job 171565 — loss_sft 25.02, loss_kd 5.81,
+  pico 28.4 GB (A100 80GB ok).
 
-- `pathways/annotations/trajectories_train_equidistant.json` — 3.117 amostras com 20 waypoints (x,y) cada
-- `pathways_dense/annotations/trajectories_dense__train_equidistant.json` — 18.100 amostras (sem texto, só trajetória)
+### 2. CoT de direção (próximo)
 
-### Configuração planejada
+Preprocessor `nav_cot` com `cot` em `components_order`/`label_components`;
+treina nos ~124 clipes com reasoning real (`ood_reasoning.parquet`,
+filtrados pelas margens de segurança 1.6s/6.4s). Dá o "porquê" junto com o
+"pra onde".
 
-```yaml
-trainer:
-  lr_multiplier:
-    vlm.model.visual: 0.0    # congelado
-    vlm.model.language_model: 0.01  # quase congelado
-    expert: 1.0              # treina completamente
-  learning_rate: 2e-6
-  num_train_epochs: 4
-```
+### 3. Avaliação
 
-### Métrica
+minADE/FDE no val set (chunks 2868, 3126) vs teacher (referência medida:
+0.35–1.97 m, job 170613).
 
-- ADE (Average Displacement Error) e FDE (Final Displacement Error) vs. trajetórias ground truth do motorista humano
+### 4. Re-especialização work zone
 
----
+Fine-tune leve devolvendo o conhecimento VQA do stage 6 ao modelo com
+trajetória (mix pequeno de LingoQA work zone + trajetória pra não esquecer
+nenhum dos dois).
 
-## Stage 3 — Knowledge Distillation (10B → 2B)
+### 5. Deploy Jetson
 
-### Arquitetura do student
-
-**`nvidia/Cosmos-Reason2-2B`** — mesma família do teacher, mesmo visual encoder (SigLIP2), sem necessidade de adaptador. Trajectory expert transferido/adaptado do teacher com LoRA se houver mismatch de dimensão.
-
-### Pipeline
-
-1. **Logit distillation** — `L = L_SFT + λ·KL(teacher || student)`, temperatura τ=0.7
-2. **Feature distillation** (Drive-KD) — hidden states por capacidade (percepção / raciocínio / planejamento)
-3. **On-policy refinement** — student gera, teacher avalia
-4. **Expert adaptation** — transferir pesos do diffusion head
-
-### Referências
-
-- Drive-KD (arxiv:2601.21288) — metodologia principal
-- LLAVADI (arxiv:2407.19409) — temperatura ótima τ=0.7 para VLMs
-- SPEED-Q (arxiv:2511.08914) — quantização staged integrada à distilação
+TensorRT W4A16 (~2 GB LLM + ~1.5 GB ViT + KV cache). Meta <100 ms/frame.
+(Pruning Minitron do 10B via Megatron-Bridge foi avaliado e **arquivado**
+por custo de engenharia — ver discussão em jul/2026.)
 
 ---
 
-## Stage 4 — TensorRT W4A16
+## Bugs estruturais conhecidos (e como evitá-los)
 
-```bash
-trtllm-build \
-  --model_dir ./models/alpamayo_student_2b \
-  --quantization W4A16 \
-  --max_batch_size 1 \
-  --output_dir ./models/alpamayo_student_2b_trt
-```
-
-Memória esperada no Jetson: LLM ~2 GB + ViT ~1.5 GB + KV cache ~5 GB = **~8.5 GB total**.
-
----
-
-## Stage 5 — Jetson AGX Orin
-
-Latência estimada por frame: SigLIP2 INT8 (~8ms) + LLM prefill (~20ms) + decode 80 tokens (~30ms) + diffusion expert 4 steps (~25ms) = **~83ms** (target: <100ms).
+| Bug | Sintoma | Causa/estado |
+|-----|---------|--------------|
+| `reasoning_metadata` filtra quase tudo | `PAIDataset` com 0–103 clipes de 3.744 | `filter_clips_by_event_t0s` descarta clipes sem entrada no parquet de reasoning (só 124 têm). Omitir o parâmetro em treino de trajetória pura. |
+| `collate_fn_from_model_config` não é currificável | `TypeError: missing 1 required positional argument: 'data'` | `data` é posicional; nos scripts standalone chamar direto com `(samples, model_config=..., chat_template_version=...)`. No Hydra funciona por causa do `_partial_: true`. |
+| KL sem máscara | loss_kd ~1000x maior que loss_sft | Corrigido em `trainer_kd.py` (usa `labels_mask`). |
+| Logprob scoring congela | scores idênticos pra qualquer imagem | Checkpoints stage 5+ — usar `generate()` real, nunca scoring de logprobs. |
 
 ---
 
 ## Cronograma
 
-| Stage | Status | ETA |
-|-------|--------|-----|
-| Stage 1 v2 (pathways) | ✅ Completo | Jun 2026 |
-| Stage 1 v3 (pathways+scene) | 🔄 Job 166310 | Jun/Jul 2026 |
-| Stage 2 (trajectory expert) | 📋 Planejado | Jul 2026 |
-| Stage 3 (KD 10B→2B) | 📋 Planejado | Set/Out 2026 |
-| Stage 4 (TensorRT) | 📋 Planejado | Out/Nov 2026 |
-| Stage 5 (Jetson) | 📋 Planejado | Nov/Dez 2026 |
+| Fase | Status |
+|------|--------|
+| Stages 4–6 (VQA work zone no 2B) | ✅ jun/2026 |
+| Inferência v16 (filtro Bayesiano) | ✅ jul/2026 |
+| Trajetória SFT+KD | 🔄 jul/2026 |
+| CoT de direção | 📋 |
+| Avaliação minADE/FDE | 📋 |
+| Re-especialização work zone | 📋 |
+| TensorRT + Jetson | 📋 |

@@ -273,13 +273,18 @@ class DisplayPolicy:
     O argmax da crença pisca perto da fronteira (~50/50) e pode pular estados
     fisicamente não-adjacentes (a massa transita por EXITING/OUTSIDE sem que
     esses estados dominem o argmax). O estado EXIBIDO:
-      1. só muda quando o novo estado tem crença >= COMMIT (histerese);
+      1. muda quando o novo estado tem crença >= COMMIT (histerese normal), OU
+         quando a crença do estado ATUALMENTE exibido colapsa abaixo de
+         REFUTE — nesse caso o display anda mesmo que o alvo ainda não tenha
+         atingido COMMIT sozinho (evita ficar preso num estado já refutado
+         só porque a alternativa não isolou 60% de massa);
       2. só percorre arestas físicas — se o filtro converge para um estado
          não-adjacente, o display anda o caminho físico um passo por update
          (ex.: INSIDE→EXITING→OUTSIDE→APPROACHING).
     INSIDE→APPROACHING direto torna-se impossível por construção.
     """
     COMMIT = 0.60
+    REFUTE = 0.15
     # próximo passo físico no caminho display_atual → alvo
     NEXT_HOP = {
         (WZState.OUTSIDE,     WZState.APPROACHING): WZState.APPROACHING,
@@ -301,7 +306,11 @@ class DisplayPolicy:
 
     def update(self, belief):
         target = STATES[int(belief.argmax())]
-        if target == self.state or belief.max() < self.COMMIT:
+        if target == self.state:
+            return self.state
+        current_belief = belief[STATES.index(self.state)]
+        refuted = current_belief < self.REFUTE
+        if belief.max() < self.COMMIT and not refuted:
             return self.state
         self.state = self.NEXT_HOP[(self.state, target)]
         return self.state
@@ -405,7 +414,7 @@ while True:
     if frame_idx % DESC_EVERY == 0:
         if pil is None:
             pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        current_text = strip_city_clause(run_qa(pil, Q_DESC, max_new_tokens=50))
+        current_text = strip_city_clause(run_qa(pil, Q_DESC, max_new_tokens=130))
 
     frame_out = frame.copy()
 
@@ -422,7 +431,7 @@ while True:
     y = 62
     if sign_read is not None and (sec - sign_last_sec) < 4.0:
         draw.rectangle([0, y, PANEL_W, y + 32], fill=(70, 55, 0))
-        draw.text((14, y + 6), f"PLACA: {sign_read[:38]}", font=font_sign, fill=(255, 220, 60))
+        draw.text((14, y + 6), f"SIGN: {sign_read[:38]}", font=font_sign, fill=(255, 220, 60))
         y += 38
     else:
         y += 6
@@ -437,7 +446,7 @@ while True:
     y += 10
 
     # 4) Descrição — fonte maior, poucas linhas, legível
-    draw.text((14, y), "O QUE O MODELO VE:", font=font_bar, fill=(255, 200, 80))
+    draw.text((14, y), "WHAT THE MODEL SEES:", font=font_bar, fill=(255, 200, 80))
     y += 20
     for line in textwrap.wrap(current_text, width=42)[:8]:
         draw.text((14, y), line, font=font_desc, fill=(235, 235, 210))

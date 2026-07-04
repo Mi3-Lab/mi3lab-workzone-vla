@@ -77,13 +77,27 @@ class KDTrainer(ReasoningVLA_Trainer):
         shift_s = logits_s[..., :-1, :].float()  # [B, L-1, V]
         shift_t = logits_t[..., :-1, :]
 
+        # Restrict KD to the same supervised positions as loss_sft (labels_mask,
+        # e.g. only traj_future tokens) — without this, kl_div sums over the
+        # full sequence (image/prompt tokens included), inflating loss_kd by
+        # ~2 orders of magnitude relative to loss_sft (empirically 24 vs 11855
+        # on a 3204-token sequence with ~128 supervised tokens) and drowning out
+        # the SFT signal once combined with kd_lambda.
+        labels_mask = inputs.get("labels_mask")
+        if labels_mask is not None:
+            mask = labels_mask[:, 1:].to(shift_s.device)
+            shift_s = shift_s[mask]
+            shift_t = shift_t[mask]
+
         τ = self.args.kd_temperature
         λ = self.args.kd_lambda
 
         # KL(T||S): KL divergence with T as target distribution
         p_t = F.softmax(shift_t / τ, dim=-1)
         log_p_s = F.log_softmax(shift_s / τ, dim=-1)
-        # kl_div expects (input=log_probs, target=probs)
+        # kl_div expects (input=log_probs, target=probs); shift_s/shift_t are now
+        # [N_valid_tokens, V] (mask flattens batch+seq), so batchmean divides by
+        # N_valid_tokens — a proper per-token average, comparable in scale to loss_sft.
         loss_kd = F.kl_div(log_p_s, p_t, reduction="batchmean") * (τ ** 2)
 
         loss = (1.0 - λ) * loss_sft + λ * loss_kd

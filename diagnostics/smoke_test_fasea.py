@@ -73,8 +73,9 @@ for k, v in sample.items():
         print(f"    {k}: {type(v).__name__} = {str(v)[:60]}")
 
 print("[5] Montando batch via collate_fn...")
-collate_fn = collate_fn_from_model_config(chat_template_version="r1_5")
-batch = collate_fn([sample])
+batch = collate_fn_from_model_config(
+    [sample], model_config=model.config, chat_template_version="r1_5"
+)
 for k, v in batch.items():
     if isinstance(v, torch.Tensor):
         print(f"    {k}: {tuple(v.shape)} {v.dtype}")

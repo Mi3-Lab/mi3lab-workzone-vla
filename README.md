@@ -1,139 +1,97 @@
 # Edge-Deployed Multimodal Safety Reasoning for Autonomous Vehicles in Work Zones
 
-**UC Merced — Research Pipeline**
+**UC Merced — Mi3 Lab**
 
-Fine-tuning do Alpamayo 1.5-10B (VLA = VLM + trajectory expert) no ROADWork dataset para reconhecimento e navegação segura em zonas de obra viária, com destino a deploy no NVIDIA Jetson AGX Orin.
+Construção de um VLA (Vision-Language-Action) compacto de 2B parâmetros para
+reconhecimento e navegação segura em zonas de obra viária, destilado do
+Alpamayo 1.5-10B (NVIDIA) e treinado no ROADWork + PhysicalAI-AV, com destino
+a deploy no NVIDIA Jetson.
 
 ---
 
-## Pipeline
+## Estado atual (jul/2026)
+
+O modelo ativo é um **Cosmos-Reason2-2B** com a arquitetura Alpamayo
+(tokenizer discreto de trajetória, vocab 4000, 128 tokens de trajetória
+futura), treinado em 4 estágios de VQA de work zone:
 
 ```
-[ROADWork Dataset — pathways/ + scene/]
-              │
-              ▼
-  Stage 1 ✅/🔄  SFT VLM
-  Ensina o backbone a descrever cenas de work zone
-  (visual encoder parcialmente descongelado — 0.1x LR)
-              │
-              ▼
-  Stage 2 📋  SFT Trajectory Expert
-  Fine-tuna o diffusion head nos waypoints do pathways/
-              │
-              ▼
-  Stage 3 📋  Knowledge Distillation (10B → 2B)
-  Student: Cosmos-Reason2-2B + expert adaptado
-              │
-              ▼
-  Stage 4 📋  TensorRT W4A16
-  Quantização para ~2GB VRAM
-              │
-              ▼
-  Stage 5 📋  Jetson AGX Orin
-  Inferência <100ms por frame
+student_2b_clean_init            (2B limpo + arquitetura Alpamayo)
+  └─ sft_stage4_v4/checkpoint-8622        VQA work zone (ROADWork real labels)
+       └─ sft_stage5_egostate/checkpoint-1700    estado ego-cêntrico (OUTSIDE/APPROACHING/INSIDE)
+            └─ sft_stage5_1_signs/checkpoint-2472     leitura de placas TTC
+                 └─ sft_stage6_general/checkpoint-2194    retenção de direção geral   ← ATUAL
 ```
 
----
+O que ele **já faz** (V+L): descreve cenas de work zone, classifica o estado
+ego-cêntrico, lê placas, responde VQA geral. A inferência em vídeo
+(`inference/video_inference_v16.py`) combina 4 sensores VQA num filtro
+Bayesiano (HMM) com política de exibição com histerese.
 
-## Dataset: ROADWork (ICCV 2025)
-
-Dataset de zonas de obra viária colhido em 5 cidades americanas (Boston, Pittsburgh, Los Angeles, San Francisco, Chicago/Columbus).
-
-| Split | Imagens | Labels reais | Uso |
-|-------|---------|-------------|-----|
-| `pathways/` | 5.430 | ✅ Descrições humanas + 20 waypoints (x,y) | Stage 1 + Stage 2 |
-| `scene/` | 7.416 | ✅ `scene_description` + `travel_alteration` + COCO bboxes | Stage 1 |
-| `pathways_dense/` | 31.562 | Só trajetória (sem texto) | Stage 2 |
-| `videos/` | ~77 GB | Raw | Inferência/avaliação |
-
-### Datasets convertidos para LingoQA
-
-| Dataset | Train pares | Val pares | Imagens train |
-|---------|------------|----------|---------------|
-| `lingoqa_pathways/` | 9.124 | 6.721 | 3.117 |
-| `lingoqa_scene/` | 21.271 | 8.392 | 5.318 |
-| `lingoqa_combined/` | 30.395 | 15.113 | 8.435 |
+O que **falta** (A de "action"): a porta de trajetória existe na arquitetura
+mas nunca foi treinada — é a fase atual (ver PIPELINE.md, "Fase VLA").
 
 ---
+
+## Fase atual: VLA — trajetória + KD
+
+1. **Trajetória (SFT+KD)** — PhysicalAI-AV (39 chunks, 3.744 clipes), ground
+   truth real de trajetória + distilação de logits do teacher Alpamayo-10B
+   puro (λ=0.5, τ=0.7, KL restrita aos tokens supervisionados).
+   Config: `configs/sft_kd_general_driving.yaml`. Pipeline validado por
+   smoke test (job 171565): vocab teacher/student idênticos (155697),
+   pico 28.4 GB VRAM em A100 80GB.
+2. **CoT de direção** — ~124 clipes com reasoning anotado
+   (`ood_reasoning.parquet`), preprocessor com `cot` no `components_order`.
+3. **Avaliação** — minADE/FDE vs teacher (referência: teacher 0.35–1.97 m).
+4. **Re-especialização work zone** — fine-tune leve devolvendo o
+   conhecimento do stage 6 ao modelo que agora dirige.
+5. **Jetson** — quantização W4A16 / TensorRT (só após 1–4).
+
+---
+
+## Datasets
+
+| Dataset | Conteúdo | Uso |
+|---------|----------|-----|
+| ROADWork `pathways/` + `scene/` (→ LingoQA parquet) | 30k pares Q&A com labels humanos reais | Stages 4–6 (VQA) ✅ |
+| PhysicalAI-AV (39 chunks, 213 GB) | 3.744 clipes, 4 câmeras, trajetória GT 6.4 s | Fase VLA (atual) |
+| ROADWork `videos/` | vídeos crus (Boston, Denver, Chicago, Seattle) | avaliação qualitativa |
 
 ## Modelos
 
-| Modelo | Tamanho | Papel | Status |
-|--------|---------|-------|--------|
-| `Alpamayo-1.5-10B-A1-format` | 37 GB | VLA completo (VLM + expert) | ✅ `/data/.../models/` |
-| `Cosmos-Reason2-8B` | 26 GB | Backbone VLM do Alpamayo | ✅ `/data/.../models/` |
-| `Cosmos-Reason2-2B` | ~8 GB | Student para KD | 📋 Pendente download |
-
-### Checkpoints de fine-tuning
-
-| Checkpoint | eval_loss | Status |
-|------------|----------|--------|
-| `checkpoints/sft_stage1_roadwork_v2/checkpoint-4500` | 0.260 | ✅ Completo |
-| `checkpoints/sft_stage1_roadwork_v3/` | em andamento | 🔄 Treinando (job 166310) |
+| Modelo | Papel |
+|--------|-------|
+| `models/Alpamayo-1.5-10B-A1-format` | teacher KD (original, sem fine-tune) |
+| `models/Cosmos-Reason2-8B` | backbone VLM do teacher |
+| `models/Cosmos-Reason2-2B` | backbone do student |
+| `checkpoints/sft_stage6_general` | 2B atual (VQA work zone + geral) |
+| `checkpoints/kd_general_driving` | 2B + trajetória (em treino) |
 
 ---
 
-## Estrutura do Repositório
+## Estrutura do repositório
 
 ```
-wokzone-alpamayo/
-├── alpamayo1.5/                    # NVlabs/alpamayo1.5 (clonado)
-├── alpamayo-recipes/               # NVlabs/alpamayo-recipes (clonado)
-│   └── recipes/alpamayo1_5_sft/
-│       ├── configs/
-│       │   ├── sft_stage1_roadwork_v2.yaml   # pathways only
-│       │   └── sft_stage1_roadwork_v3.yaml   # pathways + scene
-│       ├── eval_loss.py            # avaliação de perplexidade no val set
-│       ├── video_inference.py      # inferência anotada em vídeo
-│       └── inference_val.py        # inferência frame a frame
-├── data/roadwork/
-│   ├── pathways/                   # imagens + annotations/trajectories_*.json
-│   ├── scene/                      # imagens + annotations/instances_*.json
-│   ├── pathways_dense/             # imagens densas + trajectories_dense*.json
-│   ├── lingoqa_pathways/           # parquets convertidos (pathways/)
-│   ├── lingoqa_scene/              # parquets convertidos (scene/)
-│   ├── lingoqa_combined/           # pathways + scene mesclados
-│   ├── convert_pathways_to_lingoqa.py
-│   ├── convert_scene_to_lingoqa.py
-│   └── merge_lingoqa.py
-├── models/                         # pesos dos modelos
-├── checkpoints/                    # checkpoints de fine-tuning
-├── logs/                           # outputs SLURM + vídeos anotados
-├── sft_v2.sbatch                   # job v2 (pathways, 2×H200, 3d)
-├── sft_v3.sbatch                   # job v3 (combined, 2×H200, 3d, W&B)
-└── video_inference.sbatch          # inferência em vídeo
+mi3lab-workzone-vla/        ← este repo (github.com/Mi3-Lab/mi3lab-workzone-vla)
+├── configs/                configs Hydra (symlinkados no vendor)
+├── training/               train_hf.py, train_kd.py, trainer_kd.py, models/kd_model.py
+├── inference/              video_inference_v16.py (atual) + archive/
+├── data_prep/              conversores ROADWork→LingoQA, downloaders
+├── diagnostics/            smoke tests (fasea, kd_general)
+├── jobs/                   *.sbatch
+├── patches/                patches do vendor + instruções de symlink
+├── archive/                lineage morta (configs/jobs/scripts superados)
+└── workzone_state.py       máquina de estados ego-cêntrica
 ```
 
----
-
-## Progresso
-
-### ✅ Concluído
-
-- **Dataset convertido** — `pathways/` e `scene/` convertidos para LingoQA parquet usando labels reais (não sintéticos)
-- **Stage 1 v2** — 4 épocas no `pathways/`, eval_loss 0.260, convergiu
-  - Visual encoder parcialmente descongelado (0.1x LR)
-  - Sem overfitting (train_loss ≈ eval_loss durante todo treino)
-  - Vídeo de inferência: `logs/alpamayo_video_v2_boston.mp4`
-- **Commit no alpamayo-recipes** — configs, scripts e `.gitignore` corrigido
-
-### 🔄 Em andamento
-
-- **Stage 1 v3** — job 166310, gnode028 (2×H200), dataset combinado (30.395 pares), W&B ativo
-
-### 📋 Planejado
-
-- **Stage 2** — SFT do trajectory expert nos waypoints do `pathways/`
-- **Stage 3** — Knowledge distillation 10B → 2B (Cosmos-Reason2-2B como student)
-- **Stage 4** — TensorRT W4A16
-- **Stage 5** — Deploy Jetson AGX Orin
-
----
+Dependências vendored (clonadas ao lado, **fora** deste repo):
+`../alpamayo-recipes` e `../alpamayo1.5` (NVlabs) — ver `patches/README.md`
+para reconstruir o ambiente.
 
 ## Cluster
 
-- **Partição**: `cenvalarc.gpu`
-- **H200 NVL**: gnode026–029 (2 GPUs por nó, 141 GB VRAM cada)
-- **L40S**: gnode017–024
-- **VENV SFT**: `alpamayo-recipes/recipes/alpamayo1_5_sft/.venv`
-- **Todos os dados em `/data/`** — nunca `~/` ou `~/.cache`
+- Treino: partição `gpu` (A100 80GB ×2/nó) ou `cenvalarc.gpu` (L40S/H200)
+- Testes rápidos: partição `test` (A100/L40S/H100, ≤1 h)
+- VENV: `alpamayo-recipes/recipes/alpamayo1_5_sft/.venv`
+- **Todos os dados/caches em `/data/`** — nunca `~/`
