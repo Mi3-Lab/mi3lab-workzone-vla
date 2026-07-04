@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 BASE = "/data/wesleyferreiramaia/wokzone-alpamayo"
 sys.path.insert(0, os.path.join(BASE, "alpamayo1.5", "src"))
 sys.path.insert(0, os.path.join(BASE, "alpamayo-recipes/recipes/alpamayo1_5_sft"))
+sys.path.insert(0, os.path.join(BASE, "mi3lab-workzone-vla"))   # workzone_state.py mora aqui
 os.environ["WANDB_DISABLED"]        = "true"
 os.environ["HF_HUB_OFFLINE"]        = "1"
 os.environ["TRANSFORMERS_OFFLINE"]  = "1"

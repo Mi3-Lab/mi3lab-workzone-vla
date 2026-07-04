@@ -24,6 +24,26 @@ vivem em `training/`, `inference/`, `data_prep/`, `diagnostics/`).
 | `train_hf.py.patch` | `recipes/alpamayo1_5_sft/train_hf.py` | Ajustes de entrypoint |
 | `sft_base_model.py.patch` | `recipes/alpamayo1_5_sft/models/sft_base_model.py` | Ajustes no `TrainableReasoningVLA` |
 
+## Symlinks — módulos que precisam viver dentro do pacote vendor
+
+Além dos configs (abaixo), 3 arquivos Python nossos precisam estar
+FISICAMENTE dentro da árvore `alpamayo-recipes/recipes/alpamayo1_5_sft/`
+porque são importados via caminho de pacote absoluto
+(`alpamayo1_5_sft.models.kd_model`, não um script solto) — diferente de
+`workzone_state.py`, que só precisa estar em algum diretório do `sys.path`
+(resolvido inserindo `mi3lab-workzone-vla/` no `sys.path` dos scripts que o
+usam). São symlinks apontando pra cá, mesma lógica dos configs:
+
+| Arquivo neste repo | Symlink em alpamayo-recipes |
+|---|---|
+| `training/models/kd_model.py` | `recipes/alpamayo1_5_sft/models/kd_model.py` |
+| `training/trainer_kd.py` | `recipes/alpamayo1_5_sft/trainer_kd.py` |
+| `training/train_kd.py` | `recipes/alpamayo1_5_sft/train_kd.py` |
+
+Se reconstruir o ambiente do zero (clone novo de `alpamayo-recipes`), refaça
+esses 3 symlinks antes de rodar `train_kd.py` ou qualquer script de
+`inference/`/`diagnostics/` que importe `alpamayo1_5_sft.models.kd_model`.
+
 Os configs (`sft_base.yaml`, `wandb/default.yaml`, e todos os nossos
 `sft_stage*.yaml`/`configs/models/*.yaml`/`configs/deepspeed/zero2_fast.json`)
 **não** são patches — vivem como arquivos reais em `../configs/` deste

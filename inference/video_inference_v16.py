@@ -1,30 +1,27 @@
-"""Video inference v12 — estado ego-cêntrico APRENDIDO (Stage 5) + HMM.
+"""Video inference v16 — placas como sensor + painel legível.
 
-Fix vs v11: a descrição gerada pelo modelo inclui uma frase memorizada
-"Scene: {env} environment in {city}, ..." porque o dado de treino
-(convert_to_lingoqa.py) cola o nome real da cidade vindo do metadado do
-dataset em toda resposta. O modelo não infere a cidade da imagem — decorou
-o template. Essa frase é removida por regex do texto exibido no painel,
-para não sugerir uma capacidade de percepção que não existe.
+Mudanças vs v15:
+  1. SENSOR DE PLACAS: a leitura de placa (Stage 5.1) deixa de ser só
+     display e entra no filtro Bayesiano como 4º sensor. Evidência
+     assimétrica: ler "ROAD WORK AHEAD"/"DETOUR"/etc. é evidência forte de
+     zona (mata OUTSIDE); não ler placa é silêncio (uniforme), porque
+     placas são esparsas — ausência não vira o filtro.
+  2. PAINEL REDESENHADO: sem cabeçalho gigante; o STATUS é o topo. Placa
+     lida ganha faixa própria destacada (some após 4 s). Descrição em fonte
+     maior (17px), menos texto (max_new_tokens=50), legível em vídeo.
+  3. CALIBRAÇÃO: OUT→APP 0.05→0.08 — com a evidência extra das placas, o
+     filtro responde mais rápido à entrada na zona (Boston demorava a sair
+     de OUTSIDE) sem perder estabilidade.
 
-Fix vs v10: sensores usam geração real (model.vlm.generate) + parsing, não
-scoring por logprob via forward manual — este último dá distribuições
-congeladas no checkpoint Stage-5 (bug de preprocessing/posições, não do
-modelo; validado com job 170352, generate() responde corretamente).
-
-Diferença vs v9: o sensor principal agora é a pergunta ego-cêntrica que o
-Stage 5 ENSINOU ao modelo (labels auto-derivados da geometria das anotações
-ROADWork). O modelo responde OUTSIDE/APPROACHING/INSIDE considerando a posição
-do VEÍCULO em relação à zona — não o conteúdo da cena. Ver workers a 100 m é
-APPROACHING; INSIDE só quando os elementos estão ao lado do veículo.
-
-EXITING não tem label de imagem única: emerge da dinâmica do HMM (estando
-INSIDE, evidência de zona sumindo força a crença a passar por EXITING).
+Arquitetura (herdada de v9-v15): 4 sensores via geração real + parsing →
+fusão por matrizes de emissão → filtro Bayesiano (HMM, física nas
+transições) → DisplayPolicy (histerese + só arestas físicas).
 
 Sensores:
-  ego     (principal) — 3 respostas treinadas do Stage 5, in-domain
-  traffic (secundário) — vocabulário ROADWork, discrimina zona presente/ausente
-  active  (painel + emissão fraca) — workers presentes na cena
+  ego     (principal)  — pergunta ego-cêntrica treinada no Stage 5
+  sign    (novo, forte) — leitura de placas treinada no Stage 5.1
+  traffic (secundário)  — vocabulário ROADWork, zona presente/ausente
+  active  (secundário)  — workers presentes na cena
 """
 import os, re, sys, textwrap
 import cv2
@@ -46,7 +43,7 @@ os.environ.update({
 })
 
 VIDEO_IN  = sys.argv[1] if len(sys.argv) > 1 else f"{BASE}/videos/boston.mp4"
-VIDEO_OUT = sys.argv[2] if len(sys.argv) > 2 else f"{BASE}/outputs/v12/v12_seattle_unseen.mp4"
+VIDEO_OUT = sys.argv[2] if len(sys.argv) > 2 else f"{BASE}/outputs/v16/v16_seattle_unseen.mp4"
 CKPT      = sys.argv[3] if len(sys.argv) > 3 else f"{BASE}/checkpoints/sft_stage5_egostate"
 
 # Se CKPT é o diretório de treino, usar o checkpoint-* mais recente
@@ -154,13 +151,33 @@ ACTIVE_EMIT = np.array([
     [0.25, 0.75],   # EXITING
 ])
 
+# SENSOR DE PLACAS (Stage 5.1): evidência ASSIMÉTRICA. Ler "ROAD WORK AHEAD"
+# numa placa é evidência forte de zona (mata OUTSIDE, favorece APPROACHING —
+# placas anunciam a zona à frente). NÃO ler placa não diz nada (placas são
+# esparsas): nesse caso p_sign fica uniforme e, como as linhas somam 1, a
+# emissão vira constante — sensor silencioso, não vira o filtro.
+#                  wz_sign  none
+SIGN_EMIT = np.array([
+    [0.05, 0.95],   # OUTSIDE
+    [0.45, 0.55],   # APPROACHING (placa anuncia zona à frente)
+    [0.30, 0.70],   # INSIDE
+    [0.10, 0.90],   # EXITING
+])
+SIGN_WZ_KEYWORDS = [
+    "ROAD WORK", "WORK ZONE", "DETOUR", "LANE CLOSED", "ROAD CLOSED",
+    "SIDEWALK CLOSED", "UTILITY WORK", "SHOULDER WORK", "FLAGGER",
+    "BE PREPARED TO STOP", "LANE ENDS", "LANE SHIFT",
+]
+
 # HMM (passo 0.3 s). Física da saída: INSIDE→EXITING→OUTSIDE, sem atalhos.
 # EXITING→APPROACHING = 0: voltar a "aproximando" exige passar por OUTSIDE
 # (fecha a rota de fuga INSIDE→EXITING→APPROACHING que causava regressão
 # de estado em trechos com pouca evidência).
+# OUT→APP em 0.08 (era 0.05): com o sensor de placas somando evidência, o
+# filtro pode responder mais rápido à entrada sem perder estabilidade.
 TRANS = np.array([
     # OUT   APP   INS   EXI
-    [0.95, 0.05, 0.00, 0.00],   # OUTSIDE
+    [0.92, 0.08, 0.00, 0.00],   # OUTSIDE
     [0.02, 0.88, 0.10, 0.00],   # APPROACHING
     [0.00, 0.00, 0.98, 0.02],   # INSIDE (pegajoso: sai só com evidência sustentada)
     [0.06, 0.00, 0.06, 0.88],   # EXITING (drena devagar: rótulo visível na saída)
@@ -194,6 +211,21 @@ def classify_answer(answer, labels):
     return None  # sem match: sensor não opina neste frame
 
 
+# Pergunta EXATA do treino Stage 5.1 (lingoqa_signtext)
+Q_SIGN = "Read the text on the temporary traffic control signs in this scene."
+
+
+def parse_sign(sign_txt: str):
+    """(p_sign, texto_para_painel). Placa de work zone lida → evidência;
+    sem placa legível → uniforme (sensor silencioso)."""
+    up = sign_txt.upper()
+    if any(k in up for k in SIGN_WZ_KEYWORDS):
+        # extrair só o texto da placa para o painel
+        clean = sign_txt.replace("Signs read:", "").strip().rstrip(".")
+        return peaked_dist(0, 2), clean
+    return np.ones(2) / 2, None
+
+
 def state_emission(pil):
     ego_txt = generate_short(pil, Q_EGO, max_new_tokens=10)
     ego_i   = classify_answer(ego_txt, EGO_SHORT)
@@ -213,8 +245,12 @@ def state_emission(pil):
     ac_i = 0 if "active" in al else (1 if "passive" in al else None)
     p_active = peaked_dist(ac_i, 2) if ac_i is not None else np.ones(2) / 2
 
-    e = (EGO_EMIT @ p_ego) * (TRAFFIC_EMIT @ p_traffic) * (ACTIVE_EMIT @ p_active)
-    return e / e.sum(), p_ego, p_traffic, p_active
+    sign_txt = generate_short(pil, Q_SIGN, max_new_tokens=25)
+    p_sign, sign_read = parse_sign(sign_txt)
+
+    e = ((EGO_EMIT @ p_ego) * (TRAFFIC_EMIT @ p_traffic)
+         * (ACTIVE_EMIT @ p_active) * (SIGN_EMIT @ p_sign))
+    return e / e.sum(), p_ego, p_traffic, p_active, sign_read
 
 
 class BayesFilter:
@@ -229,6 +265,46 @@ class BayesFilter:
     @property
     def state(self):
         return STATES[int(self.belief.argmax())]
+
+
+class DisplayPolicy:
+    """Camada de decisão sobre o filtro (track management padrão).
+
+    O argmax da crença pisca perto da fronteira (~50/50) e pode pular estados
+    fisicamente não-adjacentes (a massa transita por EXITING/OUTSIDE sem que
+    esses estados dominem o argmax). O estado EXIBIDO:
+      1. só muda quando o novo estado tem crença >= COMMIT (histerese);
+      2. só percorre arestas físicas — se o filtro converge para um estado
+         não-adjacente, o display anda o caminho físico um passo por update
+         (ex.: INSIDE→EXITING→OUTSIDE→APPROACHING).
+    INSIDE→APPROACHING direto torna-se impossível por construção.
+    """
+    COMMIT = 0.60
+    # próximo passo físico no caminho display_atual → alvo
+    NEXT_HOP = {
+        (WZState.OUTSIDE,     WZState.APPROACHING): WZState.APPROACHING,
+        (WZState.OUTSIDE,     WZState.INSIDE):      WZState.APPROACHING,
+        (WZState.OUTSIDE,     WZState.EXITING):     WZState.APPROACHING,
+        (WZState.APPROACHING, WZState.OUTSIDE):     WZState.OUTSIDE,
+        (WZState.APPROACHING, WZState.INSIDE):      WZState.INSIDE,
+        (WZState.APPROACHING, WZState.EXITING):     WZState.INSIDE,
+        (WZState.INSIDE,      WZState.EXITING):     WZState.EXITING,
+        (WZState.INSIDE,      WZState.OUTSIDE):     WZState.EXITING,
+        (WZState.INSIDE,      WZState.APPROACHING): WZState.EXITING,
+        (WZState.EXITING,     WZState.OUTSIDE):     WZState.OUTSIDE,
+        (WZState.EXITING,     WZState.APPROACHING): WZState.OUTSIDE,
+        (WZState.EXITING,     WZState.INSIDE):      WZState.INSIDE,
+    }
+
+    def __init__(self):
+        self.state = WZState.OUTSIDE
+
+    def update(self, belief):
+        target = STATES[int(belief.argmax())]
+        if target == self.state or belief.max() < self.COMMIT:
+            return self.state
+        self.state = self.NEXT_HOP[(self.state, target)]
+        return self.state
 
 
 # ══ Descrição (painel) ═══════════════════════════════════════════════════════
@@ -277,11 +353,12 @@ fourcc  = cv2.VideoWriter_fourcc(*"mp4v")
 out_vid = cv2.VideoWriter(VIDEO_OUT, fourcc, fps, (W + PANEL_W, H))
 
 try:
-    font    = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Regular.ttf", 18)
-    font_sm = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Regular.ttf", 14)
-    font_lg = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Bold.ttf",    22)
+    font_status = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Bold.ttf",    30)
+    font_sign   = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Bold.ttf",    19)
+    font_desc   = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Regular.ttf", 17)
+    font_bar    = ImageFont.truetype("/usr/share/fonts/liberation/LiberationMono-Regular.ttf", 14)
 except Exception:
-    font = font_sm = font_lg = ImageFont.load_default()
+    font_status = font_sign = font_desc = font_bar = ImageFont.load_default()
 
 STATE_STYLE = {
     WZState.OUTSIDE:     {"bg": (40,  40,  40), "fg": (180, 180, 180), "label": "OUTSIDE"},
@@ -294,12 +371,12 @@ BAR_COLORS = [(180, 180, 180), (255, 200, 50), (255, 80, 80), (80, 230, 80)]
 print(f"Processing {total_fr} frames @ {fps:.0f}fps ({total_fr/fps:.0f}s)\n")
 
 bf               = BayesFilter()
+policy           = DisplayPolicy()
 belief           = PRIOR.copy()
-current_state    = bf.state
+current_state    = policy.state
 current_text     = "Analyzing..."
-p_ego            = np.ones(3) / 3
-p_traffic        = np.ones(4) / 4
-p_active         = np.ones(2) / 2
+sign_read        = None          # texto da última placa lida (None = nenhuma)
+sign_last_sec    = -99.0         # quando foi lida (placa some do painel após alguns s)
 frame_idx        = 0
 
 while True:
@@ -312,71 +389,67 @@ while True:
     if frame_idx % STATE_EVERY == 0:
         if pil is None:
             pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        emission, p_ego, p_traffic, p_active = state_emission(pil)
-        prev_state = bf.state
+        emission, p_ego, p_traffic, p_active, sr = state_emission(pil)
+        if sr is not None:
+            sign_read, sign_last_sec = sr, sec
         belief = bf.update(emission)
-        current_state = bf.state
+        prev_state = current_state
+        current_state = policy.update(belief)
         if current_state != prev_state:
             print(f"  t={sec:5.1f}s [TRANSITION] {prev_state.value.upper()} → {current_state.value.upper()}")
         estr = "  ".join(f"{n[:3]}={v:.2f}" for n, v in zip(EGO_SHORT, p_ego))
         bstr = "  ".join(f"{n[:3]}={v:.2f}" for n, v in zip(STATE_NAMES, belief))
-        print(f"  t={sec:5.1f}s ego[{EGO_SHORT[p_ego.argmax()]:>11s}]: {estr}  belief: {bstr}")
+        sstr = f"  sign[{sign_read}]" if sr is not None else ""
+        print(f"  t={sec:5.1f}s ego[{EGO_SHORT[p_ego.argmax()]:>11s}]: {estr}  belief: {bstr}{sstr}")
 
     if frame_idx % DESC_EVERY == 0:
         if pil is None:
             pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        current_text = strip_city_clause(run_qa(pil, Q_DESC, max_new_tokens=80))
+        current_text = strip_city_clause(run_qa(pil, Q_DESC, max_new_tokens=50))
 
     frame_out = frame.copy()
 
     panel = Image.new("RGB", (PANEL_W, H), color=(15, 15, 15))
     draw  = ImageDraw.Draw(panel)
 
-    draw.rectangle([0, 0, PANEL_W, 50], fill=(20, 40, 70))
-    draw.text((10,  8), "Alpamayo 2B v12 — Unseen Video", font=font, fill=(100, 200, 255))
-    draw.text((10, 28), f"t={sec:.1f}s  frame {frame_idx}", font=font_sm, fill=(120, 160, 200))
-
+    # 1) Faixa de STATUS (sem cabeçalho — o status É o cabeçalho)
     style = STATE_STYLE[current_state]
-    draw.rectangle([0, 55, PANEL_W, 105], fill=style["bg"])
-    draw.text((10, 58), "WORK ZONE STATUS:", font=font_sm, fill=(200, 200, 200))
-    draw.text((10, 74), style["label"], font=font_lg, fill=style["fg"])
-    draw.text((PANEL_W - 150, 74), f"P={belief.max():.2f}", font=font, fill=style["fg"])
+    draw.rectangle([0, 0, PANEL_W, 58], fill=style["bg"])
+    draw.text((14, 12), style["label"], font=font_status, fill=style["fg"])
+    draw.text((PANEL_W - 130, 20), f"P={belief.max():.2f}", font=font_sign, fill=style["fg"])
 
-    y = 115
-    draw.text((10, y), "STATE BELIEF (Bayes filter):", font=font_sm, fill=(180, 220, 255))
-    y += 18
-    bar_max = PANEL_W - 190
+    # 2) Faixa de PLACA (só quando uma placa de work zone foi lida; some após 4s)
+    y = 62
+    if sign_read is not None and (sec - sign_last_sec) < 4.0:
+        draw.rectangle([0, y, PANEL_W, y + 32], fill=(70, 55, 0))
+        draw.text((14, y + 6), f"PLACA: {sign_read[:38]}", font=font_sign, fill=(255, 220, 60))
+        y += 38
+    else:
+        y += 6
+
+    # 3) Barras de crença (compactas)
+    bar_max = PANEL_W - 200
     for i, (name, p) in enumerate(zip(STATE_NAMES, belief)):
-        draw.text((10, y), f"{name:<11s}", font=font_sm, fill=(200, 200, 200))
-        draw.rectangle([120, y + 2, 120 + int(bar_max * p), y + 12], fill=BAR_COLORS[i])
-        draw.text((130 + int(bar_max * p), y), f"{p:.2f}", font=font_sm, fill=(160, 160, 160))
-        y += 17
-    y += 6
+        draw.text((14, y), f"{name:<11s}", font=font_bar, fill=(200, 200, 200))
+        draw.rectangle([125, y + 2, 125 + int(bar_max * p), y + 13], fill=BAR_COLORS[i])
+        draw.text((132 + int(bar_max * p), y), f"{p:.2f}", font=font_bar, fill=(150, 150, 150))
+        y += 19
+    y += 10
 
-    draw.text((10, y), "EGO SENSOR (Stage-5 learned):", font=font_sm, fill=(180, 220, 255))
-    y += 17
-    ei = int(p_ego.argmax())
-    draw.text((10, y), "  ".join(f"{n[:3]}={v:.2f}" for n, v in zip(EGO_SHORT, p_ego)),
-              font=font_sm, fill=(140, 255, 180))
-    y += 18
-    ti, ai = int(p_traffic.argmax()), int(p_active.argmax())
-    draw.text((10, y), f"scene: {TRAFFIC_SHORT[ti]} ({p_traffic[ti]:.2f}) | "
-                       f"{ACTIVE_SHORT[ai]} ({p_active[ai]:.2f})",
-              font=font_sm, fill=(200, 200, 180))
+    # 4) Descrição — fonte maior, poucas linhas, legível
+    draw.text((14, y), "O QUE O MODELO VE:", font=font_bar, fill=(255, 200, 80))
     y += 20
-
-    draw.text((10, y), "DESCRIPTION:", font=font_sm, fill=(255, 200, 80))
-    y += 16
-    for line in textwrap.wrap(current_text, width=46)[:9]:
-        draw.text((10, y), line, font=font_sm, fill=(230, 230, 200))
-        y += 15
-        if y > H - 25:
+    for line in textwrap.wrap(current_text, width=42)[:8]:
+        draw.text((14, y), line, font=font_desc, fill=(235, 235, 210))
+        y += 22
+        if y > H - 48:
             break
 
+    # 5) Barra de progresso
     progress = frame_idx / max(total_fr, 1)
-    draw.rectangle([0, H - 20, PANEL_W, H],                 fill=(20, 20, 20))
-    draw.rectangle([0, H - 20, int(PANEL_W * progress), H], fill=(50, 100, 180))
-    draw.text((5, H - 18), f"{sec:.1f}s / {total_fr/fps:.0f}s", font=font_sm, fill=(200, 200, 200))
+    draw.rectangle([0, H - 22, PANEL_W, H],                 fill=(20, 20, 20))
+    draw.rectangle([0, H - 22, int(PANEL_W * progress), H], fill=(50, 100, 180))
+    draw.text((6, H - 20), f"{sec:.1f}s / {total_fr/fps:.0f}s", font=font_bar, fill=(210, 210, 210))
 
     panel_bgr = cv2.cvtColor(np.array(panel), cv2.COLOR_RGB2BGR)
     out_vid.write(np.hstack([frame_out, panel_bgr]))
