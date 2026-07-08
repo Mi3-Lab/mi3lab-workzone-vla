@@ -24,6 +24,17 @@ os.environ.update({
 import modelopt.torch.quantization as mtq
 from transformers import AutoModelForImageTextToText, AutoProcessor, AutoTokenizer
 
+sys.path.insert(0, f"{BASE}/TensorRT-Edge-LLM")
+from tensorrt_edgellm.quantization.quantization_configs import build_quant_config
+
+# Receita EXATA do tensorrt-edgellm-quantize (mesma usada nos checkpoints reais
+# int4awq/int4awq-v2): torre visual e KV-cache ficam de fora por padrao. Usar
+# mtq.INT4_AWQ_CFG cru (sem essa funcao) tambem quantiza a torre visual e liga
+# calibracao de KV-cache — simula um checkpoint DIFERENTE do que foi exportado,
+# e e ~10x mais lento (achado ao investigar por que a calibracao de 2000
+# amostras nao terminava em 40 min, vs 219s no job de quantizacao real).
+QUANT_CFG = build_quant_config(quantization="int4_awq")
+
 MODEL_DIR = f"{BASE}/models/workzone-2b-stage6-hf"
 CALIB_V1 = f"{BASE}/data/roadwork/calib_workzone.jsonl"      # 512 usadas de 640
 CALIB_V2 = f"{BASE}/data/roadwork/calib_workzone_v2.jsonl"   # 2000
@@ -131,7 +142,7 @@ torch.cuda.empty_cache()
 print(f"\n[INT4-v1] Calibrando com {CALIB_V1} (512 amostras, texto puro)...")
 texts_v1 = load_calib_texts(CALIB_V1, 512)
 model = load_fresh_model()
-mtq.quantize(model, mtq.INT4_AWQ_CFG, forward_loop=make_calib_forward_loop(tok, texts_v1))
+mtq.quantize(model, QUANT_CFG, forward_loop=make_calib_forward_loop(tok, texts_v1))
 int4_v1_answers = collect_answers(model, "INT4-v1")
 del model
 torch.cuda.empty_cache()
@@ -140,7 +151,7 @@ torch.cuda.empty_cache()
 print(f"\n[INT4-v2] Calibrando com {CALIB_V2} (2000 amostras, texto puro)...")
 texts_v2 = load_calib_texts(CALIB_V2, 2000)
 model = load_fresh_model()
-mtq.quantize(model, mtq.INT4_AWQ_CFG, forward_loop=make_calib_forward_loop(tok, texts_v2))
+mtq.quantize(model, QUANT_CFG, forward_loop=make_calib_forward_loop(tok, texts_v2))
 int4_v2_answers = collect_answers(model, "INT4-v2")
 del model
 torch.cuda.empty_cache()
