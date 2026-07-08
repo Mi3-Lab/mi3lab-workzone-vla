@@ -1,0 +1,1282 @@
+[
+ {
+  "sec": 0.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.342,
+   "approaching": 0.357,
+   "inside": 0.26,
+   "exiting": 0.042
+  },
+  "displayed_state": "OUTSIDE"
+ },
+ {
+  "sec": 0.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be moving smoothly, with no immediate congestion or slowdown. However, the presence of a temporary guide sign suggests that there may be some form of construction or maintenance ahead, which could require drivers to be cautious and attentive to any potential hazards.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 2 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.187,
+   "approaching": 0.479,
+   "inside": 0.301,
+   "exiting": 0.032
+  },
+  "displayed_state": "OUTSIDE"
+ },
+ {
+  "sec": 1.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in pittsburgh, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.096,
+   "approaching": 0.558,
+   "inside": 0.322,
+   "exiting": 0.024
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 1.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be moving smoothly, with no immediate congestion or slowdown. However, the presence of a temporary traffic light ahead suggests that there may be some form of regulation or signaling ahead, which could affect the flow of traffic.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.05,
+   "approaching": 0.602,
+   "inside": 0.33,
+   "exiting": 0.018
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 2.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be moving slowly, with no immediate congestion or sudden changes in the road conditions. The clear sky and the absence of any visible obstructions or signs of congestion suggest that the traffic is flowing smoothly, and there are no immediate obstacles or disruptions in the flow of traffic.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.073,
+   "approaching": 0.548,
+   "inside": 0.352,
+   "exiting": 0.026
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 3.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be moving smoothly, with no immediate congestion or slowdown. However, the presence of a few cars ahead suggests that the road may be congested, and the driver should remain vigilant for any sudden movements.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in pittsburgh, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.04,
+   "approaching": 0.587,
+   "inside": 0.354,
+   "exiting": 0.019
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 3.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be moving slowly, with no immediate congestion or sudden changes in the road conditions. The road is clear, and there are no visible obstacles or vehicles blocking the way. The lighting is soft, suggesting that the scene is likely nighttime or daytime.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.061,
+   "approaching": 0.536,
+   "inside": 0.374,
+   "exiting": 0.029
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 4.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.034,
+   "approaching": 0.573,
+   "inside": 0.371,
+   "exiting": 0.021
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 4.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.021,
+   "approaching": 0.598,
+   "inside": 0.364,
+   "exiting": 0.017
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 5.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in pittsburgh, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.016,
+   "approaching": 0.614,
+   "inside": 0.356,
+   "exiting": 0.014
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 6.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.013,
+   "approaching": 0.627,
+   "inside": 0.348,
+   "exiting": 0.012
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 6.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be flowing smoothly, with no visible congestion or delays. The clear visibility and the absence of any signs of congestion or adverse weather conditions suggest that the road is functioning well.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.032,
+   "approaching": 0.573,
+   "inside": 0.374,
+   "exiting": 0.021
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 7.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.02,
+   "approaching": 0.597,
+   "inside": 0.367,
+   "exiting": 0.016
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 7.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.015,
+   "approaching": 0.613,
+   "inside": 0.358,
+   "exiting": 0.014
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 8.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of a red light mandates that the vehicle halts, and the driver must adhere to the traffic regulations in place.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.013,
+   "approaching": 0.626,
+   "inside": 0.35,
+   "exiting": 0.012
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 9.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of a red light mandates that drivers must halt, and the traffic light is the control device that governs the flow of traffic.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in pittsburgh, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.635,
+   "inside": 0.342,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 9.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.643,
+   "inside": 0.336,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 10.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.649,
+   "inside": 0.33,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 10.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the glow of a car's headlights, casting a soft, diffused light over the scene. This lighting condition is favorable for visibility, allowing drivers to see the road, vehicles, and surroundings more clearly. The absence of direct sunlight reduces the risk of sudden weather changes, contributing to a safer driving experience.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.654,
+   "inside": 0.326,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 11.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the glow of a car's headlights, casting a soft, diffused light over the scene. This lighting condition is favorable for visibility, allowing drivers to see the road, vehicles, and surroundings more clearly. The absence of direct sunlight reduces the risk of sudden weather changes, contributing to a safer driving experience.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.658,
+   "inside": 0.322,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 12.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of the red light mandates that the vehicle halts, and the driver must adhere to the traffic regulations in place.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the glow of a car's headlights, casting a soft, diffused light over the scene. This lighting condition is favorable for visibility, allowing drivers to see the road, other vehicles, and any potential hazards or changes in the road surface.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.661,
+   "inside": 0.319,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 12.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of a red light mandates that the vehicle halts, and the driver must adhere to the traffic regulations in place.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the glow of a car's headlights, casting a soft, diffused light over the scene. This lighting condition is favorable for visibility, allowing drivers to see the road, vehicles, and surroundings more clearly. The absence of direct sunlight reduces the risk of sudden weather changes, contributing to a safer driving experience.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.664,
+   "inside": 0.316,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 13.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.666,
+   "inside": 0.314,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 13.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of the red light mandates that the vehicle halts, and the driver must adhere to the traffic regulations in place.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the glow of a car's headlights, casting a soft, diffused light over the scene. This lighting condition is favorable for visibility, allowing drivers to see the road, vehicles, and surroundings more clearly. The absence of direct sunlight reduces the risk of sudden weather changes, contributing to a safer driving experience.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.668,
+   "inside": 0.312,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 14.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.67,
+   "inside": 0.311,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 15.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.671,
+   "inside": 0.31,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 15.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.672,
+   "inside": 0.309,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 16.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.673,
+   "inside": 0.308,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 16.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.673,
+   "inside": 0.307,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 17.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 4 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.674,
+   "inside": 0.307,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 18.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be flowing smoothly, with no immediate congestion or obstacles visible. The road markings are clear, and the vehicles are positioned correctly in the lane, suggesting a steady and unimpeded flow of traffic.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 6 Light Vehicle(s). Overall hazard severity: 4/5 (high). Recommended speed: \u226415 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.03,
+   "approaching": 0.614,
+   "inside": 0.34,
+   "exiting": 0.016
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 18.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of a red light mandates that the vehicle halts, and the driver must adhere to the traffic regulations in place.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.02,
+   "approaching": 0.631,
+   "inside": 0.336,
+   "exiting": 0.013
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 19.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.015,
+   "approaching": 0.642,
+   "inside": 0.332,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 19.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.013,
+   "approaching": 0.649,
+   "inside": 0.328,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 20.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.655,
+   "inside": 0.324,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 21.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.659,
+   "inside": 0.32,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 21.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.662,
+   "inside": 0.318,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 22.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.665,
+   "inside": 0.315,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 22.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.667,
+   "inside": 0.313,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 23.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.669,
+   "inside": 0.312,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 24.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.67,
+   "inside": 0.31,
+   "exiting": 0.008
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 24.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be flowing smoothly, with no visible congestion or delays. The road is clear, and the vehicles are moving steadily, suggesting a peaceful and uneventful journey.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.03,
+   "approaching": 0.611,
+   "inside": 0.343,
+   "exiting": 0.016
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 25.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.02,
+   "approaching": 0.628,
+   "inside": 0.339,
+   "exiting": 0.013
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 25.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.015,
+   "approaching": 0.639,
+   "inside": 0.334,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 26.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.013,
+   "approaching": 0.647,
+   "inside": 0.329,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 27.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.653,
+   "inside": 0.325,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 27.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.658,
+   "inside": 0.322,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 28.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The headlights are illuminated, indicating that the vehicle is in motion. The presence of multiple vehicles ahead suggests that the traffic is congested, and the driver must pay attention to the surrounding vehicles to maintain a safe distance and avoid any potential collisions.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 6 Work Vehicle(s). Overall hazard severity: 4/5 (high). Recommended speed: \u226415 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.661,
+   "inside": 0.319,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 28.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.664,
+   "inside": 0.316,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 29.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be flowing smoothly, with no immediate congestion or adverse weather conditions. The clear visibility and the absence of any visible obstacles or signs of congestion suggest that the road is functioning well.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 6 Work Vehicle(s). Overall hazard severity: 4/5 (high). Recommended speed: \u226415 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.03,
+   "approaching": 0.606,
+   "inside": 0.348,
+   "exiting": 0.017
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 30.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is currently red, indicating that vehicles must come to a complete stop and wait for the light to turn green. The presence of a red light mandates that drivers must halt, and the traffic light is the control device that governs the flow of traffic.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.02,
+   "approaching": 0.624,
+   "inside": 0.343,
+   "exiting": 0.014
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 30.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The vehicle is traveling in the same lane, and there are no immediate obstacles or changes in the road conditions that would necessitate a turn or stop. The lane markings are clear, and the vehicle is positioned correctly in the lane, allowing for smooth movement.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.039,
+   "approaching": 0.57,
+   "inside": 0.369,
+   "exiting": 0.022
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 31.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be flowing smoothly, with no visible congestion or delays. The road is clear, and the vehicles are moving steadily, suggesting a peaceful and uneventful journey.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.061,
+   "approaching": 0.521,
+   "inside": 0.386,
+   "exiting": 0.032
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 31.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The headlights are illuminated, indicating that the vehicle is in motion. The presence of a \"NO STOPPING ANY TIME ANY PLACE\" sign suggests that there may be restrictions or regulations in place, but the current scene does not provide clear information about such regulations.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.084,
+   "approaching": 0.477,
+   "inside": 0.397,
+   "exiting": 0.042
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 32.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The image shows a single car ahead of the viewer, and the car in front of the viewer is also traveling in the same direction. This indicates that the traffic is flowing smoothly, with no immediate congestion or disruptions visible.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.046,
+   "approaching": 0.527,
+   "inside": 0.397,
+   "exiting": 0.03
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 33.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 6 Work Vehicle(s). Overall hazard severity: 4/5 (high). Recommended speed: \u226415 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.027,
+   "approaching": 0.561,
+   "inside": 0.39,
+   "exiting": 0.022
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 33.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.018,
+   "approaching": 0.585,
+   "inside": 0.38,
+   "exiting": 0.017
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 34.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.014,
+   "approaching": 0.602,
+   "inside": 0.369,
+   "exiting": 0.014
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 34.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.616,
+   "inside": 0.359,
+   "exiting": 0.013
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 35.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.627,
+   "inside": 0.35,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 36.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.636,
+   "inside": 0.342,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 36.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.643,
+   "inside": 0.336,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 37.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Cone(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.649,
+   "inside": 0.33,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 37.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.654,
+   "inside": 0.326,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 38.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The headlights are illuminated, indicating that the vehicle is in motion. The presence of multiple vehicles ahead suggests that the traffic is moving steadily, with no immediate congestion or slowdown. However, the illuminated headlights may also provide a clearer view of the road and surroundings, potentially aiding drivers in navigating the highway.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.03,
+   "approaching": 0.597,
+   "inside": 0.356,
+   "exiting": 0.017
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 39.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic appears to be flowing smoothly, with no immediate congestion or obstacles visible. The clear visibility and the absence of any signs of congestion or adverse weather conditions suggest that the road is functioning well.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the glow of a car's headlights, casting a soft, diffused light over the scene. This lighting condition is favorable for visibility, allowing drivers to see the road, vehicles, and surroundings more clearly. The absence of direct sunlight reduces the risk of sudden weather changes, contributing to a safer driving experience.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.05,
+   "approaching": 0.546,
+   "inside": 0.377,
+   "exiting": 0.027
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 39.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "The scene is illuminated by the headlights of a car, which casts a soft glow on the road. The scene is devoid of any other vehicles, creating a quiet and peaceful atmosphere. The darkness is accentuated by the absence of any other vehicles, making the scene appear calm and devoid of any potential activity.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.029,
+   "approaching": 0.579,
+   "inside": 0.373,
+   "exiting": 0.02
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 40.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The headlights are illuminated, indicating that the vehicle is in motion. The presence of a \"NO STOPPING ANY TIME ANY PLACE\" sign suggests that there may be restrictions or regulations in place, but the current scene appears to be clear and there are no immediate obstacles or impediments preventing the vehicle from proceeding.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.049,
+   "approaching": 0.53,
+   "inside": 0.392,
+   "exiting": 0.03
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 40.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic flow is affected in this scene. The headlights are illuminated, indicating that the vehicle is in motion. The presence of a \"NO STOPPING ANY TIME ANY PLACE\" sign suggests that there may be restrictions or regulations in place, but the current scene does not provide clear evidence of such regulations.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.072,
+   "approaching": 0.485,
+   "inside": 0.403,
+   "exiting": 0.04
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 41.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.039,
+   "approaching": 0.531,
+   "inside": 0.401,
+   "exiting": 0.029
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 42.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.024,
+   "approaching": 0.562,
+   "inside": 0.392,
+   "exiting": 0.021
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 42.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.017,
+   "approaching": 0.585,
+   "inside": 0.381,
+   "exiting": 0.017
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 43.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.013,
+   "approaching": 0.602,
+   "inside": 0.37,
+   "exiting": 0.014
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 43.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.012,
+   "approaching": 0.616,
+   "inside": 0.359,
+   "exiting": 0.012
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 44.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.627,
+   "inside": 0.35,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 45.0,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.636,
+   "inside": 0.343,
+   "exiting": 0.011
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 45.6,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: \u226435 mph.",
+  "desc_hallucinates_object": false,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.643,
+   "inside": 0.336,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 46.2,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 3 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.649,
+   "inside": 0.33,
+   "exiting": 0.01
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 46.8,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.654,
+   "inside": 0.326,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ },
+ {
+  "sec": 47.4,
+  "ego_raw": "APPROACHING. Work zone elements are visible ahead but the vehicle has not reached them yet. Prepare to slow down and follow work zone guidance.",
+  "traffic_raw": "The traffic light ahead is red, indicating that vehicles must come to a complete stop and wait for the light to turn green. Failure to comply with the red light could result in a traffic violation and potential penalties.",
+  "active_raw": "Passive zone: no workers visible, only control devices. Passive zones still require reduced speed and attention, but no flagger interaction. Detected markers: static devices only.",
+  "sign_raw": "No legible sign text in this scene.",
+  "desc_raw": "No Description Scene: Highway environment in unknown city, Cloudy conditions, Light lighting. Lane status: open but affected. Detected objects: 1 Work Vehicle(s). Overall hazard severity: 3/5 (moderate). Recommended speed: \u226425 mph.",
+  "desc_hallucinates_object": true,
+  "belief": {
+   "outside": 0.011,
+   "approaching": 0.658,
+   "inside": 0.322,
+   "exiting": 0.009
+  },
+  "displayed_state": "APPROACHING"
+ }
+]

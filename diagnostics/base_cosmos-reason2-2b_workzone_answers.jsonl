@@ -1,0 +1,217 @@
+{"source": "workzone:boston", "frame": "boston_00000.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00018.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00036.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00054.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00072.jpg", "GATE": "Yes, there are orange traffic cones and temporary barriers on the right side of the road, indicating ongoing construction or maintenance work.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00090.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00108.jpg", "GATE": "Yes, there are orange traffic cones, temporary barriers, and a warning sign indicating road work ahead.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00126.jpg", "GATE": "Yes, there are orange traffic cones and temporary barriers on the road, and a worker is visible near the barriers.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00144.jpg", "GATE": "Yes, there are traffic cones, barricades, temporary signs, workers, and work vehicles present.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00162.jpg", "GATE": "Yes, there are traffic cones, temporary signs, workers, and work vehicles present.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00180.jpg", "GATE": "Yes, there are orange traffic cones, temporary signs, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00198.jpg", "GATE": "Yes, there are traffic cones, temporary barriers, and workers present.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00216.jpg", "GATE": "Yes, there are orange traffic cones, temporary barriers, and a worker visible in the scene.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00234.jpg", "GATE": "Yes, there are orange traffic cones, a worker, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00252.jpg", "GATE": "Yes, there are orange traffic cones, barricades, and temporary signs indicating road work.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00270.jpg", "GATE": "Yes, there are orange traffic cones, temporary barriers, and a white truck with a crane-like attachment on the right side of the road.", "EGO": "Inside"}
+{"source": "workzone:boston", "frame": "boston_00288.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00306.jpg", "GATE": "Yes, there are orange traffic cones, temporary barriers, and a white truck involved in road work.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00324.jpg", "GATE": "Yes, there are orange traffic cones, temporary barriers, and workers visible.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00342.jpg", "GATE": "Yes, there are orange traffic cones lining the road, temporary barriers separating the construction zone, and workers visible near the barriers.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00360.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00378.jpg", "GATE": "Yes", "EGO": "INSIDE"}
+{"source": "workzone:boston", "frame": "boston_00396.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00414.jpg", "GATE": "Yes, there are orange traffic cones and temporary barriers on the road.", "EGO": "Approaching"}
+{"source": "workzone:boston", "frame": "boston_00432.jpg", "GATE": "Yes", "EGO": "INSIDE"}
+{"source": "workzone:boston", "frame": "boston_00450.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00000.jpg", "GATE": "Yes, there are construction workers and a dump truck present.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00018.jpg", "GATE": "Yes, there are workers and a dump truck involved in road work.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00036.jpg", "GATE": "Yes, there are workers and a yellow construction vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00054.jpg", "GATE": "Yes, there are workers and work vehicles present in the scene. Workers can be seen in the distance, and a yellow dump truck is parked on the right side", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00072.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00090.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00108.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00126.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00144.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00162.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:chicago", "frame": "chicago_00180.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:chicago", "frame": "chicago_00198.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:chicago", "frame": "chicago_00216.jpg", "GATE": "Yes, there are workers and work vehicles present. Workers are visible in the scene, and work vehicles such as dump trucks and loaders are parked along the street.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00234.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00252.jpg", "GATE": "Yes, there are road work indicators in this scene. Cones are present, and a worker is visible. Temporary signs are also present. Work vehicles are present", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00270.jpg", "GATE": "Yes, there are workers and work vehicles present. Workers are seen wearing high-vis vests and are actively engaged in the scene. Work vehicles include a dump truck and", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00288.jpg", "GATE": "Yes, there are temporary signs, workers, and work vehicles present. Workers are visible, and a dump truck is parked on the left side of the street.", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:chicago", "frame": "chicago_00306.jpg", "GATE": "Yes, there are temporary signs, workers, and work vehicles present. Workers are visible near the dump truck, and a yellow John Deere skid steer loader", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00324.jpg", "GATE": "Yes, there are workers and a dump truck involved in road work.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00342.jpg", "GATE": "Yes, there are workers and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00360.jpg", "GATE": "Yes, there are workers and a work vehicle present. Workers are seen wearing high-vis vests and helmets, and a work vehicle is parked on the right side of", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:chicago", "frame": "chicago_00378.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00396.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00414.jpg", "GATE": "Yes, there are workers and a work vehicle present in the scene.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00432.jpg", "GATE": "Yes, there are road work indicators in this scene, including cones, barriers, temporary signs, workers, and work vehicles.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00450.jpg", "GATE": "Yes, there are road work indicators in this scene, including workers, a bulldozer, and a jackhammer.", "EGO": "The vehicle is INSIDE."}
+{"source": "workzone:chicago", "frame": "chicago_00468.jpg", "GATE": "Yes, there are road work indicators in this scene, including workers, a bulldozer, and a shovel.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00486.jpg", "GATE": "Yes, there are road work indicators in this scene, including a worker in a yellow vest and a worker in a black vest, a bulldozer, and", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00504.jpg", "GATE": "Yes, there are construction cones, temporary signs, workers, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00522.jpg", "GATE": "Yes, there are orange traffic cones and a red dump truck present.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00540.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00558.jpg", "GATE": "Yes, there are orange traffic cones and a temporary sign visible on the left side of the road.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00576.jpg", "GATE": "Yes, there are orange traffic cones and temporary barriers visible on the left side of the road.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00594.jpg", "GATE": "Yes, there are construction cones and temporary signs present.", "EGO": "Approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00612.jpg", "GATE": "Yes", "EGO": "Inside"}
+{"source": "workzone:denver", "frame": "denver_00000.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00018.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00036.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00054.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "workzone:denver", "frame": "denver_00072.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00090.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00108.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00126.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00144.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00162.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange cones, temporary signs, and workers.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00180.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange cones, temporary signs, workers, and a work vehicle.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00198.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00216.jpg", "GATE": "Yes, there are traffic cones, workers, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00234.jpg", "GATE": "Yes, there are orange traffic cones, workers, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00252.jpg", "GATE": "Yes, there are traffic cones, workers, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00270.jpg", "GATE": "Yes, there are traffic cones, temporary signs, workers, and a tanker truck involved in road work.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00288.jpg", "GATE": "Yes, there are traffic cones, workers, and a temporary sign visible.", "EGO": "INSIDE"}
+{"source": "workzone:denver", "frame": "denver_00306.jpg", "GATE": "Yes, there are road work indicators in this scene including orange traffic cones, temporary signs, workers, and a work vehicle.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00324.jpg", "GATE": "Yes, there are road work indicators in this scene including traffic cones, temporary signs, workers, and work vehicles.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00342.jpg", "GATE": "Yes, there are traffic cones, workers, and a work vehicle present.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00360.jpg", "GATE": "Yes, there are orange traffic cones, a worker in a high-visibility vest, and a temporary sign indicating road work.", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00378.jpg", "GATE": "Yes, there are traffic cones, temporary signs, workers, and a work vehicle present.", "EGO": "INSIDE"}
+{"source": "workzone:denver", "frame": "denver_00396.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00414.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:denver", "frame": "denver_00432.jpg", "GATE": "Yes", "EGO": "INSIDE"}
+{"source": "workzone:denver", "frame": "denver_00450.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00000.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00018.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00036.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00054.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00072.jpg", "GATE": "No", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00090.jpg", "GATE": "No", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00108.jpg", "GATE": "No", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00126.jpg", "GATE": "No", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00144.jpg", "GATE": "No", "EGO": "Inside"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00162.jpg", "GATE": "No", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00180.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00198.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00216.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00234.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00252.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00270.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00288.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00306.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00324.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00342.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00360.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00378.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00396.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00414.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00432.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00450.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00468.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00486.jpg", "GATE": "Yes, there are orange cones, temporary signs, and workers present.", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00504.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00522.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00540.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00558.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00576.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00594.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00612.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00630.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00648.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00666.jpg", "GATE": "Yes", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00684.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00702.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00720.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange and white cones, temporary barriers, and workers.", "EGO": "The vehicle is INSIDE."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00738.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange traffic cones, temporary barriers, and workers.", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00756.jpg", "GATE": "Yes", "EGO": "The vehicle is APPROACHING."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00774.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange and white cones, temporary barriers, and workers.", "EGO": "The vehicle is INSIDE."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00792.jpg", "GATE": "Yes", "EGO": "The vehicle is INSIDE."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00810.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange traffic cones, temporary barriers, and workers.", "EGO": "The vehicle is INSIDE."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00828.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange traffic cones, temporary barriers, and a worker wearing a hard hat.", "EGO": "The vehicle is INSIDE."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00846.jpg", "GATE": "Yes, there are orange traffic cones, temporary barriers, and a worker visible in the scene.", "EGO": "Approaching"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00864.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange traffic cones, temporary barriers, and a worker overseeing the construction zone.", "EGO": "The vehicle is INSIDE"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00882.jpg", "GATE": "Yes, there are road work indicators in this scene, including orange traffic cones, temporary barriers, and a worker overseeing the construction zone.", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00000.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00015.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00030.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00045.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00060.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00075.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00090.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00105.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00120.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00135.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00150.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00165.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00180.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00195.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00210.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00225.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00240.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00255.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00270.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00285.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00300.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00315.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00330.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00345.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00360.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00375.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00390.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00405.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00420.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00435.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00450.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00465.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00480.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00495.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00510.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00525.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00540.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00555.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00570.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00585.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00600.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00615.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00630.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00645.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00660.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00675.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00690.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00705.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00720.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00735.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00750.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00765.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00780.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00795.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00810.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00825.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00840.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00855.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00870.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00885.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00900.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00915.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00930.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00945.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00960.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00975.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00990.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01005.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01020.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01035.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01050.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01065.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01080.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01095.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01110.jpg", "GATE": "No", "EGO": "Approaching"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01125.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01140.jpg", "GATE": "No", "EGO": "INSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01155.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01170.jpg", "GATE": "No", "EGO": "OUTSIDE"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01185.jpg", "GATE": "No", "EGO": "OUTSIDE"}

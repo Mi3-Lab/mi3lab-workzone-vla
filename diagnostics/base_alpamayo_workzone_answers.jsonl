@@ -1,0 +1,217 @@
+{"source": "workzone:boston", "frame": "boston_00000.jpg", "GATE": "True", "EGO": "The car is outside, approaching, or passing by the road work zone"}
+{"source": "workzone:boston", "frame": "boston_00018.jpg", "GATE": "True", "EGO": "The car is driving towards the center of the road"}
+{"source": "workzone:boston", "frame": "boston_00036.jpg", "GATE": "Low", "EGO": "The car is driving towards the center of the road"}
+{"source": "workzone:boston", "frame": "boston_00054.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to collide with other vehicles"}
+{"source": "workzone:boston", "frame": "boston_00072.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to collide with the vehicle in front of it"}
+{"source": "workzone:boston", "frame": "boston_00090.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is positioned to the back of the vehicle"}
+{"source": "workzone:boston", "frame": "boston_00108.jpg", "GATE": "Low", "EGO": "KEEP OUTside"}
+{"source": "workzone:boston", "frame": "boston_00126.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching, and is about to collide with another vehicle"}
+{"source": "workzone:boston", "frame": "boston_00144.jpg", "GATE": "True", "EGO": "The vehicle is currently stopped."}
+{"source": "workzone:boston", "frame": "boston_00162.jpg", "GATE": "True", "EGO": "The vehicle is currently stopped."}
+{"source": "workzone:boston", "frame": "boston_00180.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, which is marked by traffic cones and barriers, indicating a controlled area for construction activities rather than active traffic flow."}
+{"source": "workzone:boston", "frame": "boston_00198.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, surrounded by traffic cones and barriers, indicating that it is not in motion and is likely waiting for further instructions or clearance to proceed."}
+{"source": "workzone:boston", "frame": "boston_00216.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, surrounded by traffic cones and barriers, indicating that it is not in motion and is likely waiting for further instructions or clearance to proceed."}
+{"source": "workzone:boston", "frame": "boston_00234.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, surrounded by traffic cones and construction equipment, indicating that it is not in motion but rather stationary as part of the ongoing road work activities."}
+{"source": "workzone:boston", "frame": "boston_00252.jpg", "GATE": "Yes", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle, as it navigates around the construction zone, as evidenced by its proximity to the orange traffic cones and its orientation towards our direction of travel in the video"}
+{"source": "workzone:boston", "frame": "boston_00270.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, which is marked by traffic cones and barriers, indicating a controlled area for construction activities rather than active traffic flow."}
+{"source": "workzone:boston", "frame": "boston_00288.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, which is marked by traffic cones and barriers, indicating that it is not in motion and is likely waiting for further instructions or clearance to proceed."}
+{"source": "workzone:boston", "frame": "boston_00306.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within a designated area marked by traffic cones, indicating that it is not in motion and is likely waiting for further instructions or clearance to proceed."}
+{"source": "workzone:boston", "frame": "boston_00324.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching, and can be seen in front of the vehicle"}
+{"source": "workzone:boston", "frame": "boston_00342.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within a designated area marked by traffic cones, indicating that it is not in motion and is likely waiting for further instructions or clearance to proceed."}
+{"source": "workzone:boston", "frame": "boston_00360.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as it is positioned within a designated area marked by traffic cones, indicating that it is not in motion and is likely waiting for further instructions or clearance to proceed."}
+{"source": "workzone:boston", "frame": "boston_00378.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and has already passed the intersection"}
+{"source": "workzone:boston", "frame": "boston_00396.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to pass the road work zone"}
+{"source": "workzone:boston", "frame": "boston_00414.jpg", "GATE": "Low", "EGO": "KEEP OUTside"}
+{"source": "workzone:boston", "frame": "boston_00432.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to pass the road work zone"}
+{"source": "workzone:boston", "frame": "boston_00450.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to collide with other vehicles"}
+{"source": "workzone:chicago", "frame": "chicago_00000.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle's lane, as it navigates around the construction area, clearly visible in front of our vehicle's right side in the video frame."}
+{"source": "workzone:chicago", "frame": "chicago_00018.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle's lane, as it navigates past our vehicle's right side, indicating it is likely preparing for or has just completed a maneuver such as turning or merging"}
+{"source": "workzone:chicago", "frame": "chicago_00036.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00054.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00072.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00090.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of the road work zone"}
+{"source": "workzone:chicago", "frame": "chicago_00108.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00126.jpg", "GATE": "True", "EGO": "The vehicle is outside, stopped, and not approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00144.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00162.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00180.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00198.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00216.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00234.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00252.jpg", "GATE": "True", "EGO": "The vehicle is outside, approaching, and positioned to the left of our vehicle"}
+{"source": "workzone:chicago", "frame": "chicago_00270.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped."}
+{"source": "workzone:chicago", "frame": "chicago_00288.jpg", "GATE": "True", "EGO": "The vehicle is currently stopped, as it is stationary with no visible movement or activity around it, indicating it is not in motion or approaching a stop point."}
+{"source": "workzone:chicago", "frame": "chicago_00306.jpg", "GATE": "True", "EGO": "The vehicle is currently stopped, as it is positioned outside of the normal traffic flow and appears stationary in relation to other vehicles and objects in the scene, suggesting it is not actively moving or approaching other vehicles at this moment."}
+{"source": "workzone:chicago", "frame": "chicago_00324.jpg", "GATE": "True", "EGO": "The vehicle is currently stopped, as it is positioned outside of the normal traffic flow and there are workers around it, indicating that it is not actively moving through the road work zone but rather stationary for safety reasons or operational reasons related to the"}
+{"source": "workzone:chicago", "frame": "chicago_00342.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, which is typically designated for stationary vehicles during construction activities or when road maintenance is taking place."}
+{"source": "workzone:chicago", "frame": "chicago_00360.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone where construction activities are taking place, and it is not moving towards or away from the workers or equipment visible in the scene."}
+{"source": "workzone:chicago", "frame": "chicago_00378.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone, which is typically designated for stationary vehicles during construction activities or when road maintenance is taking place."}
+{"source": "workzone:chicago", "frame": "chicago_00396.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as it is stationary with no visible movement or activity around it, indicating it is not in motion or approaching any area where it would need to move."}
+{"source": "workzone:chicago", "frame": "chicago_00414.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as evidenced by its stationary position relative to the surrounding environment and lack of motion blur in the video frames provided."}
+{"source": "workzone:chicago", "frame": "chicago_00432.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the road work zone where construction activities are taking place, and there is no visible movement or indication that it is about to move or is in transit towards a specific destination within the scene"}
+{"source": "workzone:chicago", "frame": "chicago_00450.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as evidenced by its stationary position relative to the surrounding environment and lack of motion blur in the video frames provided."}
+{"source": "workzone:chicago", "frame": "chicago_00468.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as evidenced by its stationary position relative to the surrounding environment and lack of motion blur in the video frames provided."}
+{"source": "workzone:chicago", "frame": "chicago_00486.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped, as evidenced by its stationary position relative to the surrounding environment and lack of motion blur in the video frames provided."}
+{"source": "workzone:chicago", "frame": "chicago_00504.jpg", "GATE": "Yes", "EGO": "The vehicle is currently outside, as it is parked off the main road, likely for construction purposes, as evidenced by its proximity to construction materials and workers in high-visibility clothing."}
+{"source": "workzone:chicago", "frame": "chicago_00522.jpg", "GATE": "Low", "EGO": "The vehicle is currently outside, as it is parked on the side of the road, not obstructing traffic and not showing any signs of being in motion or about to move into the main flow of traffic."}
+{"source": "workzone:chicago", "frame": "chicago_00540.jpg", "GATE": "Low", "EGO": "The vehicle is currently outside, as it is positioned off the main roadway, likely within a designated area for construction or maintenance activities, as evidenced by the presence of construction equipment and barriers in the vicinity of the vehicle in the video."}
+{"source": "workzone:chicago", "frame": "chicago_00558.jpg", "GATE": "Low", "EGO": "The car is outside, approaching"}
+{"source": "workzone:chicago", "frame": "chicago_00576.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is positioned to the left of the frame, moving towards the center of the image, as it navigates past the construction cones and barriers that line the left side of the street, indicating an"}
+{"source": "workzone:chicago", "frame": "chicago_00594.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is positioned to the left of the frame"}
+{"source": "workzone:chicago", "frame": "chicago_00612.jpg", "GATE": "Low", "EGO": "The vehicle is currently stopped"}
+{"source": "workzone:denver", "frame": "denver_00000.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:denver", "frame": "denver_00018.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:denver", "frame": "denver_00036.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass the road work zone, as it is positioned further into the intersection and not directly beside it, indicating it has not yet entered or stopped within the work area."}
+{"source": "workzone:denver", "frame": "denver_00054.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to enter the intersection"}
+{"source": "workzone:denver", "frame": "denver_00072.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to pass the road work zone, as it is positioned behind the stop line and is moving towards the intersection where the road work is taking place, as evidenced by the orange cones and"}
+{"source": "workzone:denver", "frame": "denver_00090.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to pass through the intersection"}
+{"source": "workzone:denver", "frame": "denver_00108.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to pass through the intersection"}
+{"source": "workzone:denver", "frame": "denver_00126.jpg", "GATE": "True", "EGO": "The car is stopped"}
+{"source": "workzone:denver", "frame": "denver_00144.jpg", "GATE": "True", "EGO": "The car is driving outside, approaching the intersection"}
+{"source": "workzone:denver", "frame": "denver_00162.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and is about to pass the road work zone, as it is positioned further into the lane and not directly beside it, as shown in the video."}
+{"source": "workzone:denver", "frame": "denver_00180.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and is about to pass the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00198.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and is about to pass the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00216.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and is about to collide with the vehicle in front of it, which is stationary or moving slowly, as evidenced by its proximity and orientation towards our vehicle in the video."}
+{"source": "workzone:denver", "frame": "denver_00234.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and is about to pass the road work zone, as it is positioned to our left and is moving forward towards our direction, as seen in the video."}
+{"source": "workzone:denver", "frame": "denver_00252.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00270.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00288.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00306.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00324.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone, as it is visible in front of the construction area, moving towards it, and not within the construction zone itself but rather on the road where it is actively navigating past the workers"}
+{"source": "workzone:denver", "frame": "denver_00342.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching, and is positioned behind the vehicle"}
+{"source": "workzone:denver", "frame": "denver_00360.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone"}
+{"source": "workzone:denver", "frame": "denver_00378.jpg", "GATE": "Yes", "EGO": "The car is outside, approaching the road work zone, as it is positioned directly behind the construction truck and traffic cones, indicating it is about to navigate past or through the work area."}
+{"source": "workzone:denver", "frame": "denver_00396.jpg", "GATE": "No, there are no road work indicators in this scene (cones, barriers, temporary signs, workers, or work vehicles).", "EGO": "The car is outside, approaching, and is positioned on the left side of our vehicle, as it is driving towards our left side, as seen in the video."}
+{"source": "workzone:denver", "frame": "denver_00414.jpg", "GATE": "No, there are no road work indicators in this scene (cones, barriers, temporary signs, workers, or work vehicles).", "EGO": "The car is outside, approaching, and is about to pass the road work zone, as it is positioned further into the lane and not directly beside it, as shown in the video."}
+{"source": "workzone:denver", "frame": "denver_00432.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and is about to pass the road work zone, as it is positioned further into the lane and not directly beside it, as seen in the video."}
+{"source": "workzone:denver", "frame": "denver_00450.jpg", "GATE": "Low", "EGO": "The car is driving outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00000.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to cross the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00018.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and has already passed the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00036.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and has already passed the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00054.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00072.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00090.jpg", "GATE": "True", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00108.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00126.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00144.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00162.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00180.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00198.jpg", "GATE": "True", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00216.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00234.jpg", "GATE": "True", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00252.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00270.jpg", "GATE": "True", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00288.jpg", "GATE": "True", "EGO": "The car is outside, approaching, or passing through the road work zone"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00306.jpg", "GATE": "True", "EGO": "The car is outside, approaching, or passing through the road work zone"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00324.jpg", "GATE": "True", "EGO": "The car is driving towards the center of the road"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00342.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and has already passed the road work zone"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00360.jpg", "GATE": "True", "EGO": "The car is outside, approaching, and has already passed the road work zone"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00378.jpg", "GATE": "True", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00396.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00414.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00432.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00450.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00468.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00486.jpg", "GATE": "Low", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00504.jpg", "GATE": "Low", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00522.jpg", "GATE": "True", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00540.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00558.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00576.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00594.jpg", "GATE": "Low", "EGO": "The car is driving towards the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00612.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00630.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00648.jpg", "GATE": "Yes", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00666.jpg", "GATE": "Low", "EGO": "The car is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00684.jpg", "GATE": "Yes", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00702.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the designated bus lane where road work is taking place, and there is no indication of it being in motion or preparing to move."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00720.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the designated bus lane where it is not permitted to drive, indicating it is not in motion and is likely waiting for passengers or following traffic regulations specific to this lane."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00738.jpg", "GATE": "Low", "EGO": "The vehicle is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00756.jpg", "GATE": "Yes", "EGO": "The vehicle is outside, approaching the intersection"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00774.jpg", "GATE": "Yes", "EGO": "The vehicle is currently stopped, as it is positioned within the designated bus lane where road work is taking place, and there is no indication of it being in motion or preparing to move into other lanes or areas."}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00792.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00810.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00828.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00846.jpg", "GATE": "Low", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00864.jpg", "GATE": "Yes", "EGO": "The car is stopped"}
+{"source": "workzone:seattle_unseen", "frame": "seattle_unseen_00882.jpg", "GATE": "Yes", "EGO": "The vehicle is currently moving, as it is positioned in the middle of the intersection, not at the side where it would be stopped for a red light or due to construction, and there are no visible signs indicating it is stationary or out"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00000.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and has not entered the work zone"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00015.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and has not entered the work zone"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00030.jpg", "GATE": "Low", "EGO": "Low"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00045.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00060.jpg", "GATE": "Low", "EGO": "Low"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00075.jpg", "GATE": "Low", "EGO": "Low"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00090.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00105.jpg", "GATE": "Low", "EGO": "Low"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00120.jpg", "GATE": "Low", "EGO": "Low"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00135.jpg", "GATE": "Low", "EGO": "KEEP OUTside"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00150.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00165.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00180.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00195.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00210.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00225.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and passing through the construction zone, as evidenced by its position relative to the barriers and signage in the video."}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00240.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00255.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00270.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00285.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00300.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00315.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00330.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00345.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00360.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00375.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00390.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00405.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00420.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00435.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00450.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00465.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00480.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00495.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00510.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00525.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00540.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00555.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00570.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00585.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00600.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00615.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00630.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass other vehicles"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00645.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00660.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00675.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00690.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00705.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00720.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00735.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00750.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00765.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00780.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and passing by the road work zone, as evidenced by its position relative to the cones and barriers in the video."}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00795.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and passing by the road work zone, as evidenced by its position relative to the cones and signage in the image, indicating it is not obstructed by the work but rather moving past it."}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00810.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and passing by the road work zone, as evidenced by its position relative to the cones and barriers in the video."}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00825.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00840.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00855.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00870.jpg", "GATE": "Low", "EGO": "KEEP OUTside"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00885.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00900.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass other vehicles"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00915.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00930.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00945.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00960.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00975.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_00990.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01005.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01020.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01035.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01050.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01065.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01080.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and passing by the road work zone, as evidenced by its position relative to the cones and barriers in the video."}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01095.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and passing by the road work zone, as evidenced by its position relative to the cones and barriers in the video."}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01110.jpg", "GATE": "Low", "EGO": "KEEP OUTside"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01125.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01140.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and preparing to overtake from behind"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01155.jpg", "GATE": "Low", "EGO": "The car is outside, approaching, and about to pass another car"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01170.jpg", "GATE": "Low", "EGO": "BUMP"}
+{"source": "comma2k19", "frame": "comma2k19_highway_night_01185.jpg", "GATE": "Low", "EGO": "BUMP"}
