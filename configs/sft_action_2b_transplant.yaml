@@ -1,0 +1,76 @@
+# Stage AR1-2B-transplant: adapta o expert PRE-TREINADO do professor ao nosso VLM 2B.
+#
+# Contexto: descobrimos que alpamayo_r1.py:94 faz AutoModel.from_config(), ou seja
+# o expert (1.77B) sempre nasceu ALEATORIO. Treinar 1.77B de parametros aleatorios
+# com 3644 clipes (~500k params por exemplo) e' desesperadamente subdeterminado --
+# e explica por que 4 experimentos com alvos diferentes (GT, trajetoria do professor,
+# campo de velocidade, cotrain do VLM) deram todos minADE ~4.6: o gargalo nunca foi
+# o sinal, era o ponto de partida.
+#
+# Agora o expert parte dos pesos do professor. O que ele JA sabe (como e' uma
+# trajetoria de direcao plausivel) transfere; o que ele PRECISA reaprender e' ler as
+# features do nosso VLM (2048-dim) em vez das do Cosmos-8B (4096-dim). As shapes do
+# KV-cache batem (kv_heads=8, head_dim=128 nos dois), a semantica nao.
+#
+# LR 5e-5: meio-termo deliberado entre o 1e-4 usado pra treinar do zero (destruiria
+# o prior transplantado) e o 3e-5 de refino fino (lento demais pra reaprender a ler
+# um backbone diferente).
+defaults:
+  - sft_base
+  - /models/ar1_5_expert_2b_transplant@model
+  - _self_
+
+data:
+  train_dataset:
+    _recursive_: false
+    _target_: alpamayo.data.pai.PAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [15, 17, 34, 120, 133, 137, 139, 148, 149, 153, 174, 214, 224,
+                270, 276, 317, 420, 609, 727, 728, 968, 982, 1519, 1657, 1786,
+                1790, 1799, 1862, 1984, 2277, 2368, 2372, 2443, 2447, 2599,
+                2634, 2868, 3125]
+    use_default_keyframe: true
+    vla_preprocess_args:
+      generation_mode: false
+  val_dataset:
+    _recursive_: false
+    _target_: alpamayo.data.pai.PAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [3126]
+    use_default_keyframe: true
+    vla_preprocess_args:
+      generation_mode: true
+
+trainer:
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 4
+  learning_rate: 5e-5
+  warmup_steps: 50
+  lr_scheduler_type: cosine_warmup_with_min_lr
+  lr_scheduler_kwargs:
+    min_lr: 1e-6
+  num_train_epochs: 3
+  save_steps: 200
+  save_total_limit: 2
+  save_only_model: true
+  logging_steps: 10
+  eval_strategy: "no"
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+  # so o expert treina (1.77B) e o VLM fica congelado -> cabe sem particionar.
+  # Sem deepspeed o HF religa a torch.autocast, de que o action_in_proj depende
+  # (ele faz upcast fp32 interno de proposito).
+  deepspeed: null
+  ddp_find_unused_parameters: true
+  gradient_checkpointing: false
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_action_2b_transplant
+
+task_name: alpamayo_action_2b_transplant
