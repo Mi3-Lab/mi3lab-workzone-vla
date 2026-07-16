@@ -1,0 +1,45 @@
+# Avaliacao do checkpoint DESTILADO (sft_action_2b_distill/checkpoint-684):
+# mesma avaliacao dos baselines (chunk 3126, ReasoningSampler + DistanceMetrics)
+# pra comparar direto: nosso GT-direto minADE 4.62m | professor 10B 1.26m.
+defaults:
+  - sft_base
+  - /models/ar1_5_expert_2b_cotrain_eval@model
+  - _self_
+
+data:
+  val_dataset:
+    _recursive_: false
+    _target_: alpamayo.data.pai.PAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [3126]
+    use_default_keyframe: true
+    vla_preprocess_args:
+      generation_mode: true
+
+trainer:
+  per_device_eval_batch_size: 1
+  dataloader_num_workers: 2
+  bf16: true
+  deepspeed: null
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  torch_dtype: bfloat16
+  metric_runner:
+    _target_: alpamayo.metrics.metric_runner.MetricRunner
+    metrics:
+      - _target_: alpamayo.metrics.metric_api.ReasoningSampler
+        num_traj_samples: 6
+        num_traj_sets: 1
+        top_p: 0.98
+        temperature: 0.6
+        traj_only_generation: true
+        max_generation_length: 256
+      - _target_: alpamayo.metrics.metric_api.DistanceMetrics
+  eval_ckpt: null
+
+paths:
+  output_dir: /tmp/eval_cotrain
+
+task_name: eval_action_2b_cotrain

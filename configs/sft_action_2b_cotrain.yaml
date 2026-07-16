@@ -1,0 +1,72 @@
+# Stage AR1-2B-cotrain: descongela o VLM (opcao 3).
+#
+# Contexto: o expert de acao ja esta saturado. GT-direto, destilacao de
+# trajetoria e KD de campo de velocidade convergiram todos em minADE ~4.6,
+# enquanto o professor faz 1.26. Tres alvos radicalmente diferentes dando o
+# mesmo numero => o alvo nao e' o gargalo, as features do VLM 2B congelado sao.
+#
+# Memoria: treinaveis vao de 1.77B (so expert) para 4.23B (modelo inteiro).
+# AdamW fp32 sozinho seriam ~34GB, estourando a L40S de 48GB -- por isso volta
+# o ZeRO-2 (particiona optimizer+grads entre as 2 GPUs) + gradient checkpointing,
+# que sao justamente os defaults do sft_base que a gente tinha desligado.
+defaults:
+  - sft_base
+  - /models/ar1_5_expert_2b_cotrain@model
+  - _self_
+
+data:
+  train_dataset:
+    _recursive_: false
+    _target_: alpamayo.data.pai.PAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [15, 17, 34, 120, 133, 137, 139, 148, 149, 153, 174, 214, 224,
+                270, 276, 317, 420, 609, 727, 728, 968, 982, 1519, 1657, 1786,
+                1790, 1799, 1862, 1984, 2277, 2368, 2372, 2443, 2447, 2599,
+                2634, 2868, 3125]
+    use_default_keyframe: true
+    vla_preprocess_args:
+      generation_mode: false
+  val_dataset:
+    _recursive_: false
+    _target_: alpamayo.data.pai.PAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [3126]
+    use_default_keyframe: true
+    vla_preprocess_args:
+      generation_mode: true
+
+trainer:
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8   # 1 x 8 x 2 GPUs = batch efetivo 16
+  # LR conservador: o VLM e' pre-treinado e delicado. 1e-4 (default do sft_base)
+  # destruiria as features de visao/linguagem; aqui so queremos ADAPTA-las.
+  learning_rate: 1e-5
+  warmup_steps: 50
+  lr_scheduler_type: cosine_warmup_with_min_lr
+  lr_scheduler_kwargs:
+    min_lr: 1e-7
+  num_train_epochs: 3
+  save_steps: 200
+  save_total_limit: 2
+  save_only_model: true
+  logging_steps: 10
+  eval_strategy: "no"
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+  # ZeRO-2 particiona optimizer+grads entre as 2 GPUs: ~30GB/GPU em vez dos ~51GB
+  # que o modelo inteiro exigiria numa so. Sem isso nao caberia na L40S (48GB).
+  deepspeed: configs/deepspeed/zero2.json
+  # TrainableAlpamayoR1 nao declara supports_gradient_checkpointing -> o HF recusa
+  # (ValueError). O ZeRO-2 sozinho ja deixa a conta folgada, entao seguimos sem.
+  gradient_checkpointing: false
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_action_2b_cotrain
+
+task_name: alpamayo_action_2b_cotrain
