@@ -68,6 +68,15 @@ class TrajStudent485M(nn.Module):
         net.conv1 = conv1
         self.backbone = nn.Sequential(*list(net.children())[:-2])   # -> [B,2048,7,12]
 
+        # Estatisticas do ImageNet: o backbone foi pre-treinado com esta
+        # normalizacao. Alimenta-lo com pixels crus jogaria fora justamente o
+        # pre-treino que e' a razao de ser deste modelo (eficiencia de dados) --
+        # e falharia em silencio, sem erro nenhum.
+        self.register_buffer("img_mean", torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1),
+                             persistent=False)
+        self.register_buffer("img_std", torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1),
+                             persistent=False)
+
         self.proj = nn.Conv2d(2048, D_MODEL, 1)
         self.cam_embed = nn.Parameter(torch.zeros(n_cams, D_MODEL))
         gh, gw = H_IN // 32, W_IN // 32
@@ -98,9 +107,17 @@ class TrajStudent485M(nn.Module):
     def _encode_images(self, image_frames: torch.Tensor) -> torch.Tensor:
         """image_frames [B, cam, frm, 3, H, W] -> memoria [B, cam*gh*gw, D]."""
         B, C, T = image_frames.shape[:3]
-        x = image_frames.flatten(3, 3) if image_frames.dim() == 7 else image_frames
-        x = x.view(B * C, T * 3, *image_frames.shape[-2:])          # [B*C, 12, H, W]
+        # O PAIDataset entrega uint8 [0,255]: precisa virar float ANTES do resize
+        # (interpolate bilinear nao suporta Byte) e ser normalizado com as
+        # estatisticas do ImageNet, senao o backbone pre-treinado recebe entrada
+        # fora da distribuicao em que foi treinado.
+        x = image_frames.reshape(B * C * T, 3, *image_frames.shape[-2:]).float()
+        if x.max() > 1.5:
+            x = x / 255.0
+        x = (x - self.img_mean) / self.img_std
         x = F.interpolate(x, size=(H_IN, W_IN), mode="bilinear", align_corners=False)
+        # so agora empilhamos os T frames como canais: [B*C, T*3, H, W]
+        x = x.view(B * C, T * 3, H_IN, W_IN)
         f = self.proj(self.backbone(x))                              # [B*C, D, gh, gw]
         f = f.flatten(2).transpose(1, 2)                             # [B*C, gh*gw, D]
         f = f + self.pos2d[None].to(f.dtype)
