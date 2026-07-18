@@ -99,6 +99,14 @@ class TrajStudent485M(nn.Module):
         self.action_head = nn.Sequential(
             nn.Linear(D_MODEL, 512), nn.ReLU(), nn.Linear(512, 2)
         )
+        # Init pequeno na ultima camada: no passo 0 a acao sai ~0, que em espaco
+        # normalizado significa accel/curvatura ~= media do dataset -- ou seja, o
+        # modelo comeca prevendo "segue reto na velocidade atual". E' um prior
+        # sensato e mantem os gradientes pequenos enquanto a integracao dupla
+        # ainda nao esta calibrada. Nao usamos zero puro pra nao deixar os M
+        # modos identicos (a WTA precisa quebrar a simetria entre eles).
+        self.action_head[-1].weight.data.mul_(0.01)
+        self.action_head[-1].bias.data.zero_()
         self.mode_head = nn.Linear(D_MODEL, 1)
 
         # MESMO action space do VLA e do professor -> metricas comparaveis
@@ -149,21 +157,35 @@ class TrajStudent485M(nn.Module):
         xyz, rot = self.action_space.action_to_traj(
             action.reshape(B * N_MODES, N_WAYPOINTS, 2), hx, hr
         )
-        return (xyz.view(B, N_MODES, N_WAYPOINTS, 3),
+        return (action,                                   # [B,M,64,2] normalizado
+                xyz.view(B, N_MODES, N_WAYPOINTS, 3),
                 rot.view(B, N_MODES, N_WAYPOINTS, 3, 3),
                 logits)
 
 
-def wta_loss(pred_xyz, logits, gt_xyz):
-    """Winner-takes-all: so o melhor modo recebe gradiente de regressao.
+def wta_loss(action, pred_xyz, logits, gt_action, gt_xyz, traj_weight: float = 0.1):
+    """Winner-takes-all no espaco de ACAO, com a trajetoria como auxiliar.
 
-    E' o alvo certo aqui: nossos baselines sao medidos em minADE (melhor de 6),
-    entao a loss otimiza exatamente a metrica. Alem disso a WTA e' o que faz os
-    modos se ESPECIALIZAREM (seguir reto / curvar / frear) em vez de todos
-    colapsarem na media -- que e' a patologia oposta do "leque" do nosso VLA.
+    Por que a acao e' a supervisao primaria e nao a trajetoria: a trajetoria sai
+    de uma DUPLA integracao das acoes (accel -> velocidade -> posicao). A
+    aceleracao no instante 0 afeta as 64 posicoes seguintes, entao o gradiente
+    dela cresce ~quadraticamente com o horizonte -- treinar so na trajetoria
+    diverge (medido: loss 29 -> 66 -> 124 -> 177 em 150 passos). Supervisionar a
+    acao e' uma regressao bem condicionada: cada alvo afeta um passo so. E' o que
+    o repo de referencia chama de "Stabilized Unicycle Mode" (--action-weight).
+
+    A trajetoria continua na loss com peso pequeno, porque e' ela que a metrica
+    (minADE) mede -- e e' ela que escolhe o modo vencedor.
+
+    A WTA faz os modos se ESPECIALIZAREM (reto / curva / freada) em vez de
+    colapsarem na media -- patologia oposta ao "leque" do nosso VLA.
     """
-    d = (pred_xyz[..., :2] - gt_xyz[:, None, :, :2]).norm(dim=-1).mean(-1)  # [B,M]
-    best = d.argmin(1)
-    reg = d.gather(1, best[:, None]).squeeze(1).mean()
-    cls = F.cross_entropy(logits, best)          # aprende a rankear os modos
-    return reg + 0.5 * cls, reg.detach()
+    d = (pred_xyz[..., :2] - gt_xyz[:, None, :, :2]).norm(dim=-1).mean(-1)   # [B,M]
+    best = d.argmin(1)                                                        # [B]
+    b = torch.arange(d.shape[0], device=d.device)
+
+    act_loss = F.smooth_l1_loss(action[b, best], gt_action)
+    traj_loss = d[b, best].mean()
+    cls = F.cross_entropy(logits, best)        # aprende a rankear os modos
+    loss = act_loss + traj_weight * traj_loss + 0.5 * cls
+    return loss, traj_loss.detach()

@@ -1,0 +1,63 @@
+# Caminho A: MESMA receita do cotrain (a melhor: minADE 4.572), mudando SO os
+# dados de treino — 8 janelas temporais por clipe em vez de 1 (3644 -> ~29k
+# amostras, zero download). Comparacao controlada: se o numero cair, e' dado.
+#
+# 1 epoca (=~1822 passos com batch efetivo 16). O run original fez 3 epocas x
+# 227 passos = 684. Mais passos E mais dados estao confundidos aqui de proposito:
+# a pergunta e' "da' pra sair do plato com os dados do disco?", nao a ablacao
+# limpa passos-vs-dados (essa fica pro paper, se o resultado justificar).
+defaults:
+  - sft_base
+  - /models/ar1_5_expert_2b_cotrain@model
+  - _self_
+
+data:
+  train_dataset:
+    _recursive_: false
+    _target_: training.pai_multiwindow.MultiWindowPAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [15, 17, 34, 120, 133, 137, 139, 148, 149, 153, 174, 214, 224,
+                270, 276, 317, 420, 609, 727, 728, 968, 982, 1519, 1657, 1786,
+                1790, 1799, 1862, 1984, 2277, 2368, 2372, 2443, 2447, 2599,
+                2634, 2868, 3125]
+    vla_preprocess_args:
+      generation_mode: false
+  val_dataset:
+    _recursive_: false
+    _target_: alpamayo.data.pai.PAIDataset
+    local_dir: /data/wesleyferreiramaia/wokzone-alpamayo/data/PhysicalAI-AV
+    chunk_ids: [3126]
+    use_default_keyframe: true
+    vla_preprocess_args:
+      generation_mode: true
+
+trainer:
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8   # 1 x 8 x 2 GPUs = batch efetivo 16
+  learning_rate: 1e-5              # identico ao run de 4.572
+  warmup_steps: 50
+  lr_scheduler_type: cosine_warmup_with_min_lr
+  lr_scheduler_kwargs:
+    min_lr: 1e-7
+  num_train_epochs: 1
+  save_steps: 400
+  save_total_limit: 2
+  save_only_model: true
+  logging_steps: 20
+  eval_strategy: "no"
+  dataloader_num_workers: 8        # decodifica 4 videos/amostra; 8 workers seguram
+  dataloader_pin_memory: true
+  deepspeed: null                  # H200: cabe sem particionar e a autocast volta
+  ddp_find_unused_parameters: true
+  gradient_checkpointing: false    # TrainableAlpamayoR1 nao suporta
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_action_2b_multiwindow
+
+task_name: alpamayo_action_2b_multiwindow

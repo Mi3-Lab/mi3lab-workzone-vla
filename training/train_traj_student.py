@@ -44,6 +44,8 @@ def collate(batch):
         "ego_history_xyz": torch.stack([b["ego_history_xyz"][0] for b in batch]),
         "ego_history_rot": torch.stack([b["ego_history_rot"][0] for b in batch]),
         "ego_future_xyz": torch.stack([b["ego_future_xyz"][0] for b in batch]),
+        # necessario pra derivar a ACAO alvo (accel, curvatura) via traj_to_action
+        "ego_future_rot": torch.stack([b["ego_future_rot"][0] for b in batch]),
     }
 
 
@@ -68,6 +70,20 @@ cfg = {k: v for k, v in cfg.items() if k != "_target_"}
 model = TrajStudent485M(action_space_cfg=cfg).cuda()
 print(f"    {sum(p.numel() for p in model.parameters()):,} params")
 
+def gt_action_of(b):
+    """Acao (accel, curvatura) que gera o GT — o alvo primario de supervisao.
+
+    traj_to_action e' o inverso exato do action_to_traj usado no forward, entao o
+    alvo e' consistente com a integracao do modelo por construcao.
+    """
+    return model.action_space.traj_to_action(
+        traj_history_xyz=b["ego_history_xyz"].cuda(),
+        traj_history_rot=b["ego_history_rot"].cuda(),
+        traj_future_xyz=b["ego_future_xyz"].cuda(),
+        traj_future_rot=b["ego_future_rot"].cuda(),
+    ).reshape(-1, 64, 2)
+
+
 opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
 steps = len(dl_tr) * EPOCHS
 sched = torch.optim.lr_scheduler.OneCycleLR(opt, LR, total_steps=steps, pct_start=0.05)
@@ -82,8 +98,8 @@ def evaluate():
         if b is None:
             continue
         with torch.autocast("cuda", dtype=torch.bfloat16):
-            xyz, _, _ = model(b["image_frames"].cuda(), b["ego_history_xyz"].cuda(),
-                              b["ego_history_rot"].cuda())
+            _, xyz, _, _ = model(b["image_frames"].cuda(), b["ego_history_xyz"].cuda(),
+                                 b["ego_history_rot"].cuda())
         gt = b["ego_future_xyz"].cuda()
         d = (xyz.float()[..., :2] - gt[:, None, :, :2]).norm(dim=-1).mean(-1)  # [B,M]
         tot += d.min(1).values.sum().item()
@@ -98,10 +114,13 @@ for ep in range(EPOCHS):
     for i, b in enumerate(dl_tr):
         if b is None:
             continue
+        gt_act = gt_action_of(b)
         with torch.autocast("cuda", dtype=torch.bfloat16):
-            xyz, _, logits = model(b["image_frames"].cuda(), b["ego_history_xyz"].cuda(),
-                                   b["ego_history_rot"].cuda())
-            loss, reg = wta_loss(xyz.float(), logits.float(), b["ego_future_xyz"].cuda())
+            action, xyz, _, logits = model(b["image_frames"].cuda(),
+                                           b["ego_history_xyz"].cuda(),
+                                           b["ego_history_rot"].cuda())
+            loss, reg = wta_loss(action.float(), xyz.float(), logits.float(),
+                                 gt_act.float(), b["ego_future_xyz"].cuda())
         opt.zero_grad(set_to_none=True)
         scaler.scale(loss).backward()
         scaler.unscale_(opt)

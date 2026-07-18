@@ -1,0 +1,95 @@
+# Fine-tune de workzone do backbone 10B (Cosmos-Reason2-8B via Alpamayo-1.5).
+#
+# Contexto: o checkpoint original desta etapa (sft_stage1_roadwork_v2/checkpoint
+# -4500) foi apagado numa limpeza de disco anterior a esta sessao; so o config
+# arquivado sobreviveu (mi3lab-workzone-vla/archive/configs/sft_stage1_roadwork_
+# v2.yaml), e ele referenciava um model config (ar1_5_base) que tambem se
+# perdeu. Em vez de reconstruir aquela linhagem (que usava o wrapper AlpamayoR1
+# com expert de acao), replicamos a receita que de fato deu certo pro 2B: o
+# modelo de deteccao em producao (workzone-2b-stage7-1-hf) e' TrainableReasoning
+# VLA puro (SEM action expert) — o mesmo model_type=qwen3_vl do Cosmos-Reason2-8B.
+#
+# Diferenca do pipeline 2B (que foi incremental: stage1 -> stage3 KD -> stage4
+# -> stage6 -> stage7 -> stage7_1, cada um corrigindo uma regressao do anterior):
+# aqui nao temos os checkpoints intermediarios do 8B, entao fazemos uma unica
+# passada no lingoqa_combined (30395 linhas), que ja acumula TODAS as perguntas
+# de workzone (v16: EGO/TRAFFIC/ACTIVE/SIGN/DESC) com bom balanco positivo/
+# negativo verificado (ex: "workers present?" = 3226 negativos / 977 positivos /
+# 103 sem-obra) — a licao do stage7 (SFT sem negativos = vies sempre-sim) ja
+# esta embutida nos dados, nao precisa de correcao posterior.
+defaults:
+  - sft_base
+  - /models/alpamayo10b_workzone_init@model
+  - override /vla_processor@data.train_dataset.vla_preprocess_args: vqa
+  - override /vla_processor@data.val_dataset.vla_preprocess_args: vqa
+  - _self_
+
+data:
+  train_dataset:
+    _target_: alpamayo.data.lingoqa.LingoQADataset
+    local_dir: null
+    data_root: /data/wesleyferreiramaia/wokzone-alpamayo/data/roadwork/lingoqa_combined
+    parquet_name: train.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+  val_dataset:
+    _target_: alpamayo.data.lingoqa.LingoQADataset
+    local_dir: null
+    data_root: /data/wesleyferreiramaia/wokzone-alpamayo/data/roadwork/lingoqa_combined
+    parquet_name: val.parquet
+    vla_preprocess_args:
+      generation_mode: false
+
+trainer:
+  lr_multiplier:
+    vlm.model.visual: 0.1               # adapta a visao devagar (ja' pre-treinada)
+    vlm.model.language_model.embed_tokens: 0.0   # nao mexe no vocabulario
+    expert: 0.0                          # sem cabeca de acao nesta fase
+
+  per_device_train_batch_size: 1         # backbone 8B: batch menor que o do 2B (2)
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8         # 1 x 8 x 2 GPUs = batch efetivo 16, igual ao 2B
+
+  # LR igual ao stage7_1 (refino leve): o backbone ja sabe raciocinar sobre
+  # direcao, so' precisa se especializar em workzone, nao aprender do zero.
+  learning_rate: 1e-5
+  lr_scheduler_type: cosine_warmup_with_min_lr
+  lr_scheduler_kwargs:
+    min_lr: 2e-6
+  warmup_steps: 100
+
+  num_train_epochs: 2                    # passada unica -> mais epocas que o
+                                          # refino incremental de 1 epoca do 2B
+
+  save_steps: 400
+  save_total_limit: 2
+  logging_steps: 10
+
+  eval_strategy: "no"
+  load_best_model_at_end: false
+
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+
+  # ZeRO-2 padrao (sem offload): o cluster nao tem nvcc/CUDA toolkit
+  # carregavel, entao DeepSpeedCPUAdam (offload do optimizer pra CPU) nao
+  # compila -- so funciona em GPU com VRAM suficiente pro ZeRO-2 puro
+  # (~79GB/GPU pro backbone de 8.8B: params 17.6 + grads 8.8 + AdamW
+  # particionado 52.8), por isso H200 (141GB) e nao L40S (48GB) ou A100 (80GB).
+  deepspeed: configs/deepspeed/zero2_fast.json
+
+  ddp_find_unused_parameters: false
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  report_to: none
+
+evaluate:
+  max_eval_steps: -1
+  metric_runner: null
+
+paths:
+  output_dir: /data/wesleyferreiramaia/wokzone-alpamayo/checkpoints/sft_workzone_10b_stage1
+
+task_name: alpamayo_workzone_10b_stage1
