@@ -53,7 +53,7 @@ srun --ntasks=$SLURM_NNODES --ntasks-per-node=1 torchrun \
     --rdzv_id=$SLURM_JOB_ID \
     --rdzv_backend=c10d \
     --rdzv_endpoint=${MASTER_ADDR}:${MASTER_PORT} \
-    train_hf.py \
+    $BASE/mi3lab-workzone-vla/training/train_workzone_10b.py \
     --config-path configs \
     --config-name sft_workzone_10b_stage1 \
     trainer.deepspeed=configs/deepspeed/zero3_fast.json \
