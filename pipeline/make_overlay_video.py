@@ -102,6 +102,9 @@ def main():
     ap.add_argument("--key", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--labels", default=None)
+    ap.add_argument("--extra", action="append", default=[],
+                    help="DIR:LABEL of another model's record; its raw GATE answer is shown "
+                         "as an extra row (e.g. ~/eval_cache/qwendrive_ood_gate:Qwen-Drive)")
     args = ap.parse_args()
 
     stream = os.path.expanduser(args.stream)
@@ -129,11 +132,18 @@ def main():
         if args.key in L:
             gt = gt_per_second(L[args.key], fps, n_s)
 
+    extras = []
+    for spec in args.extra:
+        d, label = spec.rsplit(":", 1)
+        jp = os.path.join(os.path.expanduser(d), f"{args.key}.json")
+        if os.path.exists(jp):
+            extras.append((label, {r["t"]: r for r in json.load(open(jp))}))
+
     ow = 960
     oh = int(H * ow / W)
     chip_h, ev_h, tl_h = 34, 74, 16
     rows_top = 1 + (pred_joint is not None) + (gt is not None)
-    top = rows_top * chip_h + ev_h
+    top = rows_top * chip_h + ev_h + len(extras) * 26
     bottom = tl_h * (1 + (pred_joint is not None) + (gt is not None))
     os.makedirs(os.path.expanduser(args.out), exist_ok=True)
     dst = os.path.join(os.path.expanduser(args.out), f"{args.key}.mp4")
@@ -160,7 +170,7 @@ def main():
         g_txt = (cur.get("gate") or "").replace("<|im_end|>", "").strip()
         yes = g_txt.lower().startswith("yes")
         cv2.rectangle(canvas, (0, y), (ow, y + ev_h), (0, 0, 150) if yes else (0, 100, 0), -1)
-        cv2.putText(canvas, f"GATE: {g_txt[:30]}", (10, y + 20), cv2.FONT_HERSHEY_SIMPLEX,
+        cv2.putText(canvas, f"C3E GATE: {g_txt[:30]}", (10, y + 20), cv2.FONT_HERSHEY_SIMPLEX,
                     0.55, (255, 255, 255), 1)
         sign = (cur.get("sign") or "").replace("\n", " ").strip()
         desc = (cur.get("desc") or "").replace("\n", " ").strip()
@@ -171,6 +181,14 @@ def main():
         cv2.putText(canvas, f"t={t}s", (ow - 80, y + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.55,
                     (255, 255, 0), 1)
         y += ev_h
+        for label, ex in extras:
+            r = ex.get(t) or ex.get(max([k for k in ex if k <= t], default=-1)) or {}
+            txt = (r.get("gate") or "").replace("<|im_end|>", "").strip()
+            yes2 = txt.lower().startswith("yes")
+            cv2.rectangle(canvas, (0, y), (ow, y + 26), (0, 0, 150) if yes2 else (0, 100, 0), -1)
+            cv2.putText(canvas, f"{label} GATE: {txt[:40]}", (10, y + 19),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 1)
+            y += 26
 
         canvas[y:y + oh] = cv2.resize(frame, (ow, oh)); y += oh
 

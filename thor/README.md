@@ -19,6 +19,8 @@ dados    --- 01_sync_from_orin ---->  ~/workzone/data
 
 Cada script é idempotente: se parar no meio, rode de novo e ele continua de onde estava.
 
+> **A placa deste projeto é a DRIVE AGX Thor (DriveOS).** Siga a seção 4 normalmente, mas compile o Edge-LLM como na **seção 5** (Docker do DriveOS SDK num PC x86) e leia lá o que muda sem PyTorch.
+
 ---
 
 ## 1. Qual Thor você tem?
@@ -248,6 +250,16 @@ Na placa, `bash thor/02_build_edgellm.sh` apenas lembra desse fluxo. Depois siga
 ```bash
 echo 15658 | sudo tee /proc/sys/vm/nr_hugepages
 ```
+
+### Qwen-Drive-1.0-4B na DRIVE
+
+No Orin o Qwen-Drive roda em PyTorch puro (BF16, `pipeline/dump_qwendrive_stream.py`), a ~2,9 s por pergunta de 8 tokens. Isso não vale na DRIVE: sem PyTorch, ele precisa virar engine TensorRT pelo Edge-LLM, como o 2B e o C3E. O Edge-LLM v0.9.0 suporta Qwen3.5, que é o VLM do Qwen-Drive sem mudança de arquitetura, mas:
+
+1. a exportação (quantização INT4 e ONNX) roda num **PC x86 com GPU**, não na placa;
+2. o checkpoint é `qwen_drive`, não `qwen3_5`; é preciso extrair só os pesos do VLM para um checkpoint Qwen3.5 antes de exportar;
+3. depois disso, o ONNX entra no mesmo `04_build_engines.sh`, com 736×416 (299 tokens de imagem), como o C3E.
+
+Os passos 1 e 2 ainda não foram feitos.
 
 ---
 
