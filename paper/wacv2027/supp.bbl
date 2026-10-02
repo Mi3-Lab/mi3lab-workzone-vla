@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+
+\bibitem{qwen3vl}
+{Qwen Team}, ``{Qwen3-VL}: A versatile vision-language model series.''
+  \url{https://github.com/QwenLM/Qwen3-VL}, 2025.
+
+\bibitem{nvidia2025cosmosreason}
+{NVIDIA}, ``Cosmos-reason1: From physical common sense to embodied reasoning,''
+  {\em arXiv preprint arXiv:2503.15558}, 2025.
+
+\bibitem{ghosh2025roadwork}
+A.~Ghosh, S.~Zheng, R.~Tamburo, K.~Vuong, J.~Alvarez-Padilla, H.~Zhu, and S.~G.
+  Narasimhan, ``{ROADWork}: A dataset and benchmark for learning to recognize,
+  observe, analyze and drive through work zones,'' in {\em Proceedings of the
+  IEEE/CVF International Conference on Computer Vision (ICCV)}, pp.~6132--6142,
+  2025.
+
+\bibitem{trtedgellm}
+{NVIDIA}, ``{TensorRT Edge-LLM}: High-performance {LLM} and {VLM} inference
+  runtime for embedded platforms.''
+  \url{https://github.com/NVIDIA/TensorRT-Edge-LLM}, 2026.
+
+\end{thebibliography}

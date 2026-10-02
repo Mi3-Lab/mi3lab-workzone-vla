@@ -1,0 +1,1017 @@
+{
+ "_meta": {
+  "annotator": "claude-draft",
+  "verified": false,
+  "guideline": "annotation/GUIDELINE.md",
+  "grid_s": 2
+ },
+ "Merced_Day_01": {
+  "outside": [
+   [
+    0,
+    4139
+   ],
+   [
+    10200,
+    10799
+   ]
+  ],
+  "approaching": [
+   [
+    4140,
+    5639
+   ],
+   [
+    5820,
+    6239
+   ]
+  ],
+  "inside": [
+   [
+    5640,
+    5759
+   ],
+   [
+    6240,
+    10079
+   ]
+  ],
+  "exiting": [
+   [
+    5760,
+    5819
+   ],
+   [
+    10080,
+    10199
+   ]
+  ],
+  "visible": [
+   [
+    0,
+    1199
+   ],
+   [
+    1380,
+    2039
+   ],
+   [
+    2160,
+    2279
+   ],
+   [
+    3900,
+    3959
+   ],
+   [
+    4140,
+    10199
+   ]
+  ],
+  "notes": [
+   [
+    0,
+    2039,
+    "cones, roller and tubular markers on the OPPOSITE carriageway; human sign timestamps at 22 s and 55 s fall here, no ego-facing sign readable at full resolution -> outside"
+   ],
+   [
+    4320,
+    5639,
+    "stopped at a red light after ROAD WORK AHEAD; devices ahead hard to see at sheet resolution"
+   ],
+   [
+    5640,
+    5819,
+    "barricades and message board on the ego's right shoulder, judged ego-relevant"
+   ]
+  ]
+ },
+ "CA99_Night_01": {
+  "outside": [
+   [
+    0,
+    1319
+   ],
+   [
+    4620,
+    5399
+   ]
+  ],
+  "approaching": [
+   [
+    1320,
+    3899
+   ]
+  ],
+  "inside": [
+   [
+    3900,
+    4499
+   ]
+  ],
+  "exiting": [
+   [
+    4500,
+    4619
+   ]
+  ],
+  "visible": [
+   [
+    1320,
+    1439
+   ],
+   [
+    1920,
+    1979
+   ],
+   [
+    2400,
+    2579
+   ],
+   [
+    2820,
+    2999
+   ],
+   [
+    3780,
+    4139
+   ],
+   [
+    4320,
+    4499
+   ]
+  ],
+  "notes": [
+   [
+    0,
+    1319,
+    "human sign timestamp at 0 s; no work-zone sign readable in the first frames; tiny orange shapes at 22 s and 38 s left as no"
+   ],
+   [
+    1320,
+    3899,
+    "LOW CONFIDENCE: freeway at night, only orange diamond signs on the shoulder are visible; no devices; kept as one approach"
+   ],
+   [
+    3900,
+    4499,
+    "LOW CONFIDENCE: unlit drums/channelizers on the right shoulder and signs under the overpass; judged inside"
+   ]
+  ]
+ },
+ "CA50_Day_01": {
+  "outside": [
+   [
+    0,
+    599
+   ],
+   [
+    900,
+    2519
+   ]
+  ],
+  "approaching": [
+   [
+    600,
+    659
+   ],
+   [
+    2520,
+    4319
+   ]
+  ],
+  "inside": [
+   [
+    660,
+    839
+   ],
+   [
+    4320,
+    5399
+   ]
+  ],
+  "exiting": [
+   [
+    840,
+    899
+   ]
+  ],
+  "visible": [
+   [
+    600,
+    839
+   ],
+   [
+    2220,
+    2339
+   ],
+   [
+    2520,
+    5398
+   ]
+  ],
+  "notes": [
+   [
+    600,
+    839,
+    "cones close the LEFT lanes of the ego's direction, message board on a work truck; ego-relevant (this is the teaser frame)"
+   ],
+   [
+    2220,
+    2339,
+    "drums and an orange sign near an on-ramp; judged not ego-relevant"
+   ],
+   [
+    3780,
+    4319,
+    "between the orange diamond signs and the first drums, no devices visible; kept as approaching"
+   ]
+  ]
+ },
+ "CA50_Day_02": {
+  "outside": [
+   [
+    0,
+    239
+   ],
+   [
+    600,
+    1799
+   ],
+   [
+    3780,
+    4778
+   ]
+  ],
+  "approaching": [
+   [
+    240,
+    299
+   ],
+   [
+    1800,
+    1979
+   ]
+  ],
+  "inside": [
+   [
+    300,
+    539
+   ],
+   [
+    1980,
+    3659
+   ]
+  ],
+  "exiting": [
+   [
+    540,
+    599
+   ],
+   [
+    3660,
+    3779
+   ]
+  ],
+  "visible": [
+   [
+    240,
+    539
+   ],
+   [
+    1020,
+    1199
+   ],
+   [
+    1800,
+    3659
+   ]
+  ],
+  "notes": [
+   [
+    300,
+    539,
+    "drums along the left edge of the ego's direction; judged inside"
+   ],
+   [
+    1020,
+    1199,
+    "drums on the far left of a wide freeway; judged not ego-relevant"
+   ],
+   [
+    1980,
+    3659,
+    "long zone: orange signs, drums on both shoulders, left-lane closure at 96-100 s; some gaps with no devices kept as inside"
+   ]
+  ]
+ },
+ "CA99_Day_01": {
+  "outside": [
+   [
+    0,
+    359
+   ],
+   [
+    1740,
+    2323
+   ]
+  ],
+  "approaching": [
+   [
+    360,
+    1739
+   ]
+  ],
+  "inside": [],
+  "exiting": [],
+  "visible": [
+   [
+    360,
+    419
+   ],
+   [
+    660,
+    1019
+   ],
+   [
+    1200,
+    1319
+   ],
+   [
+    1620,
+    1679
+   ],
+   [
+    1800,
+    1859
+   ]
+  ],
+  "notes": [
+   [
+    0,
+    359,
+    "strong sun glare"
+   ],
+   [
+    360,
+    1739,
+    "LOW CONFIDENCE: orange diamond signs and sign stands on the right shoulder repeatedly, but no devices in the lanes; no zone is ever entered in this clip, so approaching throughout"
+   ],
+   [
+    1800,
+    1859,
+    "excavator beyond the barrier; judged not ego-relevant"
+   ]
+  ]
+ },
+ "CA99_Day_02": {
+  "outside": [
+   [
+    0,
+    3419
+   ],
+   [
+    5280,
+    5399
+   ]
+  ],
+  "approaching": [
+   [
+    3420,
+    4799
+   ]
+  ],
+  "inside": [
+   [
+    4800,
+    5219
+   ]
+  ],
+  "exiting": [
+   [
+    5220,
+    5279
+   ]
+  ],
+  "visible": [
+   [
+    180,
+    239
+   ],
+   [
+    1860,
+    1919
+   ],
+   [
+    3420,
+    3479
+   ],
+   [
+    3720,
+    5219
+   ]
+  ],
+  "notes": [
+   [
+    0,
+    359,
+    "human sign timestamp at 4 s; drums on the right shoulder at 6 s only, no readable ego-facing sign; left as outside"
+   ],
+   [
+    1860,
+    1919,
+    "orange diamond signs far away on the right; not counted"
+   ],
+   [
+    3420,
+    4799,
+    "orange diamond signs on both sides, SPEED 55 at 124 s, bridge construction with a crane ahead; no devices in lanes yet"
+   ],
+   [
+    4800,
+    5219,
+    "temporary concrete barriers, bridge falsework and utility trucks beside the ego's lanes"
+   ]
+  ]
+ },
+ "CA99_Evening_01": {
+  "outside": [
+   [
+    0,
+    719
+   ],
+   [
+    2580,
+    3212
+   ]
+  ],
+  "approaching": [
+   [
+    720,
+    2579
+   ]
+  ],
+  "inside": [],
+  "exiting": [],
+  "visible": [
+   [
+    720,
+    839
+   ],
+   [
+    1440,
+    1559
+   ],
+   [
+    1680,
+    1739
+   ],
+   [
+    2100,
+    2159
+   ]
+  ],
+  "notes": [
+   [
+    720,
+    2579,
+    "LOW CONFIDENCE: dusk; orange diamond signs on both shoulders at 24-26 s and again far ahead at 48-72 s, no devices seen at sheet resolution; human sign timestamps at 66 and 77 s"
+   ]
+  ]
+ },
+ "Merced_Day_02": {
+  "outside": [
+   [
+    0,
+    359
+   ],
+   [
+    480,
+    2579
+   ]
+  ],
+  "approaching": [
+   [
+    360,
+    479
+   ],
+   [
+    2580,
+    4139
+   ]
+  ],
+  "inside": [
+   [
+    4140,
+    5399
+   ]
+  ],
+  "exiting": [],
+  "visible": [
+   [
+    360,
+    479
+   ],
+   [
+    2580,
+    2699
+   ],
+   [
+    3300,
+    3419
+   ],
+   [
+    3600,
+    3659
+   ],
+   [
+    4140,
+    5398
+   ]
+  ],
+  "notes": [
+   [
+    360,
+    479,
+    "LOW CONFIDENCE: portable message board (\"...DELAY\") and a cone on the right curb; then a long stop at an intersection with no devices visible, labeled outside"
+   ],
+   [
+    2580,
+    4139,
+    "ROAD WORK AHEAD sign at 88 s; human sign timestamps at 104 and 124 s; devices only at the far-right corners until 138 s"
+   ],
+   [
+    4140,
+    5398,
+    "cones and channelizers in the lanes, RIGHT LANE ENDS, message board WORK ZONE; lane closure through the end"
+   ]
+  ]
+ },
+ "CA99_Night_02": {
+  "outside": [
+   [
+    0,
+    59
+   ],
+   [
+    2520,
+    5399
+   ]
+  ],
+  "approaching": [
+   [
+    60,
+    1079
+   ]
+  ],
+  "inside": [
+   [
+    1080,
+    2399
+   ]
+  ],
+  "exiting": [
+   [
+    2400,
+    2519
+   ]
+  ],
+  "visible": [
+   [
+    60,
+    119
+   ],
+   [
+    240,
+    479
+   ],
+   [
+    1080,
+    2399
+   ],
+   [
+    4140,
+    4199
+   ],
+   [
+    4680,
+    4979
+   ]
+  ],
+  "notes": [
+   [
+    60,
+    1079,
+    "orange diamond signs on the right shoulder at 2-14 s; human sign timestamps at 13 and 15 s"
+   ],
+   [
+    1080,
+    2399,
+    "LOW CONFIDENCE: drums along the left edge (median shoulder) of the ego's direction, signs on the right; judged inside"
+   ],
+   [
+    4140,
+    4979,
+    "orange signs on the exit ramp and surface streets after leaving the freeway; judged not ego-relevant"
+   ]
+  ]
+ },
+ "CA99_Night_03": {
+  "outside": [
+   [
+    0,
+    479
+   ],
+   [
+    1080,
+    1830
+   ]
+  ],
+  "approaching": [
+   [
+    480,
+    1079
+   ]
+  ],
+  "inside": [],
+  "exiting": [],
+  "visible": [
+   [
+    480,
+    839
+   ]
+  ],
+  "notes": [
+   [
+    0,
+    479,
+    "human sign timestamps at 4 and 13 s; headlight glare, no work zone sign readable at sheet resolution"
+   ],
+   [
+    480,
+    1079,
+    "LOW CONFIDENCE: orange diamond signs on both shoulders at 16-26 s (human timestamps 24 and 30 s); no devices seen; possibly signs for the zone of CA99_Night_02"
+   ]
+  ]
+ },
+ "CA99_Night_04": {
+  "outside": [
+   [
+    0,
+    5399
+   ]
+  ],
+  "approaching": [],
+  "inside": [],
+  "exiting": [],
+  "visible": [
+   [
+    3240,
+    3299
+   ],
+   [
+    3840,
+    3899
+   ]
+  ],
+  "notes": [
+   [
+    0,
+    599,
+    "LOW CONFIDENCE: human sign timestamp at 10 s marked Hard; no work-zone sign readable at sheet resolution; check at full size"
+   ],
+   [
+    3240,
+    3899,
+    "amber flashing light on the right shoulder and a row of reflectors; could be a work vehicle, not ego-relevant as seen"
+   ]
+  ]
+ },
+ "Fresno_Sunset_01": {
+  "outside": [
+   [
+    0,
+    719
+   ],
+   [
+    2880,
+    5819
+   ],
+   [
+    8340,
+    9471
+   ]
+  ],
+  "approaching": [
+   [
+    720,
+    1319
+   ],
+   [
+    5820,
+    6599
+   ]
+  ],
+  "inside": [
+   [
+    1320,
+    2819
+   ],
+   [
+    6600,
+    8279
+   ]
+  ],
+  "exiting": [
+   [
+    2820,
+    2879
+   ],
+   [
+    8280,
+    8339
+   ]
+  ],
+  "visible": [
+   [
+    480,
+    539
+   ],
+   [
+    720,
+    779
+   ],
+   [
+    840,
+    2819
+   ],
+   [
+    5820,
+    5879
+   ],
+   [
+    6180,
+    8279
+   ]
+  ],
+  "notes": [
+   [
+    720,
+    1319,
+    "orange fencing and barricades ahead at an intersection; human sign timestamps at 50 and 51 s"
+   ],
+   [
+    1320,
+    2819,
+    "barricades, bridge construction, temporary concrete barriers along the lanes, channelizers in the lanes at 84-92 s; LOW CONFIDENCE at 72-84 s (only concrete barriers)"
+   ],
+   [
+    2940,
+    4679,
+    "long stop at a red light, no work visible"
+   ],
+   [
+    5820,
+    6599,
+    "orange diamond signs on the right; human timestamp 211 s"
+   ],
+   [
+    6600,
+    8279,
+    "barricades, K-rail, cranes; strong sun glare 236-270 s; human timestamp 239 s"
+   ]
+  ]
+ },
+ "Merced_NightFog_01": {
+  "outside": [
+   [
+    0,
+    1079
+   ],
+   [
+    3060,
+    4139
+   ],
+   [
+    4320,
+    7379
+   ]
+  ],
+  "approaching": [
+   [
+    1080,
+    2159
+   ],
+   [
+    4140,
+    4319
+   ],
+   [
+    7380,
+    7739
+   ]
+  ],
+  "inside": [
+   [
+    2160,
+    2999
+   ],
+   [
+    7740,
+    10799
+   ]
+  ],
+  "exiting": [
+   [
+    3000,
+    3059
+   ]
+  ],
+  "visible": [
+   [
+    1080,
+    1199
+   ],
+   [
+    1800,
+    1919
+   ],
+   [
+    2160,
+    2999
+   ],
+   [
+    4140,
+    4259
+   ],
+   [
+    4980,
+    5039
+   ],
+   [
+    5760,
+    6059
+   ],
+   [
+    7200,
+    7259
+   ],
+   [
+    7680,
+    10798
+   ]
+  ],
+  "notes": [
+   [
+    1080,
+    2159,
+    "orange diamond sign on the right at 36-38 s, barricade at the stop at 60-64 s"
+   ],
+   [
+    2160,
+    2999,
+    "LOW CONFIDENCE: cones and equipment along the LEFT edge (median side) of the ego's road; judged inside"
+   ],
+   [
+    3120,
+    3359,
+    "human sign timestamp at 108 s; nothing readable in fog"
+   ],
+   [
+    4140,
+    4319,
+    "LOW CONFIDENCE: SPEED 25 sign and cones on the left at 140 s (human timestamp 140 s)"
+   ],
+   [
+    5760,
+    6059,
+    "cones in a parking lot; not ego-relevant"
+   ],
+   [
+    7380,
+    10798,
+    "arrow board at 258 s, cones and channelizers along the right edge, WORK ZONE 25 MPH message board at 300-306 s; human timestamps 229, 247 and 280 s"
+   ]
+  ]
+ },
+ "Merced_NightRain_01": {
+  "outside": [
+   [
+    0,
+    4799
+   ],
+   [
+    6900,
+    8159
+   ],
+   [
+    10320,
+    10739
+   ],
+   [
+    12840,
+    16199
+   ]
+  ],
+  "approaching": [
+   [
+    4800,
+    6899
+   ],
+   [
+    8160,
+    9299
+   ],
+   [
+    10740,
+    10979
+   ]
+  ],
+  "inside": [
+   [
+    9300,
+    10199
+   ],
+   [
+    10980,
+    12719
+   ]
+  ],
+  "exiting": [
+   [
+    10200,
+    10319
+   ],
+   [
+    12720,
+    12839
+   ]
+  ],
+  "visible": [
+   [
+    2340,
+    2759
+   ],
+   [
+    3600,
+    4499
+   ],
+   [
+    4860,
+    4979
+   ],
+   [
+    5940,
+    6059
+   ],
+   [
+    8160,
+    8279
+   ],
+   [
+    8640,
+    8759
+   ],
+   [
+    9300,
+    10199
+   ],
+   [
+    10740,
+    12719
+   ]
+  ],
+  "notes": [
+   [
+    2340,
+    2759,
+    "orange diamond signs on the right, no zone follows; kept outside"
+   ],
+   [
+    3600,
+    4499,
+    "cones and a work truck left of the double yellow line (opposite direction); not ego-relevant"
+   ],
+   [
+    4800,
+    6899,
+    "LOW CONFIDENCE: SPEED 25 signs at 164 and 200 s (human timestamps 163 and 200 s), a few cones at 200 s"
+   ],
+   [
+    8160,
+    9299,
+    "ROAD WORK AHEAD at 274 s, barricade at 290 s; human 298 s"
+   ],
+   [
+    9300,
+    10199,
+    "cones and channelizers in and beside the ego's lanes; human 332 s"
+   ],
+   [
+    10740,
+    12719,
+    "STOP message board, cones along the right edge, orange diamond sign, work truck"
+   ]
+  ]
+ }
+}

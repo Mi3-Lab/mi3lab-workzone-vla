@@ -1,0 +1,127 @@
+\begin{thebibliography}{10}
+
+\bibitem{nhtsa2023}
+{National Highway Traffic Safety Administration}, ``2023 fatality analysis
+  reporting system ({FARS}) annual report file.'' U.S. Department of
+  Transportation, accessed via workzonesafety.org, 2023.
+
+\bibitem{radford2021clip}
+A.~Radford, J.~W. Kim, C.~Hallacy, A.~Ramesh, G.~Goh, S.~Agarwal, G.~Sastry,
+  A.~Askell, P.~Mishkin, J.~Clark, G.~Krueger, and I.~Sutskever, ``Learning
+  transferable visual models from natural language supervision,'' in {\em
+  Proceedings of the International Conference on Machine Learning (ICML)},
+  pp.~8748--8763, 2021.
+
+\bibitem{priorsystem2026}
+A.~Martinez-Sanchez, K.~Ng, W.~Maia, L.~Fleig, M.~Keskar, E.~Maquiling,
+  Y.~Tandon, P.~Roy, M.~Trivedi, and R.~Greer, ``{ZONEWISE}: Zone worksite
+  inference with speed estimation,'' in {\em Proceedings of the 28th
+  International Technical Conference on the Enhanced Safety of Vehicles (ESV)},
+  (Toronto, Canada), 2026.
+\newblock First place, ESV 2026 student competition.
+
+\bibitem{priorsystemarxiv2026}
+A.~Martinez-Sanchez, K.~Ng, W.~Maia, L.~Fleig, M.~Keskar, E.~Maquiling,
+  Y.~Tandon, P.~Roy, M.~Trivedi, and R.~Greer, ``Vision-language work zone
+  intelligence for safety-critical speed regulation of mixed-autonomy vehicles
+  in dynamic environments,'' {\em arXiv preprint arXiv:2606.08860}, 2026.
+
+\bibitem{ghosh2025roadwork}
+A.~Ghosh, S.~Zheng, R.~Tamburo, K.~Vuong, J.~Alvarez-Padilla, H.~Zhu, and S.~G.
+  Narasimhan, ``{ROADWork}: A dataset and benchmark for learning to recognize,
+  observe, analyze and drive through work zones,'' in {\em Proceedings of the
+  IEEE/CVF International Conference on Computer Vision (ICCV)}, pp.~6132--6142,
+  2025.
+
+\bibitem{lin2024awq}
+J.~Lin, J.~Tang, H.~Tang, S.~Yang, W.-M. Chen, W.-C. Wang, G.~Xiao, X.~Dang,
+  C.~Gan, and S.~Han, ``{AWQ}: Activation-aware weight quantization for
+  on-device {LLM} compression and acceleration,'' in {\em Proceedings of
+  Machine Learning and Systems (MLSys)}, 2024.
+
+\bibitem{trtedgellm}
+{NVIDIA}, ``{TensorRT Edge-LLM}: High-performance {LLM} and {VLM} inference
+  runtime for embedded platforms.''
+  \url{https://github.com/NVIDIA/TensorRT-Edge-LLM}, 2026.
+
+\bibitem{shi2021workzone}
+W.~Shi and R.~R. Rajkumar, ``Work zone detection for autonomous vehicles,'' in
+  {\em Proceedings of the IEEE International Intelligent Transportation Systems
+  Conference (ITSC)}, pp.~1585--1591, 2021.
+
+\bibitem{abodo2018shrp}
+F.~Abodo, R.~Rittmuller, B.~Sumner, and A.~Berthaume, ``Detecting work zones in
+  {SHRP 2 NDS} videos using deep learning-based computer vision,'' in {\em
+  Proceedings of the IEEE International Conference on Machine Learning and
+  Applications (ICMLA)}, pp.~679--686, 2018.
+
+\bibitem{hwang2024emma}
+J.-J. Hwang, R.~Xu, H.~Lin, W.-C. Hung, J.~Ji, K.~Choi, D.~Huang, T.~He,
+  P.~Covington, B.~Sapp, Y.~Guo, D.~Anguelov, and M.~Tan, ``{EMMA}: End-to-end
+  multimodal model for autonomous driving,'' {\em arXiv preprint
+  arXiv:2410.23262}, 2024.
+
+\bibitem{tian2024drivevlm}
+X.~Tian, J.~Gu, B.~Li, Y.~Liu, Y.~Wang, Z.~Zhao, K.~Zhan, P.~Jia, X.~Lang, and
+  H.~Zhao, ``{DriveVLM}: The convergence of autonomous driving and large
+  vision-language models,'' in {\em Conference on Robot Learning (CoRL)}, 2024.
+
+\bibitem{marcu2024lingoqa}
+A.-M. Marcu, L.~Chen, J.~H{\"u}nermann, A.~Karnsund, B.~Hanotte, P.~Chidananda,
+  S.~Nair, V.~Badrinarayanan, A.~Kendall, J.~Shotton, E.~Arani, and
+  O.~Sinavski, ``{LingoQA}: Visual question answering for autonomous driving,''
+  in {\em Proceedings of the European Conference on Computer Vision (ECCV)},
+  2024.
+
+\bibitem{nvidia2025cosmosreason}
+{NVIDIA}, ``Cosmos-reason1: From physical common sense to embodied reasoning,''
+  {\em arXiv preprint arXiv:2503.15558}, 2025.
+
+\bibitem{lightemma2025}
+Z.~Qiao, H.~Li, Z.~Cao, and H.~Peng, ``{LightEMMA}: Lightweight end-to-end
+  multimodal model for autonomous driving,'' {\em arXiv preprint
+  arXiv:2505.00284}, 2025.
+
+\bibitem{nvidia2026cosmos3}
+{NVIDIA}, ``Cosmos 3: Omnimodal world models for physical ai,'' {\em arXiv
+  preprint arXiv:2606.02800}, 2026.
+
+\bibitem{alpamayo2026}
+{NVIDIA}, ``Alpamayo-r1: Bridging reasoning and action prediction for
+  generalizable autonomous driving in the long tail,'' {\em arXiv preprint
+  arXiv:2511.00088}, 2025.
+
+\bibitem{chu2024mobilevlm}
+X.~Chu, L.~Qiao, X.~Zhang, S.~Xu, F.~Wei, Y.~Yang, X.~Sun, Y.~Hu, X.~Lin,
+  B.~Zhang, and C.~Shen, ``{MobileVLM V2}: Faster and stronger baseline for
+  vision language model,'' {\em arXiv preprint arXiv:2402.03766}, 2024.
+
+\bibitem{lin2024vila}
+J.~Lin, H.~Yin, W.~Ping, P.~Molchanov, M.~Shoeybi, and S.~Han, ``{VILA}: On
+  pre-training for visual language models,'' in {\em Proceedings of the
+  IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 2024.
+
+\bibitem{viola2001rapid}
+P.~Viola and M.~Jones, ``Rapid object detection using a boosted cascade of
+  simple features,'' in {\em Proceedings of the IEEE Conference on Computer
+  Vision and Pattern Recognition (CVPR)}, 2001.
+
+\bibitem{kang2017noscope}
+D.~Kang, J.~Emmons, F.~Abuzaid, P.~Bailis, and M.~Zaharia, ``{NoScope}:
+  Optimizing neural network queries over video at scale,'' {\em Proceedings of
+  the VLDB Endowment}, vol.~10, no.~11, pp.~1586--1597, 2017.
+
+\bibitem{chen2023frugalgpt}
+L.~Chen, M.~Zaharia, and J.~Zou, ``{FrugalGPT}: How to use large language
+  models while reducing cost and improving performance,'' {\em arXiv preprint
+  arXiv:2305.05176}, 2023.
+
+\bibitem{gatekeeper2025}
+M.~Sim{\'o}n and et~al., ``Gatekeeper: Improving model cascades through
+  confidence tuning,'' {\em arXiv preprint arXiv:2502.19335}, 2025.
+
+\bibitem{qwen3vl}
+{Qwen Team}, ``{Qwen3-VL}: A versatile vision-language model series.''
+  \url{https://github.com/QwenLM/Qwen3-VL}, 2025.
+
+\end{thebibliography}

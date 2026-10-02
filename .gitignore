@@ -1,0 +1,36 @@
+# Models and engines: engines are built per device (thor/04_build_engines.sh),
+# ONNX/weights are copied with thor/01_sync_from_orin.sh.
+/onnx/
+/engines/
+/cosmos3edge-orin-deploy/onnx/
+/cosmos3edge-orin-deploy/weights/
+/cosmos3edge-orin-deploy/third_party/diffusers-cosmos3/
+*.engine
+*.onnx
+*.onnx.data
+*.safetensors
+
+# Large media
+/demo/
+/annotation/review_videos*/
+/annotation/sheets/
+
+# Python / backups
+__pycache__/
+*.pyc
+*.bak
+*.v1
+*.pre-*
+
+# LaTeX build products (PDFs are kept)
+*.aux
+*.log
+*.out
+*.blg
+*.brf
+*.xdv
+*.toc
+*.synctex.gz
+
+# Local tool state
+/.claude/

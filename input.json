@@ -1,0 +1,16 @@
+{
+    "batch_size": 1,
+    "temperature": 0.4,
+    "top_p": 0.9,
+    "top_k": 40,
+    "max_generate_length": 60,
+    "requests": [{
+        "messages": [{
+            "role": "user",
+            "content": [
+                {"type": "image", "image": "test/sample_frame.jpg"},
+                {"type": "text", "text": "Describe the work zone elements visible in this scene."}
+            ]
+        }]
+    }]
+}

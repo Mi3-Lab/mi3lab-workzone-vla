@@ -1,0 +1,28 @@
+{
+    "input_file": "input.json",
+    "responses": [
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|>Describe the work zone elements visible in this scene.<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "test/sample_frame.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "Describe the work zone elements visible in this scene.",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "TTC sign on right sidewalk. Scene: Urban environment in boston, Sunny conditions, Light lighting. Lane status: partially blocked. Detected objects: 1 Temporary Traffic Control Sign(s). Overall hazard severity: 2/5 (low). Recommended speed: ≤35 mph.",
+            "request_idx": 0
+        }
+    ]
+}

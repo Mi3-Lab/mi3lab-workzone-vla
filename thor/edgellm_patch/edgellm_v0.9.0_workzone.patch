@@ -1,0 +1,511 @@
+diff --git a/cmake/CuteDsl.cmake b/cmake/CuteDsl.cmake
+index 936757f..c27f6a4 100644
+--- a/cmake/CuteDsl.cmake
++++ b/cmake/CuteDsl.cmake
+@@ -875,7 +875,8 @@ function(cute_dsl_setup)
+   foreach(_tgt ${ARG_LINK_TARGETS})
+     get_target_property(_tgt_type ${_tgt} TYPE)
+     if(_tgt_type STREQUAL "STATIC_LIBRARY")
+-      target_link_libraries(${_tgt} PUBLIC "${_static_lib}")
++      target_link_libraries(${_tgt} PUBLIC "${_static_lib}"
++                                           trt_edgellm_cutedsl_cudart_shim)
+     else()
+       target_link_libraries(${_tgt} PRIVATE "${_static_lib}"
+                                             trt_edgellm_cutedsl_cudart_shim)
+diff --git a/cpp/builder/visualBuilder.cpp b/cpp/builder/visualBuilder.cpp
+index ad331e5..268dcbc 100644
+--- a/cpp/builder/visualBuilder.cpp
++++ b/cpp/builder/visualBuilder.cpp
+@@ -235,6 +235,10 @@ bool VisualBuilder::setupVisualOptimizationProfile(
+         result = setupNemotronOmniViTProfile(*visualProfile);
+         break;
+ 
++    case multimodal::ModelType::COSMOS3_EDGE_VISION:
++        result = setupCosmos3EdgeViTProfile(*visualProfile, network);
++        break;
++
+     case multimodal::ModelType::GEMMA4_VISION: result = setupGemma4ViTProfile(*visualProfile, network); break;
+ 
+     default: LOG_ERROR("Unsupported model type for visual encoder: %d", static_cast<int>(mModelType)); return false;
+@@ -252,6 +256,36 @@ bool VisualBuilder::setupVisualOptimizationProfile(
+     return true;
+ }
+ 
++bool VisualBuilder::setupCosmos3EdgeViTProfile(
++    nvinfer1::IOptimizationProfile& profile, nvinfer1::INetworkDefinition const& network)
++{
++    constexpr char const* kCosmosVisualInput = "pixel_values";
++    auto* input = network.getInput(0);
++    if (input == nullptr || strcmp(input->getName(), kCosmosVisualInput) != 0)
++    {
++        LOG_ERROR("Cosmos3-Edge visual graph must expose input '%s'.", kCosmosVisualInput);
++        return false;
++    }
++
++    auto const dimensions = input->getDimensions();
++    if (dimensions.nbDims != 2 || dimensions.d[1] <= 0)
++    {
++        LOG_ERROR("Cosmos3-Edge visual input must have shape [patches, patch_dim].");
++        return false;
++    }
++    if (dimensions.d[0] >= 0)
++    {
++        auto const exact = createDims({dimensions.d[0], dimensions.d[1]});
++        return setOptimizationProfile(&profile, kCosmosVisualInput, exact, exact, exact);
++    }
++
++    int64_t const minPatches = mBuilderConfig.minImageTokens * 4;
++    int64_t const maxPatches = mBuilderConfig.maxImageTokens * 4;
++    int64_t const optPatches = (minPatches + maxPatches) / 2;
++    return setOptimizationProfile(&profile, kCosmosVisualInput, createDims({minPatches, dimensions.d[1]}),
++        createDims({optPatches, dimensions.d[1]}), createDims({maxPatches, dimensions.d[1]}));
++}
++
+ bool VisualBuilder::setupQwenViTProfile(
+     nvinfer1::IOptimizationProfile& profile, nvinfer1::INetworkDefinition const& network)
+ {
+diff --git a/cpp/builder/visualBuilder.h b/cpp/builder/visualBuilder.h
+index ca1f32a..2fe65c4 100644
+--- a/cpp/builder/visualBuilder.h
++++ b/cpp/builder/visualBuilder.h
+@@ -145,6 +145,10 @@ private:
+     //! @return true if setup was successful, false otherwise
+     bool setupQwenViTProfile(nvinfer1::IOptimizationProfile& profile, nvinfer1::INetworkDefinition const& network);
+ 
++    //! Set up the packed-patch SigLIP2 profile used by Cosmos3-Edge.
++    bool setupCosmos3EdgeViTProfile(
++        nvinfer1::IOptimizationProfile& profile, nvinfer1::INetworkDefinition const& network);
++
+     //! Set up optimization profile for InternVL or Phi4-MM ViT models.
+     //! Configures inputs for InternVL or Phi4-MM visual encoders.
+     //! @param profile Optimization profile to configure
+diff --git a/cpp/kernels/posEncoding/initializeCosSinCache.cu b/cpp/kernels/posEncoding/initializeCosSinCache.cu
+index 4fbebb1..2ddc263 100644
+--- a/cpp/kernels/posEncoding/initializeCosSinCache.cu
++++ b/cpp/kernels/posEncoding/initializeCosSinCache.cu
+@@ -370,10 +370,12 @@ __global__ void initializeMRopeCosSinKernel(float* cosSinCache, int64_t* mropePo
+     int32_t const interleavedHLimit = sectionH * 3;
+     int32_t const interleavedWLimit = sectionW * 3;
+ 
+-    // Non-interleaved section boundaries (in units of 8-dim iteration blocks)
++    // Non-interleaved section boundaries in frequency-pair indices. Use zid
++    // instead of the unrolled-loop index so sections such as Cosmos3-Edge's
++    // [24, 20, 20] do not need to be multiples of the CUDA warp tile width.
+     int32_t const numTemporalPairs = RotaryDim / 2 - sectionH - sectionW;
+-    int32_t const nonInterleavedTEnd = numTemporalPairs / 8;
+-    int32_t const nonInterleavedHEnd = nonInterleavedTEnd + sectionH / 8;
++    int32_t const nonInterleavedTEnd = numTemporalPairs;
++    int32_t const nonInterleavedHEnd = nonInterleavedTEnd + sectionH;
+ 
+     float ropeConstants[RotaryDim / 16];
+ 
+@@ -412,11 +414,11 @@ __global__ void initializeMRopeCosSinKernel(float* cosSinCache, int64_t* mropePo
+             }
+             else
+             {
+-                if (i < nonInterleavedTEnd)
++                if (zid < nonInterleavedTEnd)
+                 {
+                     groupIdx = 0;
+                 }
+-                else if (i < nonInterleavedHEnd)
++                else if (zid < nonInterleavedHEnd)
+                 {
+                     groupIdx = 1;
+                 }
+@@ -442,14 +444,9 @@ void initializeMRopeCosSin(float* cosSinCache, int64_t* mropePositionIds, float
+     int64_t rotaryEmbeddingMaxPositions, int64_t batchSize, bool interleaved, int32_t sectionH, int32_t sectionW,
+     cudaStream_t stream)
+ {
+-    if (!interleaved)
+-    {
+-        int64_t const halfDim = rotaryDim / 2;
+-        int64_t const numTemporalPairs = halfDim - sectionH - sectionW;
+-        ELLM_CHECK(numTemporalPairs % 8 == 0 && sectionH % 8 == 0 && sectionW % 8 == 0,
+-            "Non-interleaved MRoPE sections must be divisible by 8, got T=" + std::to_string(numTemporalPairs)
+-                + " H=" + std::to_string(sectionH) + " W=" + std::to_string(sectionW));
+-    }
++    ELLM_CHECK(sectionH >= 0 && sectionW >= 0 && sectionH + sectionW <= rotaryDim / 2,
++        "Invalid MRoPE sections for rotary dimension " + std::to_string(rotaryDim) + ": H="
++            + std::to_string(sectionH) + " W=" + std::to_string(sectionW));
+ 
+     // Each CTA get assigned 128 threads.
+     dim3 block(8, 16);
+diff --git a/cpp/multimodal/modelTypes.h b/cpp/multimodal/modelTypes.h
+index 2fe77fe..620a236 100644
+--- a/cpp/multimodal/modelTypes.h
++++ b/cpp/multimodal/modelTypes.h
+@@ -39,6 +39,7 @@ enum class ModelType
+     GEMMA4_VISION,                //!< Gemma4 vision encoder
+     NEMOTRON_OMNI_VISION_ENCODER, //!< Nemotron-Omni vision encoder
+     NEMOTRON_OMNI_AUDIO_ENCODER,  //!< Nemotron-Omni audio encoder
++    COSMOS3_EDGE_VISION,          //!< Cosmos3-Edge SigLIP2 vision encoder
+     UNKNOWN                       //!< Unknown or unsupported model type
+ };
+ 
+@@ -72,6 +73,8 @@ inline ModelType stringToModelType(std::string const& modelTypeStr)
+         return ModelType::NEMOTRON_OMNI_VISION_ENCODER;
+     if (modelTypeStr == "parakeet")
+         return ModelType::NEMOTRON_OMNI_AUDIO_ENCODER;
++    if (modelTypeStr == "cosmos3_edge_vision")
++        return ModelType::COSMOS3_EDGE_VISION;
+     return ModelType::UNKNOWN;
+ }
+ 
+diff --git a/cpp/multimodal/multimodalRunner.cpp b/cpp/multimodal/multimodalRunner.cpp
+index 4192ee1..1f87bad 100644
+--- a/cpp/multimodal/multimodalRunner.cpp
++++ b/cpp/multimodal/multimodalRunner.cpp
+@@ -120,7 +120,8 @@ std::unique_ptr<MultimodalRunner> MultimodalRunner::create(std::string const& mu
+     multimodal::ModelType modelType = multimodal::stringToModelType(modelTypeStr);
+ 
+     if (modelType == multimodal::ModelType::QWEN2_VL || modelType == multimodal::ModelType::QWEN2_5_VL
+-        || modelType == multimodal::ModelType::QWEN3_VL || modelType == multimodal::ModelType::QWEN3_5)
++        || modelType == multimodal::ModelType::QWEN3_VL || modelType == multimodal::ModelType::QWEN3_5
++        || modelType == multimodal::ModelType::COSMOS3_EDGE_VISION)
+     {
+         multimodalRunner
+             = std::make_unique<QwenViTRunner>(multimodalEngineDir, llmMaxBatchSize, llmMaxPositionEmbeddings, stream);
+diff --git a/cpp/multimodal/qwenViTRunner.cpp b/cpp/multimodal/qwenViTRunner.cpp
+index fd59d39..44ba4e9 100644
+--- a/cpp/multimodal/qwenViTRunner.cpp
++++ b/cpp/multimodal/qwenViTRunner.cpp
+@@ -24,6 +24,8 @@
+ #include "profiling/timer.h"
+ #include <cmath>
+ #include <cstddef>
++#include <cstdlib>
++#include <cuda_fp16.h>
+ #include <fstream>
+ #include <nlohmann/json.hpp>
+ #include <numeric>
+@@ -38,6 +40,12 @@ namespace trt_edgellm
+ namespace rt
+ {
+ 
++namespace
++{
++constexpr char const* kCosmos3EdgeVisualInput = "pixel_values";
++constexpr char const* kCosmos3EdgeVisualOutput = "visual_embeddings";
++} // namespace
++
+ QwenViTRunner::QwenViTRunner(
+     std::string const& engineDir, int32_t llmMaxBatchSize, int32_t llmMaxSequenceLength, cudaStream_t stream)
+     : MultimodalRunner(engineDir, stream)
+@@ -83,7 +91,8 @@ bool QwenViTRunner::validateAndFillConfig(std::string const& engineDir)
+     mModelType = multimodal::stringToModelType(modelTypeStr);
+     if (mModelType != multimodal::ModelType::QWEN2_5_VL && mModelType != multimodal::ModelType::QWEN2_VL
+         && mModelType != multimodal::ModelType::QWEN3_VL && mModelType != multimodal::ModelType::QWEN3_5
+-        && mModelType != multimodal::ModelType::QWEN3_OMNI_VISION_ENCODER)
++        && mModelType != multimodal::ModelType::QWEN3_OMNI_VISION_ENCODER
++        && mModelType != multimodal::ModelType::COSMOS3_EDGE_VISION)
+     {
+         LOG_ERROR("Invalid model type: %s", modelTypeStr.c_str());
+         return false;
+@@ -111,6 +120,13 @@ bool QwenViTRunner::validateAndFillConfig(std::string const& engineDir)
+             mConfig.mropeSectionW = section[2];
+         }
+     }
++    if (mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION)
++    {
++        // Cosmos3-Edge uses the same non-interleaved 3-D RoPE section layout as its HF text model.
++        auto section = subConfig.value("mrope_section", std::vector<int32_t>{24, 20, 20});
++        mConfig.mropeSectionH = section[1];
++        mConfig.mropeSectionW = section[2];
++    }
+     if (mConfig.mropeSectionH <= 0 || mConfig.mropeSectionW <= 0)
+     {
+         LOG_ERROR("Failed to parse mrope_section in text_config. Got H=%d, W=%d", mConfig.mropeSectionH,
+@@ -187,43 +203,59 @@ bool QwenViTRunner::validateAndFillConfig(std::string const& engineDir)
+         ? preprocessorConfig["image_processor"]
+         : preprocessorConfig;
+     mConfig.patchSize = imageProcessorConfig["patch_size"].get<int64_t>();
+-    mConfig.temporalPatchSize = imageProcessorConfig["temporal_patch_size"].get<int64_t>();
++    mConfig.temporalPatchSize = imageProcessorConfig.value("temporal_patch_size", 1);
+     mConfig.mergeSize = imageProcessorConfig["merge_size"].get<int64_t>();
+     mConfig.imageMean = imageProcessorConfig["image_mean"].get<std::vector<float>>();
+     mConfig.imageStd = imageProcessorConfig["image_std"].get<std::vector<float>>();
+ 
+     // Get config from engine shapes
++    char const* visualInput
++        = mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION ? kCosmos3EdgeVisualInput : binding_names::kVisualInput;
++    char const* visualOutput = mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION ? kCosmos3EdgeVisualOutput
++                                                                                       : binding_names::kVisualOutput;
+     nvinfer1::Dims const inputShapeMax
+-        = mVisualEngine->getProfileShape(binding_names::kVisualInput, 0, nvinfer1::OptProfileSelector::kMAX);
++        = mVisualEngine->getProfileShape(visualInput, 0, nvinfer1::OptProfileSelector::kMAX);
+     nvinfer1::Dims const inputShapeMin
+-        = mVisualEngine->getProfileShape(binding_names::kVisualInput, 0, nvinfer1::OptProfileSelector::kMIN);
++        = mVisualEngine->getProfileShape(visualInput, 0, nvinfer1::OptProfileSelector::kMIN);
+     mConfig.maxHW = inputShapeMax.d[0];
+     mConfig.minHW = inputShapeMin.d[0];
+     auto maxImageTokens = mConfig.maxHW / (mConfig.mergeSize * mConfig.mergeSize);
+     mConfig.maxNumImages = maxImageTokens / mConfig.minImageTokensPerImage;
+-    mConfig.inputDim = mVisualContext->getTensorShape(binding_names::kVisualInput).d[1];
+-    mConfig.vitPosEmbDim = mVisualContext->getTensorShape(binding_names::kRotaryPosEmb).d[1];
+-    mConfig.outHiddenSize = mVisualEngine->getTensorShape(binding_names::kVisualOutput).d[1];
++    mConfig.inputDim = mVisualContext->getTensorShape(visualInput).d[1];
++    if (mModelType != multimodal::ModelType::COSMOS3_EDGE_VISION)
++    {
++        mConfig.vitPosEmbDim = mVisualContext->getTensorShape(binding_names::kRotaryPosEmb).d[1];
++    }
++    mConfig.outHiddenSize = mVisualEngine->getTensorShape(visualOutput).d[1];
+ 
+     return true;
+ }
+ 
+ bool QwenViTRunner::allocateBuffer(cudaStream_t stream)
+ {
++    bool const isCosmos3Edge = mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION;
++    char const* visualInput = isCosmos3Edge ? kCosmos3EdgeVisualInput : binding_names::kVisualInput;
++    char const* visualOutput = isCosmos3Edge ? kCosmos3EdgeVisualOutput : binding_names::kVisualOutput;
+     bool setTensorAddressStatus{true};
+     mVitInput = rt::Tensor(
+         {mConfig.maxHW, mConfig.inputDim}, rt::DeviceType::kGPU, nvinfer1::DataType::kHALF, "QwenViTRunner::mVitInput");
+-    setTensorAddressStatus &= mVisualContext->setTensorAddress(binding_names::kVisualInput, mVitInput.rawPointer());
++    setTensorAddressStatus &= mVisualContext->setTensorAddress(visualInput, mVitInput.rawPointer());
+ 
+-    mRotaryPosEmb = rt::Tensor({mConfig.maxHW, mConfig.vitPosEmbDim}, rt::DeviceType::kGPU, nvinfer1::DataType::kFLOAT,
+-        "QwenViTRunner::mRotaryPosEmb");
+-    setTensorAddressStatus
+-        &= mVisualContext->setTensorAddress(binding_names::kRotaryPosEmb, mRotaryPosEmb.rawPointer());
++    if (!isCosmos3Edge)
++    {
++        mRotaryPosEmb = rt::Tensor({mConfig.maxHW, mConfig.vitPosEmbDim}, rt::DeviceType::kGPU,
++            nvinfer1::DataType::kFLOAT, "QwenViTRunner::mRotaryPosEmb");
++        setTensorAddressStatus
++            &= mVisualContext->setTensorAddress(binding_names::kRotaryPosEmb, mRotaryPosEmb.rawPointer());
++    }
+ 
+     // The size of the tensor is maxNumImages + 1 because the first element is 0.
+     mCuSeqlens = rt::Tensor(
+         {mConfig.maxNumImages + 1}, rt::DeviceType::kGPU, nvinfer1::DataType::kINT32, "QwenViTRunner::mCuSeqlens");
+-    setTensorAddressStatus &= mVisualContext->setTensorAddress(binding_names::kCuSeqlens, mCuSeqlens.rawPointer());
++    if (!isCosmos3Edge)
++    {
++        setTensorAddressStatus &= mVisualContext->setTensorAddress(binding_names::kCuSeqlens, mCuSeqlens.rawPointer());
++    }
+     // Pre-allocate host tensor for cumulative sequence lengths.
+     mCuSeqlensHost = rt::Tensor(
+         {mConfig.maxNumImages + 1}, rt::DeviceType::kCPU, nvinfer1::DataType::kINT32, "QwenViTRunner::mCuSeqlensHost");
+@@ -259,8 +291,7 @@ bool QwenViTRunner::allocateBuffer(cudaStream_t stream)
+     auto const maxImageTokens = mConfig.maxHW / (mConfig.mergeSize * mConfig.mergeSize);
+     mOutputEmbedding = rt::Tensor({maxImageTokens, mConfig.outHiddenSize}, rt::DeviceType::kGPU,
+         nvinfer1::DataType::kHALF, "QwenViTRunner::mOutputEmbedding");
+-    setTensorAddressStatus
+-        &= mVisualContext->setTensorAddress(binding_names::kVisualOutput, mOutputEmbedding.rawPointer());
++    setTensorAddressStatus &= mVisualContext->setTensorAddress(visualOutput, mOutputEmbedding.rawPointer());
+ 
+     if (mModelType == multimodal::ModelType::QWEN2_5_VL)
+     {
+@@ -377,21 +408,56 @@ void QwenViTRunner::formatPatch(rt::imageUtils::ImageData const& image,
+     check::check(
+         mNormalizedImageDevice.reshape({mConfig.temporalPatchSize, height, width, channels}), "Tensor reshape failed");
+ 
+-    // Copy image to device. Repeat for T = temporalPatchSize
+     auto imageSize = height * width * channels;
+-    for (int64_t i = 0; i < mConfig.temporalPatchSize; ++i)
++    if (mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION)
++    {
++        // Cosmos3-Edge requires raster patch order with channel-last values inside each patch. Patchify on the
++        // host because TensorRT Edge-LLM's kernel archive is loaded as a plugin and cannot safely register an
++        // additional standalone CUDA kernel. This copy is below 2 MiB for the fixed Edge profile.
++        std::vector<half> patches(static_cast<size_t>(imageSize));
++        int64_t outputIndex = 0;
++        int64_t const gridHeight = height / mConfig.patchSize;
++        int64_t const gridWidth = width / mConfig.patchSize;
++        for (int64_t patchRow = 0; patchRow < gridHeight; ++patchRow)
++        {
++            for (int64_t patchColumn = 0; patchColumn < gridWidth; ++patchColumn)
++            {
++                for (int64_t patchY = 0; patchY < mConfig.patchSize; ++patchY)
++                {
++                    for (int64_t patchX = 0; patchX < mConfig.patchSize; ++patchX)
++                    {
++                        int64_t const sourcePixel
++                            = ((patchRow * mConfig.patchSize + patchY) * width
++                                  + patchColumn * mConfig.patchSize + patchX)
++                            * channels;
++                        for (int64_t channel = 0; channel < channels; ++channel)
++                        {
++                            float const normalized
++                                = (imageData[sourcePixel + channel] / 255.0f - mConfig.imageMean[channel])
++                                / mConfig.imageStd[channel];
++                            patches[outputIndex++] = __float2half(normalized);
++                        }
++                    }
++                }
++            }
++        }
++        auto* output = static_cast<half*>(mVitInput.rawPointer()) + prevCuSeqlen * mConfig.inputDim;
++        CUDA_CHECK(cudaMemcpyAsync(
++            output, patches.data(), patches.size() * sizeof(half), cudaMemcpyHostToDevice, stream));
++    }
++    else
+     {
+-        CUDA_CHECK(cudaMemcpyAsync(static_cast<std::byte*>(mImageDevice.rawPointer()) + i * imageSize, imageData,
+-            imageSize, cudaMemcpyHostToDevice, stream));
++        // Copy image to device. Repeat for T = temporalPatchSize.
++        for (int64_t i = 0; i < mConfig.temporalPatchSize; ++i)
++        {
++            CUDA_CHECK(cudaMemcpyAsync(static_cast<std::byte*>(mImageDevice.rawPointer()) + i * imageSize, imageData,
++                imageSize, cudaMemcpyHostToDevice, stream));
++        }
++        kernel::normalizeImage(mImageDevice, mImageMean, mImageStd, mNormalizedImageDevice, stream);
++        kernel::transposeToPatchQwenViT(mNormalizedImageDevice, mVitInput, prevCuSeqlen * mConfig.inputDim,
++            mConfig.temporalPatchSize, mConfig.patchSize, mConfig.mergeSize, stream);
+     }
+ 
+-    // Normalize image
+-    kernel::normalizeImage(mImageDevice, mImageMean, mImageStd, mNormalizedImageDevice, stream);
+-
+-    // Transpose to patch
+-    kernel::transposeToPatchQwenViT(mNormalizedImageDevice, mVitInput, prevCuSeqlen * mConfig.inputDim,
+-        mConfig.temporalPatchSize, mConfig.patchSize, mConfig.mergeSize, stream);
+-
+     // Update sequence length
+     cuSeqlensData[cuSeqlensSize++] = static_cast<int32_t>(prevCuSeqlen + curSeqLength);
+ }
+@@ -505,9 +571,12 @@ void QwenViTRunner::imagePreprocess(rt::LLMGenerationRequest const& request,
+      */
+     if (imageGridTHWs != mLastImageGridTHWs)
+     {
+-        check::check(mCuSeqlens.reshape({cuSeqlensSize}), "Tensor reshape failed");
+-        CUDA_CHECK(cudaMemcpyAsync(mCuSeqlens.rawPointer(), mCuSeqlensHost.rawPointer(),
+-            cuSeqlensSize * sizeof(int32_t), cudaMemcpyHostToDevice, stream));
++        if (mModelType != multimodal::ModelType::COSMOS3_EDGE_VISION)
++        {
++            check::check(mCuSeqlens.reshape({cuSeqlensSize}), "Tensor reshape failed");
++            CUDA_CHECK(cudaMemcpyAsync(mCuSeqlens.rawPointer(), mCuSeqlensHost.rawPointer(),
++                cuSeqlensSize * sizeof(int32_t), cudaMemcpyHostToDevice, stream));
++        }
+ 
+         if (mUseTrtNativeVitAttn)
+         {
+@@ -516,12 +585,15 @@ void QwenViTRunner::imagePreprocess(rt::LLMGenerationRequest const& request,
+                 cuSeqlensSize * sizeof(int32_t), cudaMemcpyHostToDevice, stream));
+         }
+ 
+-        check::check(mRotaryPosEmb.reshape({totalSeqLength, mConfig.vitPosEmbDim}), "Tensor reshape failed");
+-        // Compute rotary position embeddings
+-        for (size_t i = 0; i < imageGridTHWs.size(); ++i)
++        if (mModelType != multimodal::ModelType::COSMOS3_EDGE_VISION)
+         {
+-            kernel::initRotaryPosEmbQwenViT(
+-                mRotaryPosEmb, imageGridTHWs[i], mConfig.mergeSize, cuSeqlensData[i], 10000.0f, 1.0f, stream);
++            check::check(mRotaryPosEmb.reshape({totalSeqLength, mConfig.vitPosEmbDim}), "Tensor reshape failed");
++            // Compute rotary position embeddings.
++            for (size_t i = 0; i < imageGridTHWs.size(); ++i)
++            {
++                kernel::initRotaryPosEmbQwenViT(
++                    mRotaryPosEmb, imageGridTHWs[i], mConfig.mergeSize, cuSeqlensData[i], 10000.0f, 1.0f, stream);
++            }
+         }
+ 
+         // Compute additional inputs
+@@ -753,6 +825,7 @@ void QwenViTRunner::textPreprocess(rt::LLMGenerationRequest const& request,
+     // For Qwen3-Omni: keep original imageTokenId and wrap with vision_start/vision_end to match PyTorch,
+     // since embeddingLookupMultimodal uses multimodalIndices for indexing
+     bool const isQwen3Omni = (mModelType == multimodal::ModelType::QWEN3_OMNI_VISION_ENCODER);
++    bool const isCosmos3Edge = (mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION);
+     int32_t nextImageTokenId = mConfig.vocabSize;
+ 
+     for (size_t i = 0; i < request.requests.size(); ++i)
+@@ -790,6 +863,16 @@ void QwenViTRunner::textPreprocess(rt::LLMGenerationRequest const& request,
+                     }
+                     newIds.push_back(mConfig.visionEndTokenId);
+                 }
++                else if (isCosmos3Edge)
++                {
++                    // The Cosmos chat template already supplies vision start/end. Use synthetic IDs above the
++                    // vocabulary so the legacy vision embedding lookup replaces each placeholder in order.
++                    for (int64_t k = 0; k < numImageTokens; ++k)
++                    {
++                        newIds.push_back(nextImageTokenId);
++                        ++nextImageTokenId;
++                    }
++                }
+                 else
+                 {
+                     // Qwen2.5-VL/Qwen3-VL: use incrementing IDs
+@@ -901,13 +984,17 @@ bool QwenViTRunner::infer(cudaStream_t stream) noexcept
+     {
+         TIME_STAGE(metrics::StageNames::kVISION_ENCODER, stream);
+ 
++        bool const isCosmos3Edge = mModelType == multimodal::ModelType::COSMOS3_EDGE_VISION;
++        char const* visualInput = isCosmos3Edge ? kCosmos3EdgeVisualInput : binding_names::kVisualInput;
+         bool setEngineIOStatus{true};
+-        setEngineIOStatus
+-            &= mVisualContext->setInputShape(binding_names::kVisualInput, mVitInput.getShape().getTRTDims());
+-        setEngineIOStatus
+-            &= mVisualContext->setInputShape(binding_names::kRotaryPosEmb, mRotaryPosEmb.getShape().getTRTDims());
+-        setEngineIOStatus
+-            &= mVisualContext->setInputShape(binding_names::kCuSeqlens, mCuSeqlens.getShape().getTRTDims());
++        setEngineIOStatus &= mVisualContext->setInputShape(visualInput, mVitInput.getShape().getTRTDims());
++        if (!isCosmos3Edge)
++        {
++            setEngineIOStatus
++                &= mVisualContext->setInputShape(binding_names::kRotaryPosEmb, mRotaryPosEmb.getShape().getTRTDims());
++            setEngineIOStatus
++                &= mVisualContext->setInputShape(binding_names::kCuSeqlens, mCuSeqlens.getShape().getTRTDims());
++        }
+         if (mUseTrtNativeVitAttn)
+         {
+             setEngineIOStatus
+@@ -948,6 +1035,37 @@ bool QwenViTRunner::infer(cudaStream_t stream) noexcept
+             LOG_ERROR("Failed to enqueue engine.");
+             return false;
+         }
++
++        if (isCosmos3Edge)
++        {
++            char const* dumpDir = std::getenv("EDGELLM_COSMOS3_DUMP_DIR");
++            if (dumpDir != nullptr && dumpDir[0] != '\0')
++            {
++                CUDA_CHECK(cudaStreamSynchronize(stream));
++                auto dumpTensor = [dumpDir](char const* name, rt::Tensor const& tensor) {
++                    size_t const byteCount = tensor.getShape().volume() * sizeof(half);
++                    std::vector<std::byte> host(byteCount);
++                    CUDA_CHECK(cudaMemcpy(host.data(), tensor.rawPointer(), byteCount, cudaMemcpyDeviceToHost));
++                    std::ofstream output(std::string(dumpDir) + "/" + name, std::ios::binary);
++                    ELLM_CHECK(output.is_open(), "Failed to open Cosmos3-Edge tensor dump file");
++                    output.write(reinterpret_cast<char const*>(host.data()), static_cast<std::streamsize>(byteCount));
++                };
++                dumpTensor("pixel_values.fp16", mVitInput);
++                dumpTensor("normalized_image.fp16", mNormalizedImageDevice);
++                dumpTensor("visual_embeddings.fp16", mOutputEmbedding);
++                size_t const imageByteCount = mResizedImageHost.buffer->getShape().volume();
++                std::ofstream imageOutput(std::string(dumpDir) + "/resized_image.u8", std::ios::binary);
++                if (imageOutput.is_open())
++                {
++                    imageOutput.write(reinterpret_cast<char const*>(mResizedImageHost.data()),
++                        static_cast<std::streamsize>(imageByteCount));
++                }
++                else
++                {
++                    LOG_ERROR("Failed to open Cosmos3-Edge resized image dump file");
++                }
++            }
++        }
+     }
+ 
+     return true;
+diff --git a/examples/llm/CMakeLists.txt b/examples/llm/CMakeLists.txt
+index 0d6766b..9c59849 100644
+--- a/examples/llm/CMakeLists.txt
++++ b/examples/llm/CMakeLists.txt
+@@ -31,6 +31,14 @@ target_include_directories(
+   llm_stream PRIVATE ${COMMON_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/examples/utils)
+ add_cross_build_link_options(llm_stream)
+ 
++add_executable(llm_stream_video llm_stream_video.cpp)
++target_link_libraries(llm_stream_video PRIVATE edgellmCore exampleUtils
++                                               commonLibraryExt)
++target_include_directories(
++  llm_stream_video PRIVATE ${COMMON_INCLUDE_DIRS}
++                           ${CMAKE_SOURCE_DIR}/examples/utils)
++add_cross_build_link_options(llm_stream_video)
++
+ add_executable(llm_bench llm_bench.cpp)
+ target_link_libraries(llm_bench PRIVATE commonLibraryExt edgellmCore
+                                         exampleUtils)

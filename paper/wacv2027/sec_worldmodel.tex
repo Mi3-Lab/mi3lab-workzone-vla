@@ -1,0 +1,37 @@
+\section{Does the Cascade Need a Specialized Model?}
+\label{sec:worldmodel}
+
+Everything above assumes the perception channels come from a model fine-tuned for work zones; the zero-shot control (\cref{tab:ablations}, last row) appears to confirm that assumption, collapsing to 48.8\% frame accuracy.  That control, however, varies the checkpoint while holding fixed a cascade whose thresholds were themselves fitted to the fine-tuned model.  We revisit the assumption with a second model and, critically, a second calibration.
+
+\paragraph{Setup.}  Cosmos3-Edge is a 4B mixture-of-transformers world model for physical AI, pairing an autoregressive reasoner with a diffusion transformer that generates ego trajectories.  We quantize its reasoner to W4A16 (AWQ INT4, 1.27\,GB) and keep its visual tower in FP16 (983\,MB), both as TensorRT engines on the same Jetson AGX Orin, and drive it with the \emph{identical} prompt channels, cascade, protocol, and splits used throughout.  Its visual tower is frozen at a $26{\times}46$ patch grid, fixing the input at $736{\times}416$.  Measured channel latency: \textsc{gate} 162\,ms, \textsc{ego} 182\,ms, \textsc{desc} 488\,ms, \textsc{sign} 556\,ms.  The model is used strictly zero-shot: it has seen none of our training data and none of this benchmark.
+
+\paragraph{Temporal hyper-parameters do not transfer between models.}  Run with the thresholds of \cref{sec:system} ($N{=}5$, $K_{\text{enter}}{=}3$, $K_{\text{exit}}{=}4$, $K_{\text{fade}}{=}2$), which were fitted on the calibration split for \emph{our} model, Cosmos3-Edge scores macro-F1 0.290 and---strikingly---\textsc{inside} IoU 0.007 at 3.8\% recall.  Read at face value this says the model cannot recognize being inside a work zone, which would be a substantive claim about world models.  It is an artifact.  Recalibrating the same four thresholds on the same calibration split, for this model, moves it to macro-F1 0.515 and \textsc{inside} IoU 0.574 at 87.0\% recall on the held-out validation split---an $82{\times}$ change in one per-state IoU from four integers, with the model, the prompts, and the videos held fixed.  The selected configuration is shorter and less hysteretic ($N{=}3$, $K_{\text{enter}}{=}3$, $K_{\text{exit}}{=}2$, $K_{\text{fade}}{=}1$), consistent with per-frame evidence that is less noisy than ours and therefore needs less majority voting; it also \emph{disables} the \textsc{ego} channel, which we return to in \cref{sec:analysis}.
+
+We flag this as a reusable methodological point rather than an incidental detail.  Temporal-smoothing constants are routinely inherited when a benchmark is reused, and inheriting them silently converts a comparison between models into a comparison between one model and another model's hyper-parameters.  To make per-model calibration affordable we record each channel's raw output once per sampled frame and replay the state machine offline over that record, which reduces a threshold sweep from GPU-hours per configuration to CPU-seconds; we release this harness.
+
+\paragraph{Out-of-domain generalization.}  We recorded 14 dashcam videos in California---a different state from ROADWork's two cities, a different camera, and conditions the benchmark does not contain---and annotated 39 work-zone sign approaches, including night, rain, fog, and sunset.  \Cref{tab:ood} scores all three systems on the same 39 approaches.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+& overall & day & night & rain & fog \\
+& (39) & (15) & (9) & (4) & (5) \\
+\midrule
+our 2B (fine-tuned) & 5\% & 13\% & 0\% & 0\% & 0\% \\
+detector+CLIP & 72\% & 93\% & 44\% & 50\% & 40\% \\
+Cosmos3-Edge (zero-shot) & \textbf{95\%} & \textbf{100\%} & \textbf{100\%} & \textbf{75\%} & \textbf{80\%} \\
+\bottomrule
+\end{tabular}
+\caption{Out-of-domain detection rate on 39 hand-annotated work-zone sign approaches from our own California footage (evening and sunset columns, 2 and 4 approaches, omitted for space; both are 100\% for the detector and the world model, 0\% for our model).  Detection counts if the \textsc{gate} channel fires or the \textsc{sign} channel transcribes a work-zone keyword anywhere in the 6\,s approach window.  Our fine-tuned model does not merely degrade off-distribution---it fails in every condition except day.}
+\label{tab:ood}
+\end{table}
+
+The fine-tuned model recovers 5\% of the signs and \emph{zero} outside daylight; the detector holds daylight (93\%) but loses roughly half its recall at night and in weather; the world model, having seen none of this, is perfect through night and cedes only in rain and fog, where the sign is often physically illegible.  Read together with \cref{tab:main}, our fine-tuning bought in-domain accuracy at the cost of generalization---the specialization that makes the cascade work on ROADWork is also what makes it fail on a road three states away.
+
+\paragraph{A detector-gated world model is the best configuration we measured.}  The two systems fail in complementary ways: the world model has the best boundary localization but the worst nuisance rate (64.6 vs.\ 30.9 false-alarm events/h), consistent with the affirmation bias we measure in binary prompts (\cref{sec:prompts}); the detector has the opposite profile.  Gating the world model with the detector---the detector decides \emph{whether} a zone is active, the world model decides \emph{which} state---raises macro-F1 over the deployed detector from 0.470 to 0.507 and \textsc{approaching} IoU from 0.124 to 0.280 ($2.3\times$) at \emph{identical} nuisance rate (30.9\,events/h), because the gate never opens where the detector sees nothing, which is precisely where the language model over-fires.  The cost is \textsc{inside} event recall (95.7\% $\rightarrow$ 87.0\%) and per-cycle compute.
+
+To keep this selection honest, the strategy was chosen on the 100-video \emph{calibration} split---disjoint from the validation split and never reported---under a criterion fixed in advance: maximize macro-F1 subject to a false-alarm rate no worse than the deployed detector's on that same split.  We adopt the constrained criterion because a warning system that doubles nuisance alerts is not deployable at any macro-F1; under unconstrained macro-F1 the winner is the world model alone (0.515 vs.\ 0.507 on validation), which we also report.
+
+\paragraph{Trajectory generation is correct but not yet real-time.}  The model's diffusion head reconstructs 6\,s of ego motion to within 1--4\% of GPS ground truth from the recordings' own sidecar logs, but takes 8.8--20.8\,s per tick on Orin against a 6\,s control budget---the vendor's own package projects 5.6\,s on the next-generation part, and we measure a $4.5\times$ factor over A100 rather than the projected $2.8\times$.  The TensorRT path that would close this gap is blocked by a hard limit: the exported transformer is 5.9\,GB, past ONNX's 2\,GB protobuf ceiling.  We therefore report the trajectory head as a validated capability on this hardware, not as a component of the deployed system.

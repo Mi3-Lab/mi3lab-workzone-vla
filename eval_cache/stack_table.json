@@ -1,0 +1,21 @@
+{
+ "table": {
+  "outside|outside": "outside",
+  "outside|approaching": "outside",
+  "approaching|approaching": "approaching",
+  "inside|approaching": "approaching",
+  "inside|inside": "inside",
+  "exiting|inside": "inside",
+  "exiting|exiting": "exiting",
+  "exiting|outside": "exiting",
+  "approaching|outside": "outside",
+  "inside|exiting": "exiting",
+  "exiting|approaching": "approaching",
+  "outside|inside": "outside",
+  "outside|exiting": "outside",
+  "approaching|inside": "inside",
+  "inside|outside": "outside",
+  "approaching|exiting": "exiting"
+ },
+ "n_calibration_videos": 100
+}

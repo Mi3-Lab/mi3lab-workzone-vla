@@ -1,0 +1,84 @@
+% Minimal local approximation of the WACV author-kit style, for LOCAL
+% PREVIEW ONLY. Replace with the official wacv.sty from the WACV 2027
+% Author Kit before submission. Reproduces: CVPR-family page geometry,
+% two-column text block, review-mode header with paper ID, section/caption
+% typography close enough for length estimation.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{wacv}[2026/07/17 local preview approximation of WACV style]
+
+\newif\ifwacvreview
+\DeclareOption{review}{\wacvreviewtrue}
+\DeclareOption*{}
+\ProcessOptions\relax
+
+% ---- CVPR-family page geometry ----
+\setlength{\textheight}{8.875in}
+\setlength{\textwidth}{6.875in}
+\setlength{\columnsep}{0.3125in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\oddsidemargin}{-.19in}
+\setlength{\evensidemargin}{-.19in}
+\setlength{\parindent}{1pc}
+
+\setlength{\parskip}{0pt}
+\flushbottom
+
+% ---- title block ----
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip .375in
+  \begin{center}%
+    {\Large \bf \@title \par}%
+    \vspace*{24pt}%
+    {\large
+      \lineskip .5em
+      \ifwacvreview
+        \begin{tabular}[t]{c}Anonymous \confName{} submission\\[2pt]
+        Paper ID \wacvPaperID\end{tabular}\par
+      \else
+        \begin{tabular}[t]{c}\@author\end{tabular}\par
+      \fi
+    }%
+    \vskip .5em
+  \end{center}%
+  \par
+  \vskip .5em}
+
+% ---- review-mode footer with confidential notice ----
+\ifwacvreview
+  \def\@oddfoot{\hfil\small\textit{\confName{} \confYear{} Submission
+    \#\wacvPaperID. CONFIDENTIAL REVIEW COPY. DO NOT DISTRIBUTE.}\hfil}
+  \let\@evenfoot\@oddfoot
+\fi
+
+% ---- abstract ----
+\renewenvironment{abstract}
+ {\centerline{\large\bf Abstract}\vspace*{8pt}\it}
+ {\par\vspace*{4pt}}
+
+% ---- section typography (approximation) ----
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+  {-2.0ex \@plus -0.5ex \@minus -.2ex}{1.0ex \@plus .2ex}%
+  {\large\bf}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+  {-1.6ex \@plus -0.5ex \@minus -.2ex}{0.8ex \@plus .2ex}{\normalsize\bf}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+  {-1.2ex \@plus -0.5ex \@minus -.2ex}{0.6ex \@plus .2ex}{\normalsize\bf}}
+
+% ---- captions ----
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{\small #1. #2}%
+  \ifdim \wd\@tempboxa >\hsize
+    {\small #1. #2\par}
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+% cref support names (cleveref loaded by user optional) — no-op here.
+\endinput

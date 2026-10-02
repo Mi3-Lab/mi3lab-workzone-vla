@@ -1,0 +1,3 @@
+TensorRT Edge-LLM v0.9.0
+base commit: 1ac0f2b99642045125e1c5ac7b109434ba3b36c7
+modified files are overlaid by deploy/apply_edgellm_cosmos3edge_patch.sh

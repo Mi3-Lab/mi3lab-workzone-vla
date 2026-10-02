@@ -1,0 +1,85 @@
+{
+ "checks": {
+  "2b_desc": "TTC sign on right sidewalk. Scene: Urban environment in boston, Sunny conditions, Light lighting. Lane status: partially blocked. Detected objects: 2 Temporary Traffic Control Sign(s). Overall",
+  "c3e_gate": "Yes"
+ },
+ "host": "mi3-jetson",
+ "device": "NVIDIA Jetson AGX Orin Developer Kit",
+ "date": "2026-10-02T11:57:38",
+ "latency_2b": {
+  "GATE": {
+   "p50_ms": 139.54921,
+   "p95_ms": 152.0007153
+  },
+  "SIGN": {
+   "p50_ms": 158.189764,
+   "p95_ms": 165.9865698
+  },
+  "EGO": {
+   "p50_ms": 142.805025,
+   "p95_ms": 157.1607976
+  },
+  "DESC": {
+   "p50_ms": 479.522686,
+   "p95_ms": 510.59202719999996
+  }
+ },
+ "latency_c3e": {
+  "GATE": {
+   "p50_ms": 146.986734,
+   "p95_ms": 151.6662547
+  },
+  "SIGN": {
+   "p50_ms": 279.916032,
+   "p95_ms": 290.7051442
+  },
+  "EGO": {
+   "p50_ms": 171.461101,
+   "p95_ms": 183.15586119999998
+  },
+  "DESC": {
+   "p50_ms": 537.766321,
+   "p95_ms": 578.4509806
+  }
+ },
+ "regression_c3e": {
+  "seconds": 78,
+  "empty_replies": 0,
+  "agreement": {
+   "gate": 1.0,
+   "sign": 1.0,
+   "desc_corr": 1.0
+  },
+  "wall_s": 85.43286463594995
+ },
+ "regression_yolo": {
+  "mean_abs_diff": 0.0,
+  "same_bucket": 1.0
+ },
+ "latency_yolo": {
+  "p50_ms": 29.133315896615386,
+  "p95_ms": 34.433034202083945
+ },
+ "status": [
+  [
+   "2B resposta",
+   "PASS",
+   "descreve elementos de obra"
+  ],
+  [
+   "C3E resposta",
+   "PASS",
+   "responde 'Yes' num frame com obra"
+  ],
+  [
+   "regress\u00e3o C3E",
+   "PASS",
+   "GATE concorda 100%"
+  ],
+  [
+   "regress\u00e3o detector",
+   "PASS",
+   "mesmo bucket em 100%"
+  ]
+ ]
+}

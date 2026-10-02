@@ -1,0 +1,40 @@
+{
+  "calibration": [
+    "seattle_3bbd7b04f14c40a68c82daeb81d5e492_000000_07170_snippet.mp4",
+    "boston_2bdb5a72602342a5991b402beb8b7ab4_000000_23100_snippet.mp4",
+    "boston_2d8e13b1a8304d8395dcf6479ca61814_000005_18990_snippet.mp4",
+    "boston_702b9cb0054549a08a50aadd7812a3d6_000000_11010_snippet.mp4",
+    "seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000002_07140_snippet.mp4",
+    "boston_41d35d7ce585406aad2c2b1c8043e340_000000_19620_snippet.mp4",
+    "boston_7b34288a75284083a1d9174adcf34be4_000005_16440_snippet.mp4",
+    "boston_4d91f8efe4d44a4694ecb0e440c74dc4_000000_09030_snippet.mp4",
+    "boston_7b34288a75284083a1d9174adcf34be4_000001_01290_snippet.mp4",
+    "boston_3d896c9c53dd4852b3f4d9bff20602df_000000_14940_snippet.mp4",
+    "boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_05790_snippet.mp4",
+    "boston_344db257af864142a18c582228d2920a_000001_22230_snippet.mp4",
+    "seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000003_18810_snippet.mp4",
+    "seattle_83d7f710e54b48f5a7730576be90ddfc_000001_00120_snippet.mp4"
+  ],
+  "validation": [
+    "boston_2d8e13b1a8304d8395dcf6479ca61814_000001_06660_snippet.mp4",
+    "boston_2d8e13b1a8304d8395dcf6479ca61814_000001_13560_snippet.mp4",
+    "boston_2d8e13b1a8304d8395dcf6479ca61814_000001_05190_snippet.mp4",
+    "boston_7b34288a75284083a1d9174adcf34be4_000006_16170_snippet.mp4",
+    "boston_042e1caf93114d3286c11ba14ddaa759_000001_02790_snippet.mp4",
+    "boston_4ac05b2379194b7a91e84368b8fd200d_000001_00450_snippet.mp4",
+    "boston_2d8e13b1a8304d8395dcf6479ca61814_000001_06630_snippet.mp4",
+    "boston_10cb4a5e9c0740c8a6ff092bae0d4873_000001_22200_snippet.mp4",
+    "boston_344db257af864142a18c582228d2920a_000000_15960_snippet.mp4",
+    "seattle_7922c49d982c424183c69b803d0208eb_000001_03420_snippet.mp4",
+    "boston_4ac05b2379194b7a91e84368b8fd200d_000002_15120_snippet.mp4",
+    "boston_7fc8c152a8714a31ad7fbf41db2adead_000003_17310_snippet.mp4",
+    "boston_2d8e13b1a8304d8395dcf6479ca61814_000006_23880_snippet.mp4",
+    "seattle_83d7f710e54b48f5a7730576be90ddfc_000001_02760_snippet.mp4",
+    "boston_10cb4a5e9c0740c8a6ff092bae0d4873_000000_11520_snippet.mp4",
+    "seattle_3bbd7b04f14c40a68c82daeb81d5e492_000001_12450_snippet.mp4",
+    "boston_2bdb5a72602342a5991b402beb8b7ab4_000001_00510_snippet.mp4",
+    "boston_6f6b6d546957437fbb153b7e78c4514a_000001_14760_snippet.mp4",
+    "seattle_04cdadc91fc343c99670be0478aedff9_000001_15660_snippet.mp4",
+    "boston_4ac05b2379194b7a91e84368b8fd200d_000005_12660_snippet.mp4"
+  ]
+}
