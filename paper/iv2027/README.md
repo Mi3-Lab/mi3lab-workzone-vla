@@ -64,3 +64,20 @@ Qwen-Drive-1.0-4B (Qwen team, arXiv 2609.00111, Apache 2.0): Qwen3.5-4B VLM, unc
 Paired video-level bootstrap on perception AUC (14 videos, 2000 reps): no pair differs significantly (Qwen-Drive − C3E +0.028 [−0.039, +0.100]; Qwen-Drive − detector +0.027 [−0.022, +0.077]).
 
 Reading: three sensors with statistically indistinguishable discrimination and very different response bias. The window-hit proxy ranks C3E far above Qwen-Drive (95% vs 51%); bias-free AUC ties them. A driving-specialized model that saw ROADWork still fails ego-relevance. This strengthens every claim of the paper; SIGN/DESC for Qwen-Drive (needed for the four-state replay) are being recorded to `eval_cache/qwendrive_ood_stream`.
+
+### Qwen-Drive, four states on California (2026-10-04, DRAFT labels, NOT yet in main.tex)
+
+`pipeline/california_qwendrive_4state.py`. Same evidence-first cascade for both models, EGO off, two INHERITED constant sets (none calibrated for Qwen-Drive: that would need it run on ROADWork calibration videos, which are in its training data).
+
+| model | constants | acc | macro-F1 | IoU appr | IoU in | INSIDE prec | INSIDE rec | FA/h |
+|---|---|---|---|---|---|---|---|---|
+| C3E | C3E-calibrated (3/3/2/1) | 55.0% | 0.388 | 0.156 | 0.338 | 38.8 | 75.0 | 56.5 |
+| Qwen-Drive | C3E-calibrated | 56.6% | 0.325 | 0.061 | 0.220 | 73.7 | 31.2 | 32.9 |
+| C3E | 2B-calibrated (5/3/4/2) | 51.7% | 0.369 | 0.156 | 0.339 | 31.6 | 81.2 | 38.8 |
+| Qwen-Drive | 2B-calibrated | 58.3% | 0.364 | 0.082 | 0.317 | 71.2 | 56.2 | **25.9** |
+
+Paired video bootstrap (14 videos, 400 reps), Qwen-Drive (2B constants) minus C3E (its own constants): macro-F1 −0.024 [−0.103, +0.027] n.s.; FA/h **−30.6 [−51.4, −13.0]**; INSIDE precision **+0.32 [+0.12, +0.68]**.
+
+Evidence channels (same seconds): SIGN keyword fires on 0.6% of ego-relevant seconds for BOTH models (the keyword list does not match California signage); DESC corroboration on work-free seconds 4.9% (Qwen-Drive) vs 20.4% (C3E).
+
+Reading: same macro-F1, far fewer false alarms. Which model "wins" depends on the constants: under the C3E constants (short window for an affirmative sensor) the conservative Qwen-Drive rarely enters a zone (31% recall). This is the paper's portability result again, now out of domain and across model families.
