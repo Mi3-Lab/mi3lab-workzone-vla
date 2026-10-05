@@ -1,83 +1,19 @@
-# New paper: response bias under domain shift (IEEE IV 2027 target)
+# IEEE IV 2027 submission — ROADWork only
 
-Separate from `../journal/` (the system paper). Build: `tectonic main.tex`.
+Built from the authors' text in `../journal/main.tex`, cut to the ROADWork results
+(human four-state labels). The California-focused draft is archived in
+`../archive/iv2027_california/`.
 
-Venue: IEEE Intelligent Vehicles Symposium 2027, Perth.
-- Deadline: **15 Nov 2026, 23:59 AWST = 15 Nov, 07:59 PST** (submission via PaperCept, its.papercept.net).
-- Double-blind: no names, affiliations, lab names; the baseline [priorsystem2026] shares authors and must stay cited in the third person. Videos (optional) must also be anonymized: no faces, voices or lab identifiers.
-- 6 pages including references; up to 8 with page charges. Current draft: 5.
-- IEEE conference template (IEEEtran `conference`); remove the IEEE copyright notice for submission.
-- The PaperCept form takes an abstract under 200 words; the paper's abstract is longer and needs a short version.
-- Notification 15 Jan 2027; camera-ready 1 Feb 2027.
+- Deadline: 15 Nov 2026, 23:59 AWST (PaperCept, its.papercept.net). Double-blind.
+- 6 pages incl. references (current: 6). IEEEtran `conference`. Abstract: 192 words (form limit 200).
+- Build: `tectonic main.tex`. One paragraph per source line.
 
-Source style: one paragraph per line.
+## New relative to the journal text
+- Table "Across cities" (leave-one-city-out of the joint estimator): `pipeline/roadwork_analysis.py`
+- Table "Response bias" (2B base / 2B fine-tuned / C3E on 100 labeled calibration videos): same script
+- Main table reduced to 5 columns (dropped +FE and TCN; TCN quoted in text)
 
-## Status: BLOCKED on label verification
-
-Every out-of-domain number comes from `annotation/california_draft.json`, a
-first pass made from contact sheets. Verify at full frame rate:
-
-    cd ~/jetson-deploy/annotation
-    python3 label_tool.py --list
-    python3 label_tool.py <video> --annotator "Name"
-
-That writes `california_labels.json`; the scripts below pick it up
-automatically. Then regenerate and update Tables 2-4 and the numbers in the
-abstract and Sec. 5, and remove the red `\draftnote` blocks.
-
-## Where every number comes from
-
-| paper | script | notes |
-|---|---|---|
-| Table 1 (in domain) | `pipeline/compare_all_systems.py`, `ablate_joint.py`, `paired_ci_fast.py` | 208 validation videos, verified labels |
-| window hits 95/72, clean windows 72/18, yes-rate 40.2/5.6 | `annotation/draft_eval.py` + inline window count | DRAFT labels |
-| Table 2 (AUC) | `annotation/draft_eval.py` | DRAFT labels |
-| Table 3 (four-state OOD) | `pipeline/california_4state.py` | DRAFT labels |
-| Table 4 (adaptation) | `pipeline/california_adapt.py --lams 0.25,0.5,1.0` | DRAFT labels |
-| Fig. 1 | `eval_cache/ood_california/far_yes_spotcheck.jpg` | 16 random frames, gate "yes", >20 s from a sign |
-| evidence record | `pipeline/dump_ood_stream.py` -> `eval_cache/ood_stream/` | replay checked against 5 GPU runs |
-
-## Open work before submission
-
-- Label verification (above).
-- A second world model or VLM, to show the bias is not specific to Cosmos3-Edge.
-- A method: the adaptation section ends with two label-free signals
-  (confident-negative stretches, cross-sensor agreement); neither is tested yet.
-
-## New since the draft: Qwen-Drive-1.0-4B as a third sensor (2026-10-02, NOT yet in main.tex)
-
-Qwen-Drive-1.0-4B (Qwen team, arXiv 2609.00111, Apache 2.0): Qwen3.5-4B VLM, unchanged, plus BEV and planning heads we do not use. Its training mix **includes ROADWork**, so Boston/Seattle/SF numbers would be contaminated; California is its clean test. Run with PyTorch BF16 on the Orin (not TensorRT), 736x416 = 299 image tokens, same prompts and budgets as C3E, greedy. Script: `pipeline/dump_qwendrive_stream.py`; table: `pipeline/compare_sensors.py`. DRAFT labels.
-
-| | detector | C3E (zero-shot world model) | Qwen-Drive (driving VLM, saw ROADWork) |
-|---|---|---|---|
-| "yes" with no work in view | 5.6% | 40.2% | **1.9%** |
-| "yes" on ego-relevant work | 35.6% | 73.9% | 37.5% |
-| perception AUC, all | 0.72 | 0.72 | 0.75 |
-| — day / sunset | 0.80 / 0.81 | 0.67 / 0.59 | 0.77 / 0.84 |
-| — night / rain / fog | 0.52 / 0.62 / 0.60 | 0.70 / 0.77 / 0.76 | 0.57 / 0.73 / 0.72 |
-| ego-relevance AUC | 0.43 | 0.47 | 0.41 |
-| window hit at 39 signs | 56%* | 95% | 51% |
-| window hit on work-free windows | 18%* | 72% | 5% |
-
-\* detector at 1 Hz samples; the dense GPU run gave 72% at signs.
-
-Paired video-level bootstrap on perception AUC (14 videos, 2000 reps): no pair differs significantly (Qwen-Drive − C3E +0.028 [−0.039, +0.100]; Qwen-Drive − detector +0.027 [−0.022, +0.077]).
-
-Reading: three sensors with statistically indistinguishable discrimination and very different response bias. The window-hit proxy ranks C3E far above Qwen-Drive (95% vs 51%); bias-free AUC ties them. A driving-specialized model that saw ROADWork still fails ego-relevance. This strengthens every claim of the paper; SIGN/DESC for Qwen-Drive (needed for the four-state replay) are being recorded to `eval_cache/qwendrive_ood_stream`.
-
-### Qwen-Drive, four states on California (2026-10-04, DRAFT labels, NOT yet in main.tex)
-
-`pipeline/california_qwendrive_4state.py`. Same evidence-first cascade for both models, EGO off, two INHERITED constant sets (none calibrated for Qwen-Drive: that would need it run on ROADWork calibration videos, which are in its training data).
-
-| model | constants | acc | macro-F1 | IoU appr | IoU in | INSIDE prec | INSIDE rec | FA/h |
-|---|---|---|---|---|---|---|---|---|
-| C3E | C3E-calibrated (3/3/2/1) | 55.0% | 0.388 | 0.156 | 0.338 | 38.8 | 75.0 | 56.5 |
-| Qwen-Drive | C3E-calibrated | 56.6% | 0.325 | 0.061 | 0.220 | 73.7 | 31.2 | 32.9 |
-| C3E | 2B-calibrated (5/3/4/2) | 51.7% | 0.369 | 0.156 | 0.339 | 31.6 | 81.2 | 38.8 |
-| Qwen-Drive | 2B-calibrated | 58.3% | 0.364 | 0.082 | 0.317 | 71.2 | 56.2 | **25.9** |
-
-Paired video bootstrap (14 videos, 400 reps), Qwen-Drive (2B constants) minus C3E (its own constants): macro-F1 −0.024 [−0.103, +0.027] n.s.; FA/h **−30.6 [−51.4, −13.0]**; INSIDE precision **+0.32 [+0.12, +0.68]**.
-
-Evidence channels (same seconds): SIGN keyword fires on 0.6% of ego-relevant seconds for BOTH models (the keyword list does not match California signage); DESC corroboration on work-free seconds 4.9% (Qwen-Drive) vs 20.4% (C3E).
-
-Reading: same macro-F1, far fewer false alarms. Which model "wins" depends on the constants: under the C3E constants (short window for an affirmative sensor) the conservative Qwen-Drive rarely enters a zone (31% recall). This is the paper's portability result again, now out of domain and across model families.
+## Cut to fit 6 pages (all still in ../journal/main.tex)
+California OOD benchmark and perceive-vs-act section; tables: inherited-vs-calibrated C3E,
+paired CIs, joint ablation (numbers kept in text); qualitative and teaser figures;
+debounce operating-point paragraph; detector+text fast entry; appendix.

@@ -1,6 +1,6 @@
-% IEEE IV 2027 submission draft (double-blind, 6 pages incl. references, +2 paid).
-% Before submitting: remove the red \draftnote blocks, check anonymity, keep the IEEE
-% copyright notice OFF.  Source style: one paragraph per line.
+% IEEE IV 2027 submission (double-blind; 6 pages incl. references, up to 8 with page charges).
+% Derived from ../journal/main.tex (the authors' text) by cutting to the ROADWork results.
+% Before submitting: check anonymity; keep the IEEE copyright notice OFF.  One paragraph per line.
 \documentclass[conference]{IEEEtran}
 
 \usepackage{iftex}
@@ -12,217 +12,260 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalize]{cleveref}
 
-\newcommand{\st}[1]{\textsc{#1}}
-\newcommand{\draftnote}[1]{\textcolor{red}{#1}}
-
-\title{Response Bias, Not Perception, Breaks Temporal State Estimation\\from Foundation-Model Evidence under Domain Shift}
-\author{\IEEEauthorblockN{Anonymous Authors}\IEEEauthorblockA{Paper under double-blind review}}
-
 \begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
+
+\title{Evidence-First VLM Cascades for Embedded Work-Zone State Estimation:\\Hyper-Parameter Portability and Counted Temporal Filters}
+
+\author{\IEEEauthorblockN{Anonymous Authors}\IEEEauthorblockA{Paper under double-blind review}}
 \maketitle
 
-\draftnote{\textbf{Draft status.} The California four-state labels (\cref{sec:benchmark}) are a first pass pending human verification. Every number in \cref{sec:ood,sec:adapt} is regenerated from the verified labels by \texttt{pipeline/california\_4state.py}, \texttt{california\_adapt.py} and \texttt{annotation/draft\_eval.py}; do not cite them before that run.}
-
 \begin{abstract}
-Driving systems increasingly turn the per-frame answers of a foundation model into a temporal state: a detector or a vision--language model says what is in the frame, and a filter or segmenter decides when a situation starts and ends. We study this split on work-zone traversal, where the state is one of \st{outside}, \st{approaching}, \st{inside} and \st{exiting}, with every system running on an embedded GPU. In domain, six temporal layers built on a detector and a 4B world model reach macro-F1 0.46 to 0.55, and the best of them resolves the usual trade-off between boundary quality and false alarms. We then introduce a four-state benchmark from 51 minutes of California driving at day, dusk, night, rain and fog, labeled separately for whether work is visible and whether it concerns the ego vehicle. Three results follow. First, the metric commonly used for out-of-domain evidence, a hit anywhere in a short window, is dominated by response bias: the world model answers ``yes'' on 40\% of seconds with no work in view, so 72\% of work-free 7-second windows already count as hits. Second, once bias is removed, perception transfers unevenly rather than failing: the detector separates work from no work better by day (AUC 0.80 against 0.67), the world model better at night and in weather (0.70--0.77 against 0.52--0.62), and neither can tell relevant from irrelevant work (AUC below 0.5 for both). Third, the in-domain ranking of temporal layers inverts: the best in-domain estimator falls from 0.546 to 0.295 macro-F1 and from 26 to 68 false alarms per hour. Unsupervised re-estimation of the estimator's emission model does not repair this, because without labels a shift in how often a model says ``yes'' is indistinguishable from a shift in how often work is present. We argue that temporal layers over foundation-model evidence should be evaluated, and adapted, against response bias rather than against perception.
+We ask how closely a single work-zone-fine-tuned vision--language model (VLM), quantized to INT4 and running entirely on embedded automotive hardware, can approach such a pipeline while estimating four traversal states (\textsc{outside}, \textsc{approaching}, \textsc{inside}, \textsc{exiting}).  Our \emph{evidence-first cascade} operates one 2B VLM through asymmetric-cost prompt channels and hysteresis, under a \emph{latency-honest} protocol where each system's measured latency determines frame dropping.  On 208 held-out ROADWork videos it matches a ported detector+CLIP baseline on accuracy and event recall but trails on precision, nuisance rate, and compute.  Applying the 2B model's temporal thresholds to an INT4 4B world model yields macro-F1 0.290 and \textsc{inside} IoU 0.007; recalibrating the same four integers moves them to 0.515 and 0.574, so cross-model comparisons that inherit smoothing constants confound models with hyper-parameters.  A joint estimator over detector and world-model evidence, with every parameter counted rather than set, reaches 0.546 at 25.9 false alarms per hour, inside the detector's alarm budget, and keeps most of its advantage when fitted on one city and tested on the other; an ablation shows that the gain comes mainly from the temporal model rather than the fusion.  These results establish computational viability, not safety readiness.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-A common way to put a foundation model in a vehicle is to ask it about each frame and let a small temporal model do the rest. A detector counts cones; a vision--language model (VLM) answers ``are there road-work indicators in this scene?''; a Bayesian filter, a vote, or a temporal convolutional network turns those answers into a state that an advisory can act on. The split is attractive because the expensive part is general and pretrained, and the cheap part is specific and easy to fit.
+Work zones concentrate difficult driving-perception conditions: their appearance is regional and unstandardized, geometry changes daily, evidence such as cones, barrels, signs, and workers is small or occluded, and both misses and nuisance alerts are costly.  They accounted for roughly 101{,}000 U.S. crashes and 899 fatalities in 2023~\cite{nhtsa2023}, yet production ADAS rarely model work zones explicitly and temporary speed limits are often absent from digital maps.
 
-This paper asks what happens to that split under domain shift. Our running example is work-zone traversal, a four-state problem (\st{outside}, \st{approaching}, \st{inside}, \st{exiting}) where the boundaries matter most and where errors in both directions are costly~\cite{nhtsa2023,priorsystem2026}. Every system we study runs on a Jetson AGX Orin, under a replay protocol in which each system's own latency decides which frames it sees.
+The strongest onboard approach combines a YOLO-style work-zone detector, CLIP verification~\cite{radford2021clip}, exponential smoothing, and hysteresis to estimate four traversal states~\cite{priorsystem2026,priorsystemarxiv2026}.  It is fast and effective after a zone is established, but reported IoU falls from 0.56/0.47 on \textsc{outside}/\textsc{inside} to 0.11/0.09 on \textsc{approaching}/\textsc{exiting}~\cite{priorsystem2026}.  These boundaries are precisely where an advisory is most useful: an alert after the vehicle reaches the barrels has little anticipatory value.
 
-In domain, the temporal layer is where the gains are. On 208 held-out ROADWork videos~\cite{ghosh2025roadwork}, replacing a detector's hand-set smoothing constants with a filter whose parameters are counted from data raises macro-F1 from 0.470 to 0.536 on the same detector evidence, and adding a world model's answers gives 0.546 at 25.9 false alarms per hour. A learned causal segmenter ties that macro-F1. Read in isolation, these results say that better temporal modeling is the path forward.
+Meanwhile, fine-tuned VLMs describe work-zone scenes well offline~\cite{ghosh2025roadwork}, and weight-only quantization plus embedded runtimes bring small VLMs to automotive hardware~\cite{lin2024awq,trtedgellm}.  We ask whether a single fine-tuned VLM, operated through cooperating prompt channels, can estimate traversal state in real time and compete with the detector pipeline under identical conditions.
 
-Out of domain the picture changes, and the reason is not the one we expected. Our earlier measurements used the usual out-of-domain proxy, a hit anywhere in a short window after an annotated event, and reported the world model finding 95\% of California work-zone signs against 72\% for the detector. That number is mostly response bias. The world model says ``yes'' on 40\% of work-free seconds, so a 7-second window with no work in view already scores a hit 72\% of the time. To measure transfer properly we labeled every second of the footage twice: whether work is visible, and whether it concerns the ego vehicle.
+Under an identical embedded protocol, the detector-free VLM is competitive on state coverage but trails on precision, nuisance rate, and compute.  Two follow-ups shift the result.  First, temporal thresholds fitted to one checkpoint are not neutral: inherited across models, they move a per-state IoU by $82\times$.  Second, a 4B world model we quantize and calibrate, but never fine-tune, leads accuracy and boundary localization while the detector leads nuisance and precision.  A joint estimator over both evidence streams, with parameters counted rather than set, resolves this trade-off, and most of its gain comes from the counted temporal model rather than from the fusion.
 
-With those labels, perception does not so much fail as move. By day the detector separates work from no work better; at night and in weather the world model does. Neither separates relevant from irrelevant work at all. The temporal layers, fitted to in-domain response rates, then turn each model's new bias into errors: the best in-domain estimator becomes one of the worst, with false alarms more than doubling. Re-estimating the estimator's emission model on unlabeled target data does not help, and we show why: the shift in how often a model says ``yes'' and the shift in how often work is present are not identifiable from the evidence alone.
+Answering the original question requires more than swapping models.  At $\sim$10\,ms per output token, a full description costs roughly 500\,ms while a two-token answer costs 75\,ms: prompt choice is an economic decision.  Our cascade therefore lets evidence quality gate smoothing (\cref{sec:prompts}): a transcribed sign can bypass a vote while a binary answer cannot.
 
-Our contributions are:
-\begin{enumerate}
-\item A four-state work-zone benchmark from 51 minutes of California driving across day, dusk, night, rain and fog, labeled per second for work visibility and ego-relevance, with the labeling guideline and tools.
-\item An evaluation that separates perception (bias-free discrimination), ego-relevance, and temporal action, and shows that window-hit metrics for out-of-domain evidence are dominated by response bias.
-\item A controlled comparison of six temporal layers over the same detector and world-model evidence, in domain and out of domain, showing that the in-domain ranking inverts.
-\item A negative result for unsupervised emission re-estimation, with an identifiability argument for why it fails.
-\end{enumerate}
+Our contributions are: \textbf{(1)} a real-time, fully embedded traversal-state estimator from one quantized VLM; \textbf{(2)} latency-honest evaluation in which measured cycle time drives frame dropping, plus offline per-model recalibration; \textbf{(3)} paired comparison with a carefully reimplemented detector+CLIP port on the same 208 videos, protocol, and device; \textbf{(4)} evidence that temporal hyper-parameters do not transfer between models, with both checkpoints recalibrated symmetrically; \textbf{(5)} a joint estimator with counted rather than hand-set parameters, the best system we measure inside the detector's false-alarm budget, with an ablation showing where its gain comes from; and \textbf{(6)} a leave-one-city-out and response-bias analysis on human labels that locates the residual gap in ego-relevance.
 
 \section{Related Work}
 \label{sec:related}
 
-\paragraph{Work zones.} ROADWork~\cite{ghosh2025roadwork} provides work-zone images, videos and descriptions from 18 U.S. cities and shows large gains from in-domain fine-tuning. The four-state traversal task and the detector pipeline we use as a baseline come from \cite{priorsystem2026}, which pairs a ROADWork-trained detector with CLIP verification~\cite{radford2021clip}, exponential smoothing and hysteresis. Earlier systems used structured environment models~\cite{shi2021workzone} or frame classification~\cite{abodo2018shrp}.
+\paragraph{Work-zone perception.} Early systems used structured environmental models with sensor fusion~\cite{shi2021workzone} or frame-level classification~\cite{abodo2018shrp}.  ROADWork~\cite{ghosh2025roadwork} contains 4{,}375 videos and 9.6K annotated images across 18 U.S.\ cities, and shows that open-vocabulary models improve sharply after in-domain fine-tuning (+32.2 AP for detection and +36.7 SPICE for description).  The closest system~\cite{priorsystem2026} deploys a ROADWork-trained YOLO detector with CLIP verification, EMA smoothing, and hysteresis, and defines the traversal-state evaluation we adopt.
 
-\paragraph{Foundation models as driving sensors.} VLMs are used for planning~\cite{hwang2024emma,tian2024drivevlm}, description~\cite{marcu2024lingoqa} and physical reasoning~\cite{nvidia2025cosmosreason,nvidia2026cosmos3,alpamayo2026}, and quantization~\cite{lin2024awq} with embedded runtimes~\cite{trtedgellm} brings small ones to automotive hardware. Most evaluations score the model's answers; we score the state a system builds from them.
+\paragraph{VLMs for driving.} Large VLMs support end-to-end planning~\cite{hwang2024emma,tian2024drivevlm}, open-loop description~\cite{marcu2024lingoqa}, and reasoning~\cite{nvidia2025cosmosreason}, mostly on datacenter GPUs.  We instead estimate one safety-relevant scene state under an embedded latency budget and study prompt-level failures, such as affirmation bias and distance blindness, that larger models can mask.
 
-\paragraph{Temporal segmentation.} Assigning a state to every frame is temporal action segmentation, for which MS-TCN~\cite{farha2019mstcn} introduced multi-stage dilated convolutions and a smoothing loss. We train a strictly causal variant with modality dropout~\cite{neverova2016moddrop}.
+\paragraph{World models for physical AI.} Cosmos models jointly learn language, vision, and action for embodied agents~\cite{nvidia2025cosmosreason,nvidia2026cosmos3}, mostly for planning at datacenter or automotive-SoC scale~\cite{alpamayo2026}.  Rather than planning, we quantize a world model for Jetson-class perception.
 
-\paragraph{Shift and test-time adaptation.} Label-shift methods re-estimate class priors from unlabeled target data under the assumption that class-conditional distributions are fixed~\cite{saerens2002adjusting,lipton2018bbse}; test-time adaptation updates model parameters from unlabeled target inputs~\cite{wang2021tent}. Our setting violates the label-shift assumption in the specific way that makes it hard: what moves is the conditional response of the sensor, and it moves together with the prior.
+\paragraph{Efficient inference and cascades.} AWQ~\cite{lin2024awq} and embedded runtimes~\cite{trtedgellm} enable multi-Hz VLM inference on embedded GPUs.  Unlike classical cost-aware cascades~\cite{viola2001rapid}, our stages share one model: prompts and token budgets create the cost asymmetry, and evidence semantics (transcribed text versus a binary answer), rather than scalar confidence, drive escalation.
 
-\section{Systems and In-Domain Results}
-\label{sec:systems}
+\section{System}
+\label{sec:system}
 
-\paragraph{Evidence.} Two models produce evidence on the same Orin. The detector is a ROADWork-trained YOLO whose per-frame score weights detected cues by category~\cite{priorsystem2026}; it runs at about 22\,Hz. The world model is Cosmos3-Edge~\cite{nvidia2026cosmos3}, a 4B physical-AI model whose reasoner we quantize to INT4 (W4A16 AWQ) and run with TensorRT; it has never seen work-zone training data. It answers three fixed prompts: a binary existence \st{gate}, a sign transcription matched against a keyword list (\st{sign}), and a structured description matched against an object lexicon (\st{desc}). One pass of the three takes about 1.5\,s.
+\subsection{Two embedded deployments}
+\label{sec:deployment}
 
-\paragraph{Temporal layers.} All six layers consume the same evidence.
-\emph{Cascade}: the world model's evidence-first state machine with votes over a short window, calibrated for this model ($N{=}3$, $K_\text{enter}{=}3$, $K_\text{exit}{=}2$, $K_\text{fade}{=}1$).
-\emph{Detector, counted filter}: a forward filter over the four states whose emission $P(\text{observation}\mid\text{state})$ and per-second transition rates are counted on 312 calibration videos, observing the detector score only.
-\emph{Joint}: the same filter over a joint observation of detector score (six buckets), world-model evidence (six levels) and answer age (three buckets), 108 cells, fitted on 100 or on all 312 calibration videos.
-\emph{Joint, no detector}: the joint filter refitted without the detector stream.
-\emph{TCN}: a causal three-stage MS-TCN (100{,}780 parameters) trained on the same calibration evidence with modality dropout and early stopping.
-The filters scale the log-likelihood by $dt/\tau$ with $\tau{=}0.5$\,s so that near-duplicate frames do not count as independent evidence.
+We deploy \emph{two} models on the same Jetson AGX Orin, adapted in the two ways such a model admits: one by task fine-tuning, one by quantization and per-model calibration alone.  Both run the identical prompt channels, cascade, protocol and splits, so every comparison in this paper varies the model and its adaptation, never the pipeline around it.
 
-\paragraph{In-domain protocol.} We use the 520-video ROADWork traversal benchmark of \cite{priorsystem2026}, split by video into 312 calibration and 208 validation videos (1.78\,h). All fitting and selection use calibration; we report validation. Replay is latency-honest: after each measured cycle the video advances by that cycle's duration and skipped frames are never seen. Metrics follow \cite{priorsystem2026}; false alarms per hour count predicted active intervals that overlap no annotated active interval.
+\textbf{Fine-tuned 2B.}  A 2B-parameter VLM (Qwen3-VL architecture~\cite{qwen3vl}, initialized from a physical-AI reasoning checkpoint~\cite{nvidia2025cosmosreason}), used for perception only.  We fine-tune it through a ROADWork-derived curriculum~\cite{ghosh2025roadwork}: work-zone VQA ($\sim$46K pairs), ego-state supervision, sign reading, a general-driving retention mix, and $\sim$10K work-zone-free BDD100K hard negatives.  Before the last stage, the existence gate answered ``yes'' on 95\% of clean scenes; after it, 0\% on external negative controls.  Positive-heavy intermediate training had destroyed calibration already present in the base model, and negative examples restored it.
 
-\begin{table}[t]
-\centering
-\caption{In domain: 208 ROADWork validation videos, same evidence, same device. FA/h: false alarms per hour.}
-\label{tab:indomain}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-Temporal layer & Macro F1 & IoU \st{appr} & IoU \st{exit} & FA/h \\
-\midrule
-Detector, hand-set (\cite{priorsystem2026}, our port) & 0.470 & 0.124 & 0.106 & 30.9 \\
-Cascade (world model) & 0.515 & \textbf{0.278} & 0.071 & 64.6 \\
-Detector, counted filter & 0.536 & 0.233 & 0.148 & \textbf{18.5} \\
-Joint (100) & \textbf{0.550} & 0.262 & 0.163 & 33.2 \\
-Joint (312) & 0.546 & 0.246 & 0.160 & 25.9 \\
-Joint, no detector & 0.460 & 0.211 & 0.017 & 42.7 \\
-Causal TCN & \textbf{0.550} & 0.260 & \textbf{0.169} & 71.9 \\
-\bottomrule
-\end{tabular}
-\end{table}
+The language backbone is quantized to INT4 (W4A16 AWQ, group size 128), the vision tower stays FP16, and both are compiled to TensorRT engines on-device~\cite{trtedgellm} (1.38\,GB language + 0.83\,GB vision, $\sim$4.5\,GB peak runtime).  A persistent process serves single-image requests.  Costs decompose as 44.6\,ms for vision encoding at 720p or $\sim$20\,ms at 480px, $\sim$0.16\,ms/input token for prefill, and 10.4\,ms/output token for decoding.  Output length therefore dominates, followed by input resolution; 480px preserved probe answers while saving 45\,ms/cycle.
 
-\Cref{tab:indomain} is the in-domain picture. Counting the filter's parameters instead of setting them by hand is worth 0.066 macro-F1 on the detector's own evidence; adding the world model is worth another 0.010. The joint estimator fitted on all calibration videos is the only layer above the hand-set detector at a lower false-alarm rate, and the TCN ties the best macro-F1 at nearly three times its alarms. The same filter without the detector loses \st{exiting} almost entirely, because the fading detector score is what signals that a zone is ending. In-domain paired bootstrap intervals (10{,}000 video-level replications) put the joint estimator above the detector by $+0.076$ macro-F1 ($[+0.047, +0.105]$) with no significant difference in false alarms.
+\textbf{Quantized 4B world model.}  Cosmos3-Edge (C3E)~\cite{nvidia2026cosmos3} is a 4B physical-AI world model pairing an autoregressive reasoner with a trajectory-generating diffusion transformer.  We quantize its reasoner to W4A16 AWQ INT4 (1.27\,GB) and keep its visual tower in FP16 (983\,MB), both as TensorRT engines on the same Orin; its frozen $26{\times}46$ patch grid fixes inputs at $736{\times}416$, and channel latencies are 162/182/488/556\,ms (\textsc{gate}/\textsc{ego}/\textsc{desc}/\textsc{sign}).  It receives no work-zone training data and has never seen this benchmark.  Building its engines required six patches to the embedded runtime; the patch set and deployment recipe are released with the code.
 
-\section{A Four-State Out-of-Domain Benchmark}
-\label{sec:benchmark}
+\subsection{Prompt channels and their failure modes}
+\label{sec:prompts}
 
-\paragraph{Footage.} Fourteen dashcam recordings from Merced, Fresno and highways CA-50 and CA-99 in California, 51.0 minutes in total, with a different camera from ROADWork and conditions ROADWork does not contain: day (19.0\,min), evening (1.8), sunset (5.3), night (10.0), night with rain (9.0) and night with fog (6.0). The recordings were made to capture work zones, so work is visible in about half of the footage.
+We operate four fixed-prompt channels with fixed token budgets.  Because the first generated token is an answer-start token, the minimum useful budget is two tokens.
 
-\paragraph{Labels.} Every second receives two labels (guideline in the supplement). \emph{Visible}: any temporary traffic-control element or active work is in view. \emph{Ego-relevant}: the work regulates or affects the ego vehicle's direction of travel, which is the condition under which the four states are defined, as in \cite{priorsystem2026}. The four states then follow the source benchmark's conventions. Keeping the two labels separate lets us ask whether a model sees work at all and, separately, whether it can tell work that matters from work that does not, such as cones on the opposite carriageway or equipment in a parking lot. Of 3{,}064 labeled seconds, 1{,}484 show no work, 160 show work that does not concern the ego vehicle, and 1{,}420 are ego-relevant. \draftnote{Labels are a first pass made from contact sheets at one frame every two seconds and are being verified by a person at full frame rate with a keyboard tool; stretches the first pass marked as low confidence are listed for the verifier.}
+\paragraph{Affirmation bias.} The \textsc{gate} asks a neutral existence question and is calibrated on clean scenes, but binary prompts cannot be specialized by rephrasing.  Variants asking whether work affects the vehicle's path all answered ``yes'' on \textsc{outside} probes, while distance prompts answered ``close'' regardless of scene.  The learned discrimination resides in the trained question; prompt nuance does not transfer.  Binary outputs are therefore weak evidence requiring a temporal vote, never sole triggers.
 
-\paragraph{Evidence record.} We record every evidence channel of both models once, at 1\,Hz over the whole footage, and evaluate all temporal layers by replaying that record. The record reproduces our earlier live window measurements exactly for the five systems we had run on GPU. Layers that run faster live are approximated: filters step once per second with a fresh world-model answer, and the TCN sees each second's features held over its 10\,Hz grid.
+\paragraph{Faithful transcription.} The \textsc{sign} channel returns stable, verbatim text such as ``\textsc{shoulder work}'' and correctly reports absence.  A binary rephrasing misses signs that transcription catches on the same frames.  We therefore transcribe and derive a binary value by matching a work-zone keyword lexicon.
 
-\section{What Transfers}
-\label{sec:ood}
+\paragraph{Structured corroboration.} The \textsc{desc} channel's object--location prefix often verbalizes disqualifying context---e.g., ``barriers on right \emph{sidewalk}'' or ``work vehicle \emph{parked}.''  Corroboration therefore requires a work-zone object without such a qualifier.  Prompts, budgets and lexicons are released with the code.
 
-\subsection{Window hits measure response bias}
+\subsection{Evidence-first cascade}
+\label{sec:cascade}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{fig_falseyes.jpg}
-\caption{Sixteen random California frames on which the world model's gate answers ``yes'' at least 20\,s away from any annotated sign. Most show no work zone.}
-\label{fig:falseyes}
+\includegraphics[width=\linewidth]{fig_cascade.pdf}
+\caption{Evidence-first cascade.  In \textsc{outside}, \textsc{gate} and \textsc{sign} run every cycle and candidate evidence invokes \textsc{desc}.  Entry requires a sustained, corroborated vote or high-confidence same-cycle evidence.  In active states, \textsc{ego} drives a Bayesian filter; sustained gate clearance returns to \textsc{outside}, while partial fading triggers \textsc{exiting}.  Constants are calibrated per model: $5/3/4/2$ for the 2B and $3/3/2/1$ for C3E, so the structure transfers but the numbers do not.}
+\label{fig:cascade}
 \end{figure}
 
-The common proxy for out-of-domain evidence counts an event as detected if a model responds anywhere in a short window after it. On the 39 annotated sign approaches in this footage, that proxy gives the world model 95\% and the detector 72\%. The same rule applied to 7-second windows in which no work is visible gives 72\% and 18\%. The world model answers ``yes'' on 40.2\% of work-free seconds, the detector responds on 5.6\%. The window proxy is therefore mostly a measurement of how often a model says ``yes'', and \cref{fig:falseyes} shows what those answers look like.
+The cascade (\cref{fig:cascade}) allocates compute by state.
 
-\subsection{Perception moves; ego-relevance never arrives}
+\textbf{Outside (patrol).}  \textsc{gate} and \textsc{sign} run every cycle ($\sim$315\,ms, 3.2\,Hz); either can invoke \textsc{desc}.  Entry into \textsc{approaching} has two paths: a voting path, with the gate active in at least three of five cycles and one corroboration, or fast entry on a lexicon-matching sign or gate+\textsc{desc} agreement in the same cycle.  Fast entry avoids the $\sim$1.6\,s voting delay for evidence such as a transcribed ``\textsc{road work ahead}.''
+
+\textbf{Active states.}  \textsc{ego} updates a Bayesian filter whose argmax is restricted to the three active states.  Otherwise, a single ``outside'' reply immediately after sign-triggered entry would erase the sign's anticipatory value.  Only sustained gate clearance returns the system to \textsc{outside}; partial fading triggers \textsc{exiting}, which \textsc{ego} never produced even when offered explicitly.  \textsc{desc} refreshes every 1.5\,s.  All thresholds ($N{=}5$, $K_\text{enter}{=}3$, $K_\text{exit}{=}4$, $K_\text{fade}{=}2$) were fixed on calibration data.
+
+\subsection{Joint estimator over both evidence streams}
+\label{sec:jointdesign}
+
+Our first attempts to combine the detector and the world model grafted one onto the other's temporal machinery, and all of them failed.  The ported detector counts cycles (a 150-cycle maximum approach duration, 20 minimum frames outside) tuned for its 43\,ms loop; the cascade votes over a window tuned for a $\sim$700\,ms stride.  Reusing either as the spine imports constants that are wrong for the combination, which is the threshold-inheritance problem of \cref{sec:worldmodel} one level up.
+
+The joint estimator therefore inherits nothing: it has no EMA, no hand-set hysteresis, no threshold and no cycle counter.  It is a forward filter over the four states.  Its observation combines the detector's calibrated frame score (six buckets), the world model's gate, sign-keyword and corroboration answers ordered by evidence strength (six levels), and the age of that answer (three buckets), for 108 discrete cells.  The emission $P(\text{observation}\mid\text{state})$ is counted directly on the calibration split with Laplace smoothing, and it is joint rather than factorized because the interaction is the signal: the world model's \textsc{approaching} is reliable when the detector corroborates it and mostly a false alarm when it does not (73\% of those frames are \textsc{outside}).  The transition is a per-second rate matrix, counted as ground-truth transitions over dwell time and scaled by the elapsed $dt$ of each step, so it does not depend on the loop rate.  Finally, the log-likelihood is scaled by $dt/\tau$ with $\tau=0.5$\,s: a world-model answer persists across roughly 30 detector frames, and applying its likelihood once per frame treats 30 correlated looks as independent, which drove an early version to 135 false alarms per hour.
+
+At run time the detector runs at its native rate and is never blocked.  The world model is polled asynchronously and re-polled as soon as it answers; its last answer is held, with its age as part of the observation.
+
+\section{Evaluation Protocol}
+\label{sec:protocol}
+
+\paragraph{Benchmark.} We use the detector baseline's 520-video ROADWork-derived traversal benchmark~\cite{priorsystem2026}: Boston and Seattle footage at 1920$\times$1080, 30\,fps, with 484K interval-labeled frames.  A state-stratified 60/40 video split assigns all design choices and thresholds to calibration (312 videos, 2.59\,h) and final results to validation (208 videos; 192{,}135 frames, 1.78\,h, 13 pure-negative videos); the benchmark totals 4.37\,h of annotated driving.  All systems see the same split.  All 25 drives occur in both partitions, so they are not route-independent (\cref{sec:limitations}).  Interval labels are evaluation-only and hard negatives come from BDD100K.  Fine-tuning images and benchmark videos both derive from ROADWork, so depicted-zone overlap is possible; the ROADWork-trained baseline shares this condition.
+
+\paragraph{Latency-honest camera simulation.} Embedded perception cannot pause the world.  After each measured inference cycle of duration $\Delta$ on the target hardware, the replay advances by $\Delta$ and drops intervening frames exactly as a live camera would.  Slower systems therefore observe fewer, sparser frames and pay latency inside the accuracy result rather than beside it.  Predictions are held between cycles, matching a driver-facing display, and scored per frame.
+
+\paragraph{Metrics.} We adopt the baseline's suite~\cite{priorsystem2026}: frame accuracy and macro-F1; per-state IoU; event precision/recall, where an interval is correct if it overlaps one of the same state; matched-event entry offset; and transition matching at $\pm\{0,5,15,30\}$ frames.  Videos beginning in a state contribute no entry event.  Event metrics capture whether the warning occurs at all, whereas IoU and timing capture boundary quality; both are needed because a long, early interval can have perfect recall but poor localization.  Confidence intervals and paired tests use 10{,}000 video-level bootstrap samples, resampling the same video indices for paired systems.
+
+\section{Results: One Fine-Tuned Model vs.\ the Detector}
+\label{sec:results}
+
+\subsection{Comparison with the deployed detector system}
+\label{sec:vsdetector}
 
 \begin{table}[t]
 \centering
-\caption{Per-second discrimination on California (AUC; 0.5 is chance). Perception: visible work against no work. Ego-relevance: relevant against visible-but-irrelevant work.}
-\label{tab:auc}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lccc@{}}
-\toprule
- & seconds (pos / neg) & World model & Detector \\
-\midrule
-Perception, all & 1176 / 1484 & 0.72 & 0.72 \\
-\quad day & 590 / 462 & 0.67 & \textbf{0.80} \\
-\quad sunset & 142 / 158 & 0.59 & \textbf{0.81} \\
-\quad night & 118 / 374 & \textbf{0.70} & 0.52 \\
-\quad night, rain & 156 / 284 & \textbf{0.77} & 0.62 \\
-\quad night, fog & 158 / 160 & \textbf{0.76} & 0.60 \\
-Ego-relevance & 1420 / 160 & 0.47 & 0.43 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-AUC removes the response rate and asks only whether a model responds more when work is there. \Cref{tab:auc} shows that neither model fails outright and neither dominates. The detector is the better perceiver in daylight and at sunset. At night, in rain and in fog, the world model is better, which matches the earlier window result in direction but at a fraction of its size. On ego-relevance both are below chance: they respond to irrelevant work at least as often as to relevant work. This extends to a new domain the failure we observed in domain, where the residual false positives of every VLM system were correctly described objects that did not concern the vehicle.
-
-\subsection{The in-domain ranking inverts}
-
-\begin{table}[t]
-\centering
-\caption{Four-state results on California, same six temporal layers as \cref{tab:indomain}, replayed on the 1\,Hz evidence record. \draftnote{Draft labels.}}
-\label{tab:ood}
+\caption{Validation split, 208 videos, one protocol, one device (event P/R in \%, timing in s).  \emph{raw}: the cascade of \cref{sec:cascade}, sampled decoding; \emph{rec.}: greedy plus a 1\,s \textsc{inside} debounce; \emph{C3E}: the world model with its own thresholds; \emph{joint}: the estimator of \cref{sec:jointdesign}, fitted on 312 calibration videos.}
+\label{tab:main}
 \footnotesize
 \setlength{\tabcolsep}{3.2pt}
-\begin{tabular}{@{}lcccccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-Temporal layer & Acc. & F1 & IoU \st{ap} & IoU \st{in} & \st{in} rec. & FA/h \\
+ & Det.+CLIP & \multicolumn{2}{c}{2B fine-tuned} & C3E & Joint \\
+\cmidrule(lr){3-4}
+Metric & \cite{priorsystem2026} & raw & rec. & & \\
 \midrule
-Cascade & 55.0 & 0.388 & 0.156 & 0.338 & 75.0 & 56.5 \\
-Detector, counted & 57.5 & 0.296 & 0.028 & 0.221 & 31.2 & \textbf{14.1} \\
-Joint (100) & 48.4 & 0.304 & 0.044 & 0.234 & 62.5 & 64.7 \\
-Joint (312) & 47.8 & 0.295 & 0.035 & 0.222 & 37.5 & 68.2 \\
-Joint, no detector & \textbf{57.7} & \textbf{0.414} & \textbf{0.231} & \textbf{0.395} & 81.2 & 90.6 \\
-Causal TCN & 53.7 & 0.336 & 0.045 & 0.312 & \textbf{87.5} & 60.0 \\
+Frame acc. & 62.9\% & 62.5\% & 62.0\% & 65.5\% & \textbf{66.1\%} \\
+Macro F1 & 0.470 & 0.464 & 0.453 & 0.515 & \textbf{0.546} \\
+\midrule
+IoU \textsc{out} & 0.617 & 0.586 & 0.581 & 0.615 & \textbf{0.641} \\
+IoU \textsc{appr} & 0.124 & 0.152 & 0.152 & \textbf{0.278} & 0.246 \\
+IoU \textsc{in} & 0.544 & 0.535 & 0.532 & 0.574 & \textbf{0.578} \\
+IoU \textsc{exit} & 0.106 & 0.085 & 0.062 & 0.071 & \textbf{0.160} \\
+\midrule
+\textsc{in} ev. recall & 95.7 & \textbf{96.8} & \textbf{96.8} & 87.0 & 85.9 \\
+\textsc{in} ev. prec. & \textbf{79.9} & 54.1 & 76.7 & 71.5 & 66.8 \\
+False alarms/h & 30.9 & 60.1 & 37.7 & 64.6 & \textbf{25.9} \\
+\midrule
+Entry MAE & 2.52 & 2.53 & 2.52 & \textbf{2.15} & 2.22 \\
+\textsc{in} entry med. & 3.47 & 2.73 & 2.77 & 2.50 & \textbf{2.27} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\Cref{tab:ood} replays the six layers on California. Five of the six layers lose between 0.13 and 0.25 macro-F1; the world-model-only filter loses 0.05. The order changes. The joint estimator, best in domain inside the alarm budget, falls to 0.295 macro-F1 with 68 false alarms per hour, and by day it produces 117 per hour. The detector-only filter keeps a low alarm rate but recovers only 31\% of \st{inside} events, because at night the detector is nearly silent. The best macro-F1 comes from the world model alone, through the joint filter without its detector stream or through the cascade, and at 57 to 91 false alarms per hour.
+\Cref{tab:main} places every system on the same videos, device and protocol.  This section reads its first three columns; C3E is the outcome of \cref{sec:worldmodel} and the joint estimator of \cref{sec:joint}.  Against the ported detector+CLIP pair, the fine-tuned 2B is statistically tied on frame accuracy and \textsc{inside} event recall, and shows a small \textsc{approaching}-IoU advantage (0.152 vs.\ 0.124) whose paired 95\% CI marginally includes zero ($[-0.005,+0.058]$, 10{,}000 video-level replications), but trails badly on event precision (54.1\% vs.\ 79.9\%).  This is a competitive detector-free result rather than a replacement result.  Greedy decoding plus a 1\,s \textsc{inside} debounce recovers most of the precision gap (76.7\%) without retraining, at a small cost in boundary IoU.  Median entry error is comparable across systems (1.27\,s for the debounced 2B against 1.37\,s for the detector), while the 2B's \textsc{inside} entry median is better by 0.70\,s.
 
-The two per-model biases of \cref{sec:ood} explain most of this. A filter counted in domain has learned how often each model responds in each state. Out of domain the world model responds more everywhere and the detector less at night, and a filter that trusts in-domain response rates reads the first as work that is not there and the second as the absence of work that is. The joint table is hit twice: its most informative in-domain cells are the ones where the two models agree, and out of domain they rarely agree for the right reason.
+The four-state pattern matters more than aggregate accuracy.  Both learned pipelines perform well on established \textsc{inside} intervals but poorly on \textsc{exiting}; the VLM's main advantage is \textsc{approaching}, where text and distant semantic evidence appear before detector counts become stable.  Conversely, the detector's stronger \textsc{outside} IoU and lower nuisance rate show why semantic anticipation cannot be accepted unconditionally.  This state-wise complementarity, rather than a small difference in overall accuracy, is the result that survives.
 
-\section{Adapting Without Labels}
-\label{sec:adapt}
+\subsection{Operational false-alarm characterization}
+\label{sec:falsealarms}
 
-Because the transition structure of a work zone is a property of roads rather than of sensors, a natural fix keeps the counted transition rates and re-estimates only the emission table from unlabeled target evidence. We run expectation--maximization with forward--backward posteriors under the same tempered likelihood the filter uses, and a Dirichlet prior centred on the in-domain table:
-\[
-e'_{s,o} \;\propto\; \lambda N \pi_s\, e^\text{src}_{s,o} + \textstyle\sum_t \gamma_t(s)\,[o_t = o],
-\]
-where $N$ is the number of target observations, $\pi$ the in-domain state prior, and $\lambda$ the weight of the source table. We fix $\lambda{=}0.5$ in advance and report $0.25$ and $1.0$ as sensitivity. We adapt either on all target videos (transductive) or, more strictly, on the other thirteen videos only.
+A driver-facing system is judged by nuisance rate, not only event precision.  Over 1.78\,h, false active-state events occur at 60.1/h; greedy plus 1\,s debounce cuts this to 37.7/h (2\,s: 27.5/h), versus 30.9/h for the detector.  Specificity is measured on 75{,}918 \textsc{outside} frames (70.6\% correctly held) and on all 36 pure-negative videos, where the system remains \textsc{outside} for 67.4\% and 58.0\% of their frames respectively.  Residual errors are predominantly the ego-relevance family of \cref{sec:analysis}, not clean-scene noise.  Of 155 matched \textsc{inside} entries, 81.9\% fire early (median 2.4\,s), which an advisory prefers but which stretches intervals.
+
+\subsection{Ablations and design validation}
+\label{sec:ablations}
+
+Seven single-toggle ablations show that no component moves frame accuracy or macro-F1 by more than 1.5 points, yet each protects a targeted failure.  The sign channel must transcribe rather than classify: an equal-cost binary question is the most damaging change, reducing accuracy 62.5\%$\to$52.5\% and \textsc{inside} precision to 46.1\%.  Removing the channel barely moves aggregates because its value is anticipatory entry rather than frame correctness.  Greedy decoding costs 0.5 accuracy points but improves precision at matched recall, making it our reproducible default.  Fast entry, qualifier filtering, and active-state filtering protect behaviors poorly captured by aggregate metrics; the qualifier filter is largest, adding 2.2 points concentrated in pure-negative videos.
+
+\subsection{Operational cost and cross-city consistency}
+\label{sec:cost}
+
+At 480px, p50/p95 latency is 83/90\,ms (\textsc{gate}), 136/149\,ms (\textsc{ego}), 155/169\,ms (\textsc{sign}), and 468/508\,ms (\textsc{desc}).  Patrol and active cycles run at p95 259\,ms (3.9\,Hz) and 239\,ms (4.2\,Hz); the heaviest path is 768\,ms (1.3\,Hz).  Here ``real time'' means keeping pace with a live camera at these rates, not meeting a specific alert deadline.  Under load, the VLM draws 36.5\,W median (42.5\,W peak; 7.9\,W idle) and 3--26\,J/cycle, versus $\sim$24\,W and $\sim$1\,J for the 43\,ms detector: $1.5\times$ the power and $3$--$26\times$ the energy per decision.  Each channel currently re-encodes the frame; sharing its visual embedding is an obvious route to reduce the gap.
+
+\section{Varying the Model: Calibration and Generalization}
+\label{sec:worldmodel}
+
+\Cref{sec:results} held the model fixed while varying its pipeline, confounding the checkpoint with thresholds fitted to it.  The base-checkpoint ablation changes only the former and appears to settle the question, but inherits the latter.  We separate the two factors using the second deployment of \cref{sec:deployment}, recalibrating each checkpoint on its own evidence.  This changes two conclusions above and produces our strongest system.
+
+\paragraph{Temporal hyper-parameters do not transfer.}  With the 2B thresholds, C3E scores macro-F1 0.290 and \textsc{inside} IoU 0.007 at 3.8\% recall.  Taken literally, this would mean that C3E cannot recognize being inside a zone.  It is an artifact.  Recalibrating the same four integers for C3E moves these to 0.515, 0.574, and 87.0\% on validation: \textsc{inside} IoU rises 0.567 absolute and recall 83.2 points, with model, prompts and videos fixed; the $82\times$ ratio is large mainly because the inherited value is near zero.  The search covers $N\in\{3,5,7,9\}$, $K_\ast\in 1..N$ and the \textsc{ego}/\textsc{sign} switches (4{,}896 configurations), scored by calibration macro-F1.  The selected configuration ($N{=}3$, $K_{\text{enter}}{=}3$, $K_{\text{exit}}{=}2$, $K_{\text{fade}}{=}1$) is shorter and less hysteretic, consistent with less noisy per-frame evidence, and disables \textsc{ego} (\cref{sec:analysis}).
+
+We make per-model recalibration cheap by recording each channel's output once per sampled frame and replaying the state machine, reducing a threshold sweep from GPU-hours per configuration to CPU-seconds.
+
+Replay evaluates only temporal logic over a fixed record.  The identical search on the identical videos barely moves the fine-tuned 2B (macro-F1 0.453$\to$0.459, against 0.290$\to$0.515 for C3E): a search that merely rewarded flexibility would have helped both models equally.
+
+The same procedure also measures fine-tuning under matched conditions.  Recalibrating the \emph{base} checkpoint---identical family, scale, architecture and visual tower, differing only in the work-zone curriculum---lifts it from macro-F1 0.281 to 0.383 on calibration, against 0.451 to 0.496 for the fine-tuned version.  Given their own thresholds, fine-tuning is worth $+0.113$ macro-F1 and $+8.8$ accuracy points, not the near-total collapse (\textsc{inside} IoU 0.535$\to$0.012) that the base checkpoint shows under the fine-tuned model's thresholds.  It buys a real and specific capability in domain.  Thus the $82\times$ change isolates fitting the wrapper to its model rather than extra visual training or validation leakage.
+
+Notably, calibration disables the \textsc{ego} channel entirely.  A seemingly task-specific question can thus reduce end-to-end accuracy even for a physical-AI world model; the cascade performs better when direct evidence and temporal structure infer state.
+
+Every decision in this paper is made on the 312-video calibration partition and none on validation: prompts, budgets and the qualifier lexicon on the full partition, and per-model thresholds by replaying recorded evidence over a 100-video subset of it.  The 208 validation videos enter only as the reported result.
+
+\paragraph{No configuration dominates.}  The two deployments fail complementarily: C3E leads accuracy, macro-F1 and both boundary IoUs, but at 64.6 false alarms/h against the detector's 30.9; the detector leads nuisance and \textsc{inside} precision but localizes boundaries poorly.  As single models, neither is the right choice for every application.  \Cref{sec:joint} shows that combining their evidence under a temporal model fitted for the pair resolves this trade-off.
+
+\section{Combining the Detector and the World Model}
+\label{sec:joint}
+
+The joint estimator of \cref{sec:jointdesign} reaches macro-F1 0.546 at 25.9 false alarms per hour (\cref{tab:main}).  It is the only system we measure that improves on the detector's quality while staying inside the detector's alarm budget, and the only one that moves \textsc{exiting}, which every single-model system leaves between 0.06 and 0.11.  Against the detector (paired video-level bootstrap, 10{,}000 replications), the gains in accuracy, macro-F1 and the three non-\textsc{outside} IoUs exclude zero, the false-alarm difference does not ($-5.1$, $[-13.7,+3.8]$), and \textsc{inside} event precision is 0.131 lower.  Against the calibrated world model it gains 0.031 macro-F1 and 0.089 \textsc{exiting} IoU and removes 38.8 alarms per hour.
+
+We report the fit on all 312 calibration videos; a 100-video fit scores the same within noise but at 33.2 alarms per hour, violating our pre-set criterion (maximize macro-F1 with false alarms no worse than the detector's 30.9).
+
+\paragraph{Operational profile.}  The detector drives the clock and is never blocked (p50 44\,ms, p95 59\,ms), so the state updates at 22.1\,Hz.  The world model answers asynchronously at 0.62\,Hz (p50 1.54\,s between answers).  The estimator therefore runs at the detector's rate while carrying world-model evidence, rather than at the slower model's rate as our earlier chained designs did.
+
+\paragraph{Where the gain comes from.}  A channel ablation, which refits the filter without each stream, is uncomfortable for the fusion story.  Removing the world model entirely costs 0.010 macro-F1 and \emph{improves} the alarm rate (25.9 to 18.5 per hour) and \textsc{inside} precision (66.8\% to 76.5\%).  Removing the detector costs 0.086 macro-F1 and collapses \textsc{exiting} IoU from 0.160 to 0.017.  Of the world-model channels only \textsc{desc} pays for itself in domain; removing \textsc{gate} slightly helps.  The detector alone inside the counted filter scores 0.536, against 0.470 for the same detector with its hand-tuned state machine.  Most of the in-domain improvement is therefore the temporal model, not the fusion: counting the parameters is worth 0.066 on the detector's own evidence, and adding the world model on top is worth 0.010.  On this benchmark, the honest recommendation would be the detector inside the counted filter, at 18.5 false alarms per hour.
+
+\paragraph{A learned alternative.}  A strictly causal multi-stage TCN~\cite{farha2019mstcn} trained on the same evidence ties the best macro-F1 (0.550) but at 71.9 false alarms per hour and 55.1\% \textsc{inside} precision, failing the same criterion.
 
 \begin{table}[t]
 \centering
-\caption{Unsupervised emission adaptation on California (leave-one-video-out). \draftnote{Draft labels.}}
-\label{tab:adapt}
+\caption{Joint estimator fitted on one city, replayed on the other city's validation videos.  Detector+CLIP: 0.462 (Seattle), 0.469 (Boston).}
+\label{tab:loco}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}llccc@{}}
+\begin{tabular}{@{}llcccc@{}}
 \toprule
-Filter & Emission & F1 & IoU \st{in} & FA/h \\
+Test city & Fitted on & Macro F1 & IoU \textsc{in} & \textsc{in} prec. & FA/h \\
 \midrule
-Joint (312) & source & 0.295 & 0.222 & 68.2 \\
- & adapted, $\lambda{=}0.25$ & 0.330 & 0.269 & 90.6 \\
- & adapted, $\lambda{=}0.5$ & 0.324 & 0.264 & 83.5 \\
- & adapted, $\lambda{=}1.0$ & 0.312 & 0.246 & 87.0 \\
+Seattle (54) & all 312 & 0.519 & 0.620 & 61.3 & 38.1 \\
+ & Boston only (246) & 0.499 & 0.618 & 60.7 & 42.6 \\
 \midrule
-Joint, no detector & source & 0.414 & 0.395 & 90.6 \\
- & adapted, $\lambda{=}0.5$ & 0.410 & 0.396 & 187.0 \\
+Boston (154) & all 312 & 0.551 & 0.560 & 68.9 & 21.8 \\
+ & Seattle only (66) & 0.513 & 0.421 & 73.1 & 32.3 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\Cref{tab:adapt} shows that adaptation buys at most 0.035 macro-F1 and always raises false alarms, doubling them for the world-model-only filter; transductive adaptation gives the same pattern. The failure is structural. The observation likelihood of an HMM and its state occupancy trade off against each other: more ``yes'' answers can be explained by a sensor that says ``yes'' more often in the same states, or by more time spent in active states. The source table and the transition prior break the tie in domain. Out of domain the evidence alone does not, and EM takes the explanation that the prior makes cheapest, which is more work. This is the label-shift problem~\cite{saerens2002adjusting,lipton2018bbse} with its key assumption removed: the class-conditional response is exactly what moved.
+\paragraph{Across cities.}  Because all drives appear in both splits (\cref{sec:protocol}), we also count the estimator's tables on one city only and replay it on the other city's validation videos (\cref{tab:loco}).  Fitted on Boston and tested on Seattle it loses 0.020 macro-F1; fitted on the 66 Seattle videos and tested on Boston it loses 0.038, mostly in \textsc{inside} IoU.  Both remain above the detector pipeline in the same city.  The language models themselves were not re-fine-tuned per city, so this bounds memorization by the temporal model only.
 
-The practical reading is that adaptation needs a signal about the sensor that does not pass through the state. Two such signals are available without labels in principle: responses on inputs known to be negative, such as frames from a stretch the vehicle has already classified with high confidence, and agreement structure between sensors whose biases move differently, which \cref{tab:auc} shows is the case here. We leave both to future work; the benchmark is designed to evaluate them.
+\section{Failure Analysis: the Ego-Relevance Gap}
+\label{sec:analysis}
+
+Nearly all residual false-positive mass has one signature: descriptions are factually correct about objects irrelevant to the vehicle's path.  Examples include a parked work vehicle more than 60\,m away, sidewalk reconstruction behind barriers, and residual detour signs for another street.  The qualifier filter catches only cases where the model verbalizes this context; it does not emit qualifiers reliably, and binary or distance prompts do not recover the judgment.
+
+\begin{table}[t]
+\centering
+\caption{\textsc{gate} ``yes'' rate by true state, \textsc{inside}-vs-\textsc{outside} AUC, and \textsc{desc} corroboration on \textsc{outside}; same 100 labeled videos, 1\,Hz.}
+\label{tab:bias}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{4}{c}{\textsc{gate} ``yes'' when truth is} & & \\
+\cmidrule(lr){2-5}
+Checkpoint & \textsc{out} & \textsc{appr} & \textsc{in} & \textsc{exit} & AUC & \textsc{desc} \\
+\midrule
+2B base & 3.8\% & 53.1\% & 71.8\% & 9.8\% & \textbf{0.84} & 31.3\% \\
+2B fine-tuned & 42.4\% & 85.3\% & 92.2\% & 51.2\% & 0.75 & \textbf{10.7\%} \\
+C3E zero-shot & 29.4\% & 93.3\% & 94.0\% & 34.4\% & 0.82 & 35.7\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Response bias.}  The three checkpoints were recorded on the same labeled videos, which separates how often a model says ``yes'' from how well its answer tracks the state (\cref{tab:bias}).  The base 2B rarely answers yes outside a zone and its gate separates \textsc{inside} from \textsc{outside} best (AUC 0.84); fine-tuning moves the same gate to 42.4\% and 0.75.  \textsc{outside} in ROADWork includes visible work that does not concern the vehicle, so a ``yes'' there is often correct perception and missing ego-relevance.  The fine-tuned model's advantage under matched calibration therefore does not come from its gate: its description corroborates on 10.7\% of \textsc{outside} seconds against 31.3\% for the base model.
+
+The natural reading is incomplete fine-tuning coverage: empty hard negatives do not teach that visible work-zone objects can be irrelevant.  A control shows that this is not the whole explanation.  C3E transcribes signs correctly and emits plausible 2D boxes, yet labels most verified \textsc{inside} frames ``off-road/sidewalk'' in ego-lane probes, nearly independently of ground truth.  It exhibits the same failure with the same sign as the fine-tuned model.  Geometric prompting also fails: an ego corridor built from the model's own boxes inherits the query's affirmation bias, because ``locate all work-zone objects'' presupposes their existence and produces boxes in 6/6 pure-negative probes.  Geometry cannot correct bias in its own input.
+
+Perceiving objects and judging whether they claim the ego path are distinct capabilities that prompting does not bridge across two model families, scales and adaptation strategies; the gap belongs to the interface, not one fine-tuning run.  This also explains uniformly weak \textsc{exiting} IoU (0.085 for 2B, 0.106 detector, 0.071 C3E): visible but receding objects require ego-relative reasoning that neither detection counts nor detection-flavored questions capture.  The joint estimator reaches 0.160 on \textsc{exiting} only through the detector: without it, \textsc{exiting} IoU falls to 0.017.  The detector's object score decays as objects recede, and the counted filter reads that decay directly; no language channel supplies it.
+
+Trajectory-grounded supervision is the natural remedy.  ROADWork's 129K path annotations~\cite{ghosh2025roadwork}, unused in our fine-tuning, can derive ego-relevance labels from recorded trajectories rather than a lexicon.
 
 \section{Limitations}
-\label{sec:limits}
+\label{sec:limitations}
 
-\draftnote{The California labels are a first pass awaiting human verification, and all out-of-domain numbers depend on them.} The benchmark is 51 minutes from one region and one camera, with fewer than ten minutes in each weather condition, so per-condition values are descriptive. Out-of-domain results are replayed at 1\,Hz, which approximates layers that run faster live. We study one detector and one world model; whether other VLMs show the same response bias is untested. The in-domain split shares drives between calibration and validation, and fine-tuning data for the detector and the benchmark both derive from ROADWork.
+The detector-free VLM does not uniformly beat the detector: its recommended precision is 76.7\% versus 79.9\%, accuracy is slightly lower, and compute is much higher.  A tight power budget still favors the detector-centric design.  Four limitations bound our claims.  \emph{(i) Provenance:} fine-tuning and evaluation both use ROADWork, and all 25 drives span both splits.  Leave-one-city-out replay of the joint estimator costs 0.02--0.04 macro-F1 (\cref{tab:loco}), but the fine-tuned model was not retrained per city, and a drive-disjoint split would be stronger.  \emph{(ii) Negatives:} a benchmark of hard ego-negatives with category counts would stress the identified failure better.  \emph{(iii) Portability:} every cross-model number we report is recalibrated per checkpoint, but the recalibration itself is fitted on one calibration split over a finite grid, so the reported configurations are the best we found rather than optima.  \emph{(iv) Baseline reproduction:} our port scores 0.470 against a published 0.600; the split explains $+0.029$ and frame dropping none ($-0.018$), leaving about $+0.119$ to implementation differences, so we claim only that the port is the same pipeline measured under our protocol.  Finally, the in-domain data cover two daytime U.S.\ cities, camera replay is open-loop, and sampled decoding varies by roughly 1--3 points per video (which greedy decoding removes); these results establish neither geographic generalization nor safety readiness.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-When a temporal model sits on top of a foundation model's per-frame answers, in-domain evaluation measures the pair. Out of domain, the pair separates: perception shifts unevenly across conditions and sensors, ego-relevance is absent for every model we tried, and the temporal layer, fitted to in-domain response rates, turns the sensor's new bias into errors. The in-domain ranking of temporal layers is not informative about this, window-hit metrics hide it, and unsupervised re-estimation cannot undo it because bias and base rate are confounded. We release the benchmark, the labeling guideline and tools, the evidence record, and the replay harness so that temporal layers can be evaluated against response bias directly.
+An INT4 2B VLM can estimate work-zone state at live-camera rates, matching detector event recall under a latency-honest paired comparison.  Testing the assumptions behind that result changes the conclusion.  Inherited temporal thresholds move \textsc{inside} IoU by 0.567 absolute, so cross-model comparisons must recalibrate; applying the same search to both models moves only the one that inherited foreign constants.  Combining both models under a temporal model fitted for the pair gives the best system inside the detector's alarm budget, although most of its gain is the counted temporal model itself.  It keeps most of that advantage across cities.  The residual ego-relevance gap resists prompting in both models and calls for independently supervised trajectory grounding.  We release the replay harness, prompts, metrics and baseline port so that both latency-honest comparison and per-model calibration are reproducible.
 
-{\small
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-}
 
 \end{document}
