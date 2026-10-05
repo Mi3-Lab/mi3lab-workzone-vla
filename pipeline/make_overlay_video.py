@@ -45,7 +45,11 @@ def find_video(video_dir, key):
         for name in (key + ".mp4", key + ".MP4", key + "_snippet.mp4"):
             if name in files:
                 return os.path.join(root, name)
-    return None
+    try:  # California recordings whose file name differs from the key (Fresno_01.mp4)
+        import eval_external_cosmos3 as E
+        return E.find_video(key)
+    except Exception:
+        return None
 
 
 def evidence(npz):
@@ -105,6 +109,10 @@ def main():
     ap.add_argument("--extra", action="append", default=[],
                     help="DIR:LABEL of another model's record; its raw GATE answer is shown "
                          "as an extra row (e.g. ~/eval_cache/qwendrive_ood_gate:Qwen-Drive)")
+    ap.add_argument("--extra-state", action="append", default=[],
+                    help="DIR:LABEL of another model's record (t, gate, sign, corr); its "
+                         "cascade state is shown, with the 2B-calibrated constants that "
+                         "worked best for Qwen-Drive (N=5, K 3/4/2, EGO off)")
     args = ap.parse_args()
 
     stream = os.path.expanduser(args.stream)
@@ -126,6 +134,18 @@ def main():
     if has_det:
         P = json.load(open(os.path.expanduser("~/eval_cache/joint_params_full.json")))
         pred_joint = per_second(s["t"], C.make_joint(P)(s), n_s)
+    extra_states = []
+    for spec in args.extra_state:
+        d, label = spec.rsplit(":", 1)
+        npz = os.path.join(os.path.expanduser(d), f"{args.key}.npz")
+        if os.path.exists(npz):
+            o = np.load(npz)["obs"]
+            ev = dict(t=o[:, 0].astype(int), gate=o[:, 1] > .5, sign=o[:, 2] > .5, corr=o[:, 3] > .5)
+            from cascade_state_machine import CascadeStateMachine
+            csm = CascadeStateMachine(N=5, k_enter=3, k_exit=4, k_fading=2, use_ego=False)
+            st = [csm.update_evidence(g or si, c or si, None, fast_entry=si or (g and c)).value
+                  for g, si, c in zip(ev["gate"], ev["sign"], ev["corr"])]
+            extra_states.append((label, per_second(ev["t"], st, n_s)))
     gt = None
     if args.labels:
         L = json.load(open(os.path.expanduser(args.labels)))
@@ -142,9 +162,9 @@ def main():
     ow = 960
     oh = int(H * ow / W)
     chip_h, ev_h, tl_h = 34, 74, 16
-    rows_top = 1 + (pred_joint is not None) + (gt is not None)
+    rows_top = 1 + (pred_joint is not None) + (gt is not None) + len(extra_states)
     top = rows_top * chip_h + ev_h + len(extras) * 26
-    bottom = tl_h * (1 + (pred_joint is not None) + (gt is not None))
+    bottom = tl_h * (1 + (pred_joint is not None) + (gt is not None) + len(extra_states))
     os.makedirs(os.path.expanduser(args.out), exist_ok=True)
     dst = os.path.join(os.path.expanduser(args.out), f"{args.key}.mp4")
     vw = cv2.VideoWriter(dst, cv2.VideoWriter_fourcc(*"mp4v"), fps, (ow, top + oh + bottom))
@@ -164,6 +184,8 @@ def main():
         chip(canvas, y, chip_h, "C3E cascade", pred_casc[t], ow); y += chip_h
         if pred_joint is not None:
             chip(canvas, y, chip_h, "Joint estimator", pred_joint[t], ow); y += chip_h
+        for label, seq in extra_states:
+            chip(canvas, y, chip_h, f"{label} cascade", seq[t], ow); y += chip_h
         if gt is not None:
             chip(canvas, y, chip_h, "GROUND TRUTH (draft)", gt[t], ow); y += chip_h
 
@@ -195,6 +217,8 @@ def main():
         timeline(canvas, y, tl_h, pred_casc, t, ow, "cascade"); y += tl_h
         if pred_joint is not None:
             timeline(canvas, y, tl_h, pred_joint, t, ow, "joint"); y += tl_h
+        for label, seq in extra_states:
+            timeline(canvas, y, tl_h, seq, t, ow, label); y += tl_h
         if gt is not None:
             timeline(canvas, y, tl_h, gt, t, ow, "truth"); y += tl_h
 
