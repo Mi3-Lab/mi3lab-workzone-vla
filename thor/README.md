@@ -70,7 +70,7 @@ git push -u origin main
 **No Thor:**
 
 ```bash
-git clone <URL-DO-SEU-REPOSITORIO> ~/jetson-deploy
+git clone -b jetson-deploy git@github.com:Mi3-Lab/mi3lab-workzone-vla.git ~/jetson-deploy
 cd ~/jetson-deploy
 ```
 
