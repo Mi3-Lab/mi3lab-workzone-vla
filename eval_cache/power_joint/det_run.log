@@ -1,0 +1,66 @@
+/home/mi3-jetson/workzone/venv/lib/python3.10/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Loading YOLO: /home/mi3-jetson/workzone/weights/yolo12s_hardneg_1280_960.engine
+Loading /home/mi3-jetson/workzone/weights/yolo12s_hardneg_1280_960.engine for TensorRT inference...
+[10/07/2026-10:57:00] [TRT] [I] Loaded engine size: 22 MiB
+[10/07/2026-10:57:00] [TRT] [W] Using an engine plan file across different models of devices is not recommended and is likely to affect performance or even cause errors.
+[10/07/2026-10:57:00] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +1, GPU +81, now: CPU 1, GPU 98 (MiB)
+Evaluating 10 video(s) with the YOLO-only pipeline...
+[1/10] boston_7b34288a75284083a1d9174adcf34be4_000010_08250_snippet.mp4  acc=69.0%  transitions=4  cycle=25ms  (35.8s)
+[2/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02220_snippet.mp4  acc=40.6%  transitions=14  cycle=25ms  (35.6s)
+[3/10] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_02160_snippet.mp4  acc=79.7%  transitions=4  cycle=25ms  (35.8s)
+[4/10] boston_4ac05b2379194b7a91e84368b8fd200d_000004_19860_snippet.mp4  acc=29.6%  transitions=14  cycle=25ms  (35.6s)
+[5/10] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000001_21180_snippet.mp4  acc=55.8%  transitions=5  cycle=25ms  (35.6s)
+[6/10] seattle_7922c49d982c424183c69b803d0208eb_000001_00750_snippet.mp4  acc=65.4%  transitions=10  cycle=25ms  (35.7s)
+[7/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_05250_snippet.mp4  acc=69.9%  transitions=4  cycle=25ms  (35.7s)
+[8/10] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_10800_snippet.mp4  acc=36.0%  transitions=6  cycle=25ms  (35.7s)
+[9/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02190_snippet.mp4  acc=40.1%  transitions=9  cycle=24ms  (35.8s)
+[10/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000002_13200_snippet.mp4  acc=69.7%  transitions=8  cycle=24ms  (36.0s)
+
+=== RESUMO (YOLO champion, YOLO-only) ===
+Acuracia por-frame agregada: 55.6%  (9000 frames em 10 videos)
+Ciclo medio de inferencia: 25ms
+
+--- Matriz de confusao (linha=verdade, coluna=previsto) ---
+GT\PRED          outside  approach    inside   exiting
+outside             2727       250       554        29
+approaching           90        20      1799        32
+inside               125       176      2165       108
+exiting              584        97       155        89
+
+--- Atraso de deteccao de transicao (frames a 30fps) ---
+approaching    media=322.7f (10.76s)  min=9  max=717  perdidas=3/9
+inside         media=312.3f (10.41s)  min=241  max=396  perdidas=7/10
+exiting        media=25.8f (0.86s)  min=0  max=56  perdidas=5/11
+outside        media=221.0f (7.37s)  min=85  max=357  perdidas=8/10
+
+=== METRICAS NO FORMATO DO PAPER (arXiv:2606.08860) ===
+
+Acuracia por-frame (todos os 4 estados): 55.6%
+Macro F1: 0.383
+
+--- IoU por estado (Sec V.A) ---
+outside        IoU=0.626
+approaching    IoU=0.008
+inside         IoU=0.426
+exiting        IoU=0.081
+
+--- Precisao/Recall a nivel de EVENTO (Eq. 5-7) ---
+outside        precision=  70.8%  recall=  94.1%  (n_pred_events=24, n_gt_events=17)
+approaching    precision=  22.2%  recall=  33.3%  (n_pred_events=18, n_gt_events=12)
+inside         precision=  66.7%  recall= 100.0%  (n_pred_events=18, n_gt_events=10)
+exiting        precision=  35.3%  recall=  54.5%  (n_pred_events=17, n_gt_events=11)
+
+--- Erro de timing de entrada Delta_t (Eq. 8, frames a 30fps) ---
+outside        MAE=49.4f (1.65s)  mediana=21.0f (0.70s)  n=10
+approaching    MAE=30.0f (1.00s)  mediana=10.0f (0.33s)  n=3
+inside         MAE=185.3f (6.18s)  mediana=136.5f (4.55s)  n=10
+exiting        MAE=25.8f (0.86s)  mediana=20.0f (0.67s)  n=6
+overall        MAE=89.4f (2.98s)  mediana=45.0f (1.50s)  n=29
+
+--- Matching de transicao por janela de tolerancia (Table I) ---
+Tolerancia (f)    Precision     Recall   Accuracy
+               0     0.0299     0.0500     0.0190
+               5     0.0448     0.0750     0.0288
+              15     0.1791     0.3000     0.1263
+              30     0.2687     0.4500     0.2022

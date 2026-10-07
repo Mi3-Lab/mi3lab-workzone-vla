@@ -1,0 +1,6 @@
+4800 configurations (exit < enter), 312 cal / 208 val videos
+hand-tuned : {'approach_th': 0.25, 'enter_th': 0.5, 'exit_th': 0.3, 'min_out': 20, 'max_app': 150, 'alpha': 0.1}
+calibrated : {'approach_th': 0.3, 'enter_th': 0.8, 'exit_th': 0.4, 'min_out': 160.0, 'max_app': 150.0, 'alpha': 0.02}
+              cal F1 | validation:    acc     F1  IoUap  IoUin  IoUex    inP    inR   FA/h
+hand-tuned     0.433 |              61.3%  0.435  0.049  0.526  0.115  74.8%  97.8%   40.5
+calibrated     0.513 |              61.4%  0.503  0.254  0.570  0.103  91.7%  87.6%   17.4

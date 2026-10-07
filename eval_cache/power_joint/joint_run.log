@@ -1,0 +1,53 @@
+/home/mi3-jetson/workzone/venv/lib/python3.10/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+filtering with parameters fitted on 312 calibration videos
+WARNING ⚠️ Unable to automatically guess model task, assuming 'task=detect'. Explicitly define task for your model, i.e. 'task=detect', 'segment', 'classify','pose' or 'obb'.
+Loading /home/mi3-jetson/workzone/weights/yolo12s_hardneg_1280_960.engine for TensorRT inference...
+[10/07/2026-10:45:53] [TRT] [I] Loaded engine size: 22 MiB
+[10/07/2026-10:45:53] [TRT] [W] Using an engine plan file across different models of devices is not recommended and is likely to affect performance or even cause errors.
+[10/07/2026-10:45:53] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +1, GPU +81, now: CPU 1, GPU 98 (MiB)
+[1/10] boston_7b34288a75284083a1d9174adcf34be4_000010_08250_snippet.mp4  det=1218 polls=32 (66.4s)
+[2/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02220_snippet.mp4  det=1205 polls=33 (65.9s)
+[3/10] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_02160_snippet.mp4  det=1247 polls=32 (66.4s)
+[4/10] boston_4ac05b2379194b7a91e84368b8fd200d_000004_19860_snippet.mp4  det=1269 polls=35 (66.2s)
+[5/10] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000001_21180_snippet.mp4  det=1267 polls=34 (66.3s)
+[6/10] seattle_7922c49d982c424183c69b803d0208eb_000001_00750_snippet.mp4  det=1282 polls=34 (66.4s)
+[7/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_05250_snippet.mp4  det=1287 polls=34 (66.6s)
+[8/10] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_10800_snippet.mp4  det=1284 polls=34 (66.4s)
+[9/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02190_snippet.mp4  det=1261 polls=35 (66.4s)
+[10/10] boston_2d8e13b1a8304d8395dcf6479ca61814_000002_13200_snippet.mp4  det=1237 polls=32 (65.9s)
+
+=== joint filter (filtering) ===
+  detector cycle p50 24 ms | 41.8 Hz
+  world-model polls 335
+
+=== METRICAS NO FORMATO DO PAPER (arXiv:2606.08860) ===
+
+Acuracia por-frame (todos os 4 estados): 65.9%
+Macro F1: 0.563
+
+--- IoU por estado (Sec V.A) ---
+outside        IoU=0.678
+approaching    IoU=0.247
+inside         IoU=0.562
+exiting        IoU=0.196
+
+--- Precisao/Recall a nivel de EVENTO (Eq. 5-7) ---
+outside        precision=  90.5%  recall= 100.0%  (n_pred_events=21, n_gt_events=17)
+approaching    precision=  64.3%  recall=  75.0%  (n_pred_events=14, n_gt_events=12)
+inside         precision=  73.3%  recall= 100.0%  (n_pred_events=15, n_gt_events=10)
+exiting        precision=  71.4%  recall=  81.8%  (n_pred_events=14, n_gt_events=11)
+
+--- Erro de timing de entrada Delta_t (Eq. 8, frames a 30fps) ---
+outside        MAE=41.8f (1.39s)  mediana=28.0f (0.93s)  n=10
+approaching    MAE=33.2f (1.11s)  mediana=36.0f (1.20s)  n=8
+inside         MAE=131.1f (4.37s)  mediana=153.0f (5.10s)  n=10
+exiting        MAE=41.3f (1.38s)  mediana=42.0f (1.40s)  n=9
+overall        MAE=64.0f (2.13s)  mediana=46.0f (1.53s)  n=37
+
+--- Matching de transicao por janela de tolerancia (Table I) ---
+Tolerancia (f)    Precision     Recall   Accuracy
+               0     0.0000     0.0000     0.0000
+               5     0.1111     0.1500     0.0682
+              15     0.2222     0.3000     0.1463
+              30     0.3519     0.4750     0.2533
