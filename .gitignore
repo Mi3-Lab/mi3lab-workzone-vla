@@ -40,3 +40,6 @@ __pycache__/
 /eval_cache/detclip_counted_val/
 /eval_cache/vlm_greedy_deb1/
 /eval_cache/detclip_smoke/
+/eval_cache/concurrent_smoke/
+/eval_cache/concurrent_preds.pkl
+/eval_cache/concurrent_tegra.marks

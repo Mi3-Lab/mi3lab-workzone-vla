@@ -1,0 +1,46 @@
+[10/08/2026-10:44:02] [TRT] [I] Loaded engine size: 22 MiB
+[10/08/2026-10:44:02] [TRT] [W] Using an engine plan file across different models of devices is not recommended and is likely to affect performance or even cause errors.
+[10/08/2026-10:44:02] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +1, GPU +81, now: CPU 1, GPU 98 (MiB)
+[1/20] boston_4ac05b2379194b7a91e84368b8fd200d_000004_19860_snippet.mp4 det cycles=564 p50=55ms p95=62ms world answers=21 p50=1517ms
+[2/20] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_10800_snippet.mp4 det cycles=595 p50=53ms p95=58ms world answers=21 p50=1458ms
+[3/20] boston_4ac05b2379194b7a91e84368b8fd200d_000004_14490_snippet.mp4 det cycles=597 p50=53ms p95=58ms world answers=21 p50=1464ms
+[4/20] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000000_10770_snippet.mp4 det cycles=630 p50=48ms p95=57ms world answers=21 p50=1489ms
+[5/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02280_snippet.mp4 det cycles=570 p50=55ms p95=60ms world answers=22 p50=1464ms
+[6/20] boston_7b34288a75284083a1d9174adcf34be4_000010_08340_snippet.mp4 det cycles=606 p50=50ms p95=58ms world answers=20 p50=1501ms
+[7/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_22320_snippet.mp4 det cycles=603 p50=52ms p95=58ms world answers=21 p50=1441ms
+[8/20] seattle_04cdadc91fc343c99670be0478aedff9_000000_21120_snippet.mp4 det cycles=583 p50=54ms p95=58ms world answers=21 p50=1443ms
+[9/20] boston_2bdb5a72602342a5991b402beb8b7ab4_000001_18390_snippet.mp4 det cycles=627 p50=48ms p95=57ms world answers=21 p50=1469ms
+[10/20] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21570_snippet.mp4 det cycles=581 p50=54ms p95=59ms world answers=22 p50=1430ms
+[11/20] seattle_04cdadc91fc343c99670be0478aedff9_000001_01500_snippet.mp4 det cycles=598 p50=53ms p95=58ms world answers=21 p50=1432ms
+[12/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_23640_snippet.mp4 det cycles=527 p50=54ms p95=58ms world answers=19 p50=1428ms
+[13/20] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_03930_snippet.mp4 det cycles=585 p50=54ms p95=58ms world answers=22 p50=1423ms
+[14/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_00240_snippet.mp4 det cycles=587 p50=54ms p95=58ms world answers=22 p50=1427ms
+[15/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000005_04200_snippet.mp4 det cycles=605 p50=52ms p95=58ms world answers=21 p50=1433ms
+[16/20] boston_344db257af864142a18c582228d2920a_000003_00810_snippet.mp4 det cycles=584 p50=54ms p95=58ms world answers=21 p50=1426ms
+[17/20] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000003_04290_snippet.mp4 det cycles=583 p50=54ms p95=58ms world answers=23 p50=1401ms
+[18/20] boston_6f6b6d546957437fbb153b7e78c4514a_000001_14880_snippet.mp4 det cycles=583 p50=54ms p95=58ms world answers=22 p50=1427ms
+[19/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11820_snippet.mp4 det cycles=579 p50=54ms p95=58ms world answers=22 p50=1419ms
+[20/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11550_snippet.mp4 det cycles=582 p50=54ms p95=58ms world answers=22 p50=1424ms
+[10/08/2026-10:54:15] [TRT] [I] Loaded engine size: 22 MiB
+[10/08/2026-10:54:15] [TRT] [W] Using an engine plan file across different models of devices is not recommended and is likely to affect performance or even cause errors.
+[10/08/2026-10:54:15] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +1, GPU +81, now: CPU 1, GPU 98 (MiB)
+[1/20] boston_4ac05b2379194b7a91e84368b8fd200d_000004_19860_snippet.mp4 det cycles=897 p50=24ms p95=25ms world answers=0
+[2/20] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_10800_snippet.mp4 det cycles=898 p50=24ms p95=24ms world answers=0
+[3/20] boston_4ac05b2379194b7a91e84368b8fd200d_000004_14490_snippet.mp4 det cycles=898 p50=24ms p95=24ms world answers=0
+[4/20] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000000_10770_snippet.mp4 det cycles=898 p50=23ms p95=24ms world answers=0
+[5/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02280_snippet.mp4 det cycles=1182 p50=24ms p95=33ms world answers=0
+[6/20] boston_7b34288a75284083a1d9174adcf34be4_000010_08340_snippet.mp4 det cycles=897 p50=24ms p95=33ms world answers=0
+[7/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_22320_snippet.mp4 det cycles=898 p50=24ms p95=25ms world answers=0
+[8/20] seattle_04cdadc91fc343c99670be0478aedff9_000000_21120_snippet.mp4 det cycles=897 p50=24ms p95=25ms world answers=0
+[9/20] boston_2bdb5a72602342a5991b402beb8b7ab4_000001_18390_snippet.mp4 det cycles=898 p50=23ms p95=25ms world answers=0
+[10/20] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21570_snippet.mp4 det cycles=898 p50=24ms p95=27ms world answers=0
+[11/20] seattle_04cdadc91fc343c99670be0478aedff9_000001_01500_snippet.mp4 det cycles=898 p50=24ms p95=26ms world answers=0
+[12/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_23640_snippet.mp4 det cycles=803 p50=24ms p95=25ms world answers=0
+[13/20] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_03930_snippet.mp4 det cycles=897 p50=24ms p95=27ms world answers=0
+[14/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_00240_snippet.mp4 det cycles=899 p50=24ms p95=27ms world answers=0
+[15/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000005_04200_snippet.mp4 det cycles=897 p50=24ms p95=26ms world answers=0
+[16/20] boston_344db257af864142a18c582228d2920a_000003_00810_snippet.mp4 det cycles=897 p50=24ms p95=26ms world answers=0
+[17/20] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000003_04290_snippet.mp4 det cycles=898 p50=24ms p95=26ms world answers=0
+[18/20] boston_6f6b6d546957437fbb153b7e78c4514a_000001_14880_snippet.mp4 det cycles=897 p50=24ms p95=29ms world answers=0
+[19/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11820_snippet.mp4 det cycles=898 p50=24ms p95=26ms world answers=0
+[20/20] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11550_snippet.mp4 det cycles=898 p50=24ms p95=25ms world answers=0

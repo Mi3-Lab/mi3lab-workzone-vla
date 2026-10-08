@@ -58,3 +58,19 @@ Extra check (not asked): the C3E threshold search optimum (N=3) was on the grid 
 | C3E EGO-off behaviour | Described (INSIDE after 13 cycles on the transition prior), checked against `cascade_state_machine.py` | — |
 
 Not done: fine-tuning hyper-parameters (A100 side); frame-level overlap check between fine-tuning images and benchmark videos; yes/no logits.
+
+## Response to the third round (2026-10-08)
+
+| point | change | evidence |
+|---|---|---|
+| "[?]" citations | Not in our build (0 undefined); the reviewed PDF was compiled with an old `references.bib`. Upload both files from `iv2027_overleaf.zip` | `./build.sh` |
+| MC2 GPU concurrency | Live concurrent run (camera thread + detector + C3E process sharing the GPU), 20 val videos, twice: detector 24 -> 54 ms, C3E 1.44 s; detector-only filter live 0.425 vs replay 0.423; joint live 0.44 vs replay 0.50, paired -0.07 [-0.16, +0.01] | `pipeline/concurrent_joint.py`, `eval_cache/concurrent*` |
+| bug found while doing MC2 | The "detector-only" counted filter kept the age of the world-model answer as an observation. Fixed (age masked): 0.524 at 22.5 FA/h (was 0.536 at 18.5); conclusions unchanged | `eval_cache/det_counted_noage`, `dd_det_counted_noage` |
+| R2 unequal budgets | Detector+CLIP recalibrated with the VLM budget (one grid, same 100 videos): 0.522 val, +0.052 over hand-tuned, level with C3E | `eval_cache/detclip_cal100_val` |
+| MC4 HMM sensitivity | Cell occupancy (68/108 cells seen, 20 cells = 97%), 3/6/10 detector buckets 0.538/0.546/0.545, counting rule stated | inline |
+| MC5 where the VLM helps | 10 onsets preceded by a transcribed sign: joint and C3E warn >=2 s on 10/10, recalibrated det+CLIP 8/10 | inline |
+| contributions too many | Reorganised into three (evaluation, findings, systems) | — |
+| no recalibrated 2B in Table I | Added to caption (0.459) | — |
+| double-blind | Award note removed from the prior-system bib entry | `references.bib` |
+
+Not done (need GPU-hours or data not on this machine): counted filter on 2B evidence (~9 h), VLM search on all 312 videos (~3 h dump), fine-tuning/benchmark overlap check, time-based cascade windows, full F1-vs-FA curve figure (space).
