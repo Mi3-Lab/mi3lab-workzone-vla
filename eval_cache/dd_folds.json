@@ -1,0 +1,104 @@
+{
+ "folds": [
+  {
+   "fold": 0,
+   "drives": [
+    "boston_2d8e13b1a8304d8395dcf6479ca61814",
+    "seattle_7922c49d982c424183c69b803d0208eb"
+   ],
+   "n_test": 103,
+   "sm_cfg": {
+    "approach_th": 0.35,
+    "enter_th": 0.9,
+    "exit_th": 0.5,
+    "min_out": 160.0,
+    "max_app": 75.0,
+    "alpha": 0.03
+   },
+   "sm_train_f1": 0.5411345270723461
+  },
+  {
+   "fold": 1,
+   "drives": [
+    "boston_4ac05b2379194b7a91e84368b8fd200d",
+    "seattle_11a6d1c0ae1944ec9bfe1ef71377be7a",
+    "boston_7fc8c152a8714a31ad7fbf41db2adead",
+    "boston_6f6b6d546957437fbb153b7e78c4514a",
+    "boston_702b9cb0054549a08a50aadd7812a3d6",
+    "seattle_058413b03fa54cf9b28ddc89dda3bca5"
+   ],
+   "n_test": 104,
+   "sm_cfg": {
+    "approach_th": 0.4,
+    "enter_th": 0.95,
+    "exit_th": 0.6,
+    "min_out": 160.0,
+    "max_app": 75.0,
+    "alpha": 0.03
+   },
+   "sm_train_f1": 0.5400444620119694
+  },
+  {
+   "fold": 2,
+   "drives": [
+    "boston_4d91f8efe4d44a4694ecb0e440c74dc4",
+    "seattle_04cdadc91fc343c99670be0478aedff9",
+    "seattle_3bbd7b04f14c40a68c82daeb81d5e492",
+    "boston_21cce96047dc491bb61f281b08c02569",
+    "seattle_0cd5195bd3784d9eada8e8bbcccfef1f",
+    "boston_3d896c9c53dd4852b3f4d9bff20602df"
+   ],
+   "n_test": 105,
+   "sm_cfg": {
+    "approach_th": 0.35,
+    "enter_th": 0.9,
+    "exit_th": 0.4,
+    "min_out": 80.0,
+    "max_app": 75.0,
+    "alpha": 0.03
+   },
+   "sm_train_f1": 0.5201393373638715
+  },
+  {
+   "fold": 3,
+   "drives": [
+    "boston_2dacdcbcc3bf42c28eeb08592fc2c325",
+    "boston_10cb4a5e9c0740c8a6ff092bae0d4873",
+    "seattle_83d7f710e54b48f5a7730576be90ddfc",
+    "boston_3a1d0e6ad25b4f5c8312639dc01c88da",
+    "boston_41d35d7ce585406aad2c2b1c8043e340",
+    "seattle_51db45759c024d419f21fc0d33840c5e"
+   ],
+   "n_test": 105,
+   "sm_cfg": {
+    "approach_th": 0.35,
+    "enter_th": 0.9,
+    "exit_th": 0.6,
+    "min_out": 160.0,
+    "max_app": 75.0,
+    "alpha": 0.03
+   },
+   "sm_train_f1": 0.5334406816284399
+  },
+  {
+   "fold": 4,
+   "drives": [
+    "boston_344db257af864142a18c582228d2920a",
+    "boston_7b34288a75284083a1d9174adcf34be4",
+    "boston_2bdb5a72602342a5991b402beb8b7ab4",
+    "boston_042e1caf93114d3286c11ba14ddaa759",
+    "seattle_04eaf53df027407cb8f4c3a7aa806442"
+   ],
+   "n_test": 103,
+   "sm_cfg": {
+    "approach_th": 0.35,
+    "enter_th": 0.9,
+    "exit_th": 0.5,
+    "min_out": 160.0,
+    "max_app": 75.0,
+    "alpha": 0.03
+   },
+   "sm_train_f1": 0.5355218681519651
+  }
+ ]
+}

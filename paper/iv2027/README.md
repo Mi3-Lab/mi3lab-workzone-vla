@@ -5,7 +5,7 @@ Built from the authors' text in `../journal/main.tex`, cut to the ROADWork resul
 `../archive/iv2027_california/`.
 
 - Deadline: 15 Nov 2026, 23:59 AWST (PaperCept, its.papercept.net). Double-blind.
-- 6 pages incl. references (current: 6). IEEEtran `conference`. Abstract: 192 words (form limit 200).
+- 7 pages incl. references (one paid page; decided 2026-10-08). IEEEtran `conference`. Abstract: 185 words (form limit 200).
 - Build: `./build.sh` (pdflatex + bibtex + Times, as IEEE builds it; TeX Live user-local in `~/texlive`). Do not use tectonic for page counts: its Times clone paginates differently. One paragraph per source line.
 
 ## New relative to the journal text
@@ -35,3 +35,26 @@ debounce operating-point paragraph; detector+text fast entry; appendix.
 | minor | Abstract antecedent; FA/h and timing defined; unreported transition matching removed; greedy 2B is the table column; 82x → absolute first; distance per cycle at highway speed | — |
 
 Extra check (not asked): the C3E threshold search optimum (N=3) was on the grid edge; N=1,2,4 added, optimum unchanged and now interior.
+
+## Response to the two reviews of 2026-10-07 (Weak Reject x2)
+
+| point | change | evidence |
+|---|---|---|
+| Fig. 1 "??", 39 approaches, 5%/95% | Teaser removed (cited a non-existent table and the withdrawn California result) | — |
+| W1/C4 baseline without CLIP | Full detector+CLIP pipeline recorded on all 520 videos and recalibrated by replay (same grids): 0.470 -> 0.551, best system. Replay of the hand config reproduces the live run (0.473 vs 0.470) | `pipeline/dump_detclip.py`, `pipeline/detclip_recal.py`, `eval_cache/detclip_recal.log` |
+| W2/C2 drives in both splits | 5-fold drive-disjoint replay of every replay-fitted system (new Table III, Sec. VII-A); all conclusions hold | `pipeline/drive_disjoint.py`, `eval_cache/dd_*` |
+| C2 video-level bootstrap | All intervals now drive-level cluster bootstrap | `pipeline/review3_analysis.py --cluster` |
+| C5 different operating points | Shared causal persistence filter, F1 at <=20 FA/h (Tables I, III) | `review3_analysis.py --equalfa` |
+| W5/C8 anticipation | "Lead >=2 s" row; matched-nuisance anticipation in VII-A | `review3_analysis.py --lead` |
+| W3/C6 HMM naming, VLM value | Filter called an HMM with ML counts, cited [Rabiner, Thrun]; channel ablation and efficiency stated | — |
+| C3 debounce chosen on validation, mixed 2B column | 2B column now greedy without post-filter, all cells verified; debounce only as a sentence | `eval_cache/vlm_greedy` |
+| V-C ">1.5 points" contradiction | Ablation Table II with all 7 toggles | ablation caches `eval_cache/vlm_*` |
+| interior grid, unequal budgets | Grid extension stated; budgets stated (favour the baselines) | — |
+| power/latency inconsistencies | Two sessions reported as increments over idle; 44 ms (recorded) vs 24 ms (later run) explained | `eval_cache/power_joint/` |
+| AUC on binary output | Renamed balanced accuracy | — |
+| Cosmos-Reason2 citation, Viola-Jones | Model card cited; cascades paragraph rewritten with FrugalGPT | `references.bib` |
+| world model = reasoner only, Orin not automotive | Stated in III-A | — |
+| title too universal | "The Role of Model-Specific Temporal Calibration" | — |
+| C3E EGO-off behaviour | Described (INSIDE after 13 cycles on the transition prior), checked against `cascade_state_machine.py` | — |
+
+Not done: fine-tuning hyper-parameters (A100 side); frame-level overlap check between fine-tuning images and benchmark videos; yes/no logits.

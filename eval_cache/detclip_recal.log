@@ -1,0 +1,13 @@
+312 cal / 208 val videos
+  hand (val)             n=208 acc 62.8 F1 0.473 ap 0.129 in 0.548 ex 0.113 inP 80.4 inR 95.1 FA 28.7
+  calibrated config {'approach_th': 0.3, 'enter_th': 0.7, 'exit_th': 0.3, 'min_out': 80.0, 'max_app': 150.0, 'alpha': 0.1} cal F1 0.538  (hand cal F1 0.486)
+  recalibrated (val)     n=208 acc 64.8 F1 0.551 ap 0.296 in 0.552 ex 0.153 inP 92.5 inR 77.8 FA 20.2
+  counted (val)          n=208 acc 66.8 F1 0.465 ap 0.193 in 0.557 ex 0.025 inP 82.4 inR 78.9 FA 24.7
+  fold 0: 103 test, config {'approach_th': 0.3, 'enter_th': 0.7, 'exit_th': 0.3, 'min_out': 80.0, 'max_app': 150.0, 'alpha': 0.1} (train F1 0.558)
+  fold 1: 104 test, config {'approach_th': 0.3, 'enter_th': 0.7, 'exit_th': 0.3, 'min_out': 80.0, 'max_app': 150.0, 'alpha': 0.1} (train F1 0.552)
+  fold 2: 105 test, config {'approach_th': 0.35, 'enter_th': 0.7, 'exit_th': 0.25, 'min_out': 80.0, 'max_app': 150.0, 'alpha': 0.1} (train F1 0.534)
+  fold 3: 105 test, config {'approach_th': 0.35, 'enter_th': 0.7, 'exit_th': 0.25, 'min_out': 80.0, 'max_app': 150.0, 'alpha': 0.1} (train F1 0.547)
+  fold 4: 103 test, config {'approach_th': 0.35, 'enter_th': 0.7, 'exit_th': 0.25, 'min_out': 80.0, 'max_app': 150.0, 'alpha': 0.1} (train F1 0.537)
+  drive-disjoint hand    n=520 acc 64.5 F1 0.481 ap 0.129 in 0.570 ex 0.115 inP 79.8 inR 93.3 FA 26.1
+  drive-disjoint cal     n=520 acc 64.5 F1 0.535 ap 0.259 in 0.560 ex 0.139 inP 90.7 inR 76.4 FA 18.7
+  drive-disjoint counted n=520 acc 66.9 F1 0.471 ap 0.179 in 0.562 ex 0.045 inP 79.8 inR 78.6 FA 19.4

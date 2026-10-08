@@ -34,3 +34,9 @@ __pycache__/
 
 # Local tool state
 /.claude/
+
+# Review-3 caches not used by any number in the IV paper
+/eval_cache/dd_detclip_counted/
+/eval_cache/detclip_counted_val/
+/eval_cache/vlm_greedy_deb1/
+/eval_cache/detclip_smoke/

@@ -101,9 +101,32 @@ P.~Viola and M.~Jones, ``Rapid object detection using a boosted cascade of
   simple features,'' in \emph{Proceedings of the IEEE Conference on Computer
   Vision and Pattern Recognition (CVPR)}, 2001.
 
+\bibitem{chen2023frugalgpt}
+L.~Chen, M.~Zaharia, and J.~Zou, ``{FrugalGPT}: How to use large language
+  models while reducing cost and improving performance,'' \emph{arXiv preprint
+  arXiv:2305.05176}, 2023.
+
+\bibitem{rabiner1989hmm}
+L.~R. Rabiner, ``A tutorial on hidden {Markov} models and selected applications
+  in speech recognition,'' \emph{Proceedings of the IEEE}, vol.~77, no.~2, pp.
+  257--286, 1989.
+
+\bibitem{thrun2005probabilistic}
+S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic Robotics}.\hskip 1em plus
+  0.5em minus 0.4em\relax MIT Press, 2005.
+
+\bibitem{melis2018state}
+G.~Melis, C.~Dyer, and P.~Blunsom, ``On the state of the art of evaluation in
+  neural language models,'' in \emph{International Conference on Learning
+  Representations (ICLR)}, 2018.
+
 \bibitem{qwen3vl}
 {Qwen Team}, ``{Qwen3-VL}: A versatile vision-language model series,''
   \url{https://github.com/QwenLM/Qwen3-VL}, 2025.
+
+\bibitem{nvidia2025cosmosreason2}
+{NVIDIA}, ``{Cosmos-Reason2-2B} model card,''
+  \url{https://huggingface.co/nvidia/Cosmos-Reason2-2B}, 2025.
 
 \bibitem{farha2019mstcn}
 Y.~A. Farha and J.~Gall, ``{MS-TCN}: Multi-stage temporal convolutional network

@@ -1,0 +1,11 @@
+520 videos, 25 drives
+fold 0: 2 drives, 103 test / 417 train videos
+   det SM config {'approach_th': 0.35, 'enter_th': 0.9, 'exit_th': 0.5, 'min_out': 160.0, 'max_app': 75.0, 'alpha': 0.03} (train F1 0.541)
+fold 1: 6 drives, 104 test / 416 train videos
+   det SM config {'approach_th': 0.4, 'enter_th': 0.95, 'exit_th': 0.6, 'min_out': 160.0, 'max_app': 75.0, 'alpha': 0.03} (train F1 0.540)
+fold 2: 6 drives, 105 test / 415 train videos
+   det SM config {'approach_th': 0.35, 'enter_th': 0.9, 'exit_th': 0.4, 'min_out': 80.0, 'max_app': 75.0, 'alpha': 0.03} (train F1 0.520)
+fold 3: 6 drives, 105 test / 415 train videos
+   det SM config {'approach_th': 0.35, 'enter_th': 0.9, 'exit_th': 0.6, 'min_out': 160.0, 'max_app': 75.0, 'alpha': 0.03} (train F1 0.533)
+fold 4: 5 drives, 103 test / 417 train videos
+   det SM config {'approach_th': 0.35, 'enter_th': 0.9, 'exit_th': 0.5, 'min_out': 160.0, 'max_app': 75.0, 'alpha': 0.03} (train F1 0.536)
