@@ -102,6 +102,15 @@ bash thor/00_preflight.sh
 
 ### Passo 1 — copiar modelos e dados do Orin
 
+> **Por que copiar do Orin e não baixar da internet?** Os modelos que o pipeline usa foram gerados por nós e **não existem para download**:
+> - **C3E em INT4:** o checkpoint original é público (`nvidia/Cosmos3-Edge` no Hugging Face, BF16, 8,6 GB), mas o pipeline usa a versão que nós quantizamos para INT4 e exportamos para ONNX. Refazer isso exige o fluxo de quantização do Edge-LLM num PC x86 com GPU, e uma requantização nova não reproduz exatamente os números do paper.
+> - **2B fine-tunado** e **YOLO:** treinados por nós.
+>
+> Por isso há duas formas de levá-los, ambas a partir do Orin.
+
+**Opção A — pela rede** (o Thor alcança o Orin por SSH):
+
+
 ```bash
 bash thor/01_sync_from_orin.sh models smoke
 ```
@@ -116,6 +125,22 @@ bash thor/01_sync_from_orin.sh models smoke
 | `calibration` | 312 vídeos de calibração | ~6,3 GB | só para recalibrar no Thor |
 
 Pode copiar o resto depois, quando for rodar os experimentos.
+
+**Opção B — por disco externo** (sem rede entre as placas). No **Orin**, com o disco montado:
+
+```bash
+cd ~/jetson-deploy
+bash thor/pack_for_thor.sh /media/<disco>/thor_pack              # modelos + teste de fumaça (~6 GB)
+bash thor/pack_for_thor.sh /media/<disco>/thor_pack validation   # + 208 vídeos (~4,2 GB a mais)
+```
+
+No **Thor**, depois de clonar o repositório (seção 3):
+
+```bash
+bash thor/unpack_on_thor.sh /media/<disco>/thor_pack
+```
+
+O `unpack` confere a integridade de cada arquivo (sha256) antes de instalar e coloca tudo nos caminhos que o pipeline espera. Ele substitui o passo 1; siga do passo 2 em diante.
 
 ### Passo 2 — compilar o TensorRT Edge-LLM
 
@@ -292,7 +317,8 @@ git push
 |---|---|
 | `config.sh` | configurações compartilhadas (edite só as 3 primeiras) |
 | `00_preflight.sh` | diagnóstico, não muda nada |
-| `01_sync_from_orin.sh` | copia modelos e dados do Orin por pacote |
+| `01_sync_from_orin.sh` | copia modelos e dados do Orin pela rede |
+| `pack_for_thor.sh` / `unpack_on_thor.sh` | o mesmo, por disco externo (sem rede) |
 | `02_build_edgellm.sh` | Edge-LLM v0.9.0 + patch + build |
 | `03_python_env.sh` | `~/workzone/venv` |
 | `04_build_engines.sh` | engines 2B, C3E e YOLO nesta placa |
