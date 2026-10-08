@@ -6,7 +6,7 @@ Built from the authors' text in `../journal/main.tex`, cut to the ROADWork resul
 
 - Deadline: 15 Nov 2026, 23:59 AWST (PaperCept, its.papercept.net). Double-blind.
 - 6 pages incl. references (current: 6). IEEEtran `conference`. Abstract: 192 words (form limit 200).
-- Build: `tectonic main.tex`. One paragraph per source line.
+- Build: `./build.sh` (pdflatex + bibtex + Times, as IEEE builds it; TeX Live user-local in `~/texlive`). Do not use tectonic for page counts: its Times clone paginates differently. One paragraph per source line.
 
 ## New relative to the journal text
 - Table "Across cities" (leave-one-city-out of the joint estimator): `pipeline/roadwork_analysis.py`
