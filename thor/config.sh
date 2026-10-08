@@ -42,7 +42,8 @@ detect_platform() {
         if grep -qi orin <<<"$model"; then echo jetson-orin; return; fi
     fi
     # A Thor board with no JetPack release file is a DRIVE AGX Thor on DriveOS.
-    if grep -qi thor <<<"$model"; then echo drive-thor; return; fi
+    # Its device-tree model is the board part number (p3960-xxxx), not "Thor".
+    if grep -qiE "thor|p3960" <<<"$model"; then echo drive-thor; return; fi
     echo unknown
 }
 
