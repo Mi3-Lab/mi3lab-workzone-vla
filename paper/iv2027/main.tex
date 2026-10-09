@@ -39,7 +39,14 @@ The strongest onboard approach combines a YOLO-style work-zone detector, CLIP ve
 
 Meanwhile, fine-tuned VLMs describe work-zone scenes well offline~\cite{ghosh2025roadwork}, and weight-only quantization plus embedded runtimes bring small VLMs to automotive hardware~\cite{lin2024awq,trtedgellm}.  Whether they should replace detector pipelines is usually judged by comparing systems as published, each with the smoothing and hysteresis constants its authors tuned.  We build the strongest embedded VLM estimator we can, run it beside the detector pipeline on the same device, videos and protocol, and ask what such a comparison actually measures.
 
-The answer is: mostly the temporal constants.  Against the hand-tuned detector pipeline, our VLM-based systems look competitive or better.  But constants inherited from one checkpoint leave a 4B reasoner at \textsc{inside} IoU 0.007, and its own calibration lifts it to 0.574; the same calibration applied to the detector pipeline raises its macro-F1 from 0.470 to 0.551, after which no VLM-based system beats it, and a counted filter on the detector score alone matches it without a search.  These conclusions survive drive-disjoint folds, matched false-alarm rates and matched search budgets, and our replay is checked against a live concurrent run.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_ranking.pdf}
+\caption{The hidden variable.  Validation macro-F1 (208 videos) under three comparison regimes.  Left: every VLM runs the 2B's temporal constants and the detector pipeline its published ones; the zero-shot 4B reasoner (C3E) looks useless.  Middle: the VLM systems are calibrated and the baseline is not, as in a typical comparison; C3E and the joint estimator beat the detector pipeline.  Right: the baseline is calibrated by the same procedure and becomes the best system.}
+\label{fig:ranking}
+\end{figure}
+
+The answer is: mostly the temporal constants (\cref{fig:ranking}).  Against the hand-tuned detector pipeline, our VLM-based systems look competitive or better.  But constants inherited from one checkpoint leave a 4B reasoner at \textsc{inside} IoU 0.007, and its own calibration lifts it to 0.574; the same calibration applied to the detector pipeline raises its macro-F1 from 0.470 to 0.551, after which no VLM-based system beats it, and a counted filter on the detector score alone matches it without a search.  These conclusions survive drive-disjoint folds, matched false-alarm rates and matched search budgets, and our replay is checked against a live concurrent run.  A team choosing a perception stack from the usual comparison would adopt a costlier VLM stack for no measurable gain.
 
 At $\sim$10\,ms per output token, a description costs $\sim$500\,ms and a two-token answer 75\,ms, so our cascade lets evidence quality gate smoothing (\cref{sec:prompts}): a transcribed sign can bypass a vote while a binary answer cannot.
 
@@ -115,7 +122,7 @@ At run time the detector runs at its native rate and is never blocked.  The worl
 
 \paragraph{Metrics.} We adopt the baseline's suite~\cite{priorsystem2026}: frame accuracy and macro-F1; per-state IoU; event precision/recall, where an interval is correct if it overlaps one of the same state; matched-event entry offset (Entry MAE: mean absolute offset over all states; \textsc{in} entry med.: median absolute offset of \textsc{inside} entries); and false alarms per hour, the rate of predicted active intervals overlapping no annotated active interval.  Videos beginning in a state contribute no entry event.  We keep the baseline's overlap rule for comparability and add a lead metric for timing (\cref{sec:vsdetector}).  Event metrics capture whether a warning occurs, IoU and timing how well it is placed.  Confidence intervals are paired 95\% cluster-bootstrap intervals (10{,}000 replications) that resample drives, so that correlated videos of one drive are drawn together; video-level intervals are reported where they differ in sign.
 
-\section{Results: One Fine-Tuned Model vs.\ the Detector}
+\section{The VLM Cascade Against the Published Baseline}
 \label{sec:results}
 
 \subsection{Comparison with the deployed detector system}
