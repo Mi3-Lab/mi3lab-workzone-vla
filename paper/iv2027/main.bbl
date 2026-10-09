@@ -83,15 +83,15 @@ A.-M. Marcu \emph{et~al.}, ``{LingoQA}: Visual question answering for
   Computer Vision (ECCV)}, 2024.
 
 \bibitem{nvidia2025cosmosreason}
-{NVIDIA}, ``Cosmos-reason1: From physical common sense to embodied reasoning,''
-  \emph{arXiv preprint arXiv:2503.15558}, 2025.
+{NVIDIA}, ``{Cosmos-Reason1}: From physical common sense to embodied
+  reasoning,'' \emph{arXiv preprint arXiv:2503.15558}, 2025.
 
 \bibitem{nvidia2026cosmos3}
-------, ``Cosmos 3: Omnimodal world models for physical ai,'' \emph{arXiv
+------, ``Cosmos 3: Omnimodal world models for physical {AI},'' \emph{arXiv
   preprint arXiv:2606.02800}, 2026.
 
 \bibitem{alpamayo2026}
-------, ``Alpamayo-r1: Bridging reasoning and action prediction for
+------, ``{Alpamayo-R1}: Bridging reasoning and action prediction for
   generalizable autonomous driving in the long tail,'' \emph{arXiv preprint
   arXiv:2511.00088}, 2025.
 
