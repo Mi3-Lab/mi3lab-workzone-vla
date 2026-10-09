@@ -21,13 +21,13 @@
 \begin{document}
 \bstctlcite{IEEEexample:BSTcontrol}
 
-\title{Calibrate the Baseline Too: Fair Evaluation of Embedded Vision--Language Models for Work-Zone State Estimation}
+\title{The Hidden Variable in Embedded VLM Perception: Temporal Calibration for Real-Time Work-Zone State Estimation}
 
 \author{\IEEEauthorblockN{Anonymous Authors}\IEEEauthorblockA{Paper under double-blind review}}
 \maketitle
 
 \begin{abstract}
-Vision--language models (VLMs) are increasingly proposed as replacements for detector pipelines in driving perception, and such comparisons usually keep the temporal smoothing constants each system was published with.  We show on embedded hardware that this choice can decide the outcome.  We deploy an INT4 2B VLM fine-tuned on $\sim$46K work-zone question--answer pairs and $\sim$10K hard negatives and a zero-shot 4B physical-AI reasoner on a Jetson AGX Orin, operate both through an evidence-first prompt cascade, and compare them with a YOLO+CLIP pipeline under a latency-honest protocol in which each system's measured latency determines frame dropping.  On 484K annotated frames of ROADWork driving, constants inherited from the 2B leave the 4B model at macro-F1 0.290; recalibrated, it reaches 0.515.  The detector baseline gains too: recalibration lifts it from 0.470 to 0.551, the best result, and no VLM-based system then beats it.  A counted hidden-Markov filter on the detector score alone matches the recalibrated pipeline without a threshold search.  These conclusions hold on drive-disjoint folds, at matched false-alarm rates and with matched search budgets, and our replay is checked against live concurrent execution.
+Vision--language models (VLMs) are increasingly proposed as replacements for detector pipelines in driving perception, and such comparisons usually keep the temporal smoothing constants each system was published with.  We show on embedded hardware that this hidden variable can decide the outcome.  We deploy an INT4 2B VLM fine-tuned on $\sim$46K work-zone question--answer pairs and $\sim$10K hard negatives and a zero-shot 4B physical-AI reasoner on a Jetson AGX Orin, operate both through an evidence-first prompt cascade, and compare them with a YOLO+CLIP pipeline under a latency-honest protocol in which each system's measured latency determines frame dropping.  On 484K annotated frames of ROADWork driving, constants inherited from the 2B leave the 4B model at macro-F1 0.290; recalibrated, it reaches 0.515.  The detector baseline gains too: recalibration lifts it from 0.470 to 0.551, the best result, and no VLM-based system then beats it.  A counted hidden-Markov filter on the detector score alone matches the recalibrated pipeline without a threshold search.  These conclusions hold on drive-disjoint folds, at matched false-alarm rates and with matched search budgets, and our replay is checked against live concurrent execution.
 \end{abstract}
 
 \section{Introduction}
