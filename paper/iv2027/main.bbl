@@ -23,18 +23,16 @@
 
 \bibitem{nhtsa2023}
 {National Highway Traffic Safety Administration}, ``2023 fatality analysis
-  reporting system ({FARS}) annual report file,'' U.S. Department of
-  Transportation, accessed via workzonesafety.org, 2023.
+  reporting system ({FARS}) annual report file,'' U.S. DOT, 2023.
 
 \bibitem{radford2021clip}
 A.~Radford \emph{et~al.}, ``Learning transferable visual models from natural
-  language supervision,'' in \emph{Proceedings of the International Conference
-  on Machine Learning (ICML)}, 2021, pp. 8748--8763.
+  language supervision,'' in \emph{Proc. ICML}, 2021, pp. 8748--8763.
 
 \bibitem{priorsystem2026}
 A.~Martinez-Sanchez \emph{et~al.}, ``{ZONEWISE}: Zone worksite inference with
-  speed estimation,'' in \emph{Proceedings of the 28th International Technical
-  Conference on the Enhanced Safety of Vehicles (ESV)}, Toronto, Canada, 2026.
+  speed estimation,'' in \emph{Proc. Int. Tech. Conf. Enhanced Safety of
+  Vehicles (ESV)}, 2026.
 
 \bibitem{priorsystemarxiv2026}
 ------, ``Vision-language work zone intelligence for safety-critical speed
@@ -43,14 +41,12 @@ A.~Martinez-Sanchez \emph{et~al.}, ``{ZONEWISE}: Zone worksite inference with
 
 \bibitem{ghosh2025roadwork}
 A.~Ghosh \emph{et~al.}, ``{ROADWork}: A dataset and benchmark for learning to
-  recognize, observe, analyze and drive through work zones,'' in
-  \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision
-  (ICCV)}, 2025, pp. 6132--6142.
+  recognize, observe, analyze and drive through work zones,'' in \emph{Proc.
+  ICCV}, 2025, pp. 6132--6142.
 
 \bibitem{lin2024awq}
 J.~Lin \emph{et~al.}, ``{AWQ}: Activation-aware weight quantization for
-  on-device {LLM} compression and acceleration,'' in \emph{Proceedings of
-  Machine Learning and Systems (MLSys)}, 2024.
+  on-device {LLM} compression and acceleration,'' in \emph{Proc. MLSys}, 2024.
 
 \bibitem{trtedgellm}
 {NVIDIA}, ``{TensorRT Edge-LLM}: High-performance {LLM} and {VLM} inference
@@ -59,14 +55,12 @@ J.~Lin \emph{et~al.}, ``{AWQ}: Activation-aware weight quantization for
 
 \bibitem{shi2021workzone}
 W.~Shi and R.~R. Rajkumar, ``Work zone detection for autonomous vehicles,'' in
-  \emph{Proceedings of the IEEE International Intelligent Transportation
-  Systems Conference (ITSC)}, 2021, pp. 1585--1591.
+  \emph{Proc. IEEE ITSC}, 2021, pp. 1585--1591.
 
 \bibitem{abodo2018shrp}
 F.~Abodo \emph{et~al.}, ``Detecting work zones in {SHRP 2 NDS} videos using
-  deep learning-based computer vision,'' in \emph{Proceedings of the IEEE
-  International Conference on Machine Learning and Applications (ICMLA)}, 2018,
-  pp. 679--686.
+  deep learning-based computer vision,'' in \emph{Proc. IEEE ICMLA}, 2018, pp.
+  679--686.
 
 \bibitem{hwang2024emma}
 J.-J. Hwang \emph{et~al.}, ``{EMMA}: End-to-end multimodal model for autonomous
@@ -74,13 +68,11 @@ J.-J. Hwang \emph{et~al.}, ``{EMMA}: End-to-end multimodal model for autonomous
 
 \bibitem{tian2024drivevlm}
 X.~Tian \emph{et~al.}, ``{DriveVLM}: The convergence of autonomous driving and
-  large vision-language models,'' in \emph{Conference on Robot Learning
-  (CoRL)}, 2024.
+  large vision-language models,'' in \emph{Proc. CoRL}, 2024.
 
 \bibitem{marcu2024lingoqa}
 A.-M. Marcu \emph{et~al.}, ``{LingoQA}: Visual question answering for
-  autonomous driving,'' in \emph{Proceedings of the European Conference on
-  Computer Vision (ECCV)}, 2024.
+  autonomous driving,'' in \emph{Proc. ECCV}, 2024.
 
 \bibitem{nvidia2025cosmosreason}
 {NVIDIA}, ``{Cosmos-Reason1}: From physical common sense to embodied
@@ -97,8 +89,7 @@ A.-M. Marcu \emph{et~al.}, ``{LingoQA}: Visual question answering for
 
 \bibitem{viola2001rapid}
 P.~Viola and M.~Jones, ``Rapid object detection using a boosted cascade of
-  simple features,'' in \emph{Proceedings of the IEEE Conference on Computer
-  Vision and Pattern Recognition (CVPR)}, 2001.
+  simple features,'' in \emph{Proc. CVPR}, 2001.
 
 \bibitem{chen2023frugalgpt}
 L.~Chen, M.~Zaharia, and J.~Zou, ``{FrugalGPT}: How to use large language
@@ -116,8 +107,7 @@ S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic Robotics}.\hskip 1em plus
 
 \bibitem{melis2018state}
 G.~Melis, C.~Dyer, and P.~Blunsom, ``On the state of the art of evaluation in
-  neural language models,'' in \emph{International Conference on Learning
-  Representations (ICLR)}, 2018.
+  neural language models,'' in \emph{Proc. ICLR}, 2018.
 
 \bibitem{qwen3vl}
 {Qwen Team}, ``{Qwen3-VL}: A versatile vision-language model series,''
@@ -130,11 +120,10 @@ G.~Melis, C.~Dyer, and P.~Blunsom, ``On the state of the art of evaluation in
 \bibitem{mutcd2009}
 {Federal Highway Administration}, ``Manual on uniform traffic control devices
   for streets and highways ({MUTCD}), part 6: Temporary traffic control,'' U.S.
-  Department of Transportation, 2009.
+  DOT, 2009.
 
 \bibitem{farha2019mstcn}
 Y.~A. Farha and J.~Gall, ``{MS-TCN}: Multi-stage temporal convolutional network
-  for action segmentation,'' in \emph{Proceedings of the IEEE/CVF Conference on
-  Computer Vision and Pattern Recognition (CVPR)}, 2019, pp. 3575--3584.
+  for action segmentation,'' in \emph{Proc. CVPR}, 2019, pp. 3575--3584.
 
 \end{thebibliography}

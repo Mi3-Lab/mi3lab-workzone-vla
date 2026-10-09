@@ -60,7 +60,7 @@ def main():
         thumbs.append((f, st, cv2.cvtColor(cv2.resize(im, (320, 180)), cv2.COLOR_BGR2RGB)))
     cap.release()
 
-    fig = plt.figure(figsize=(3.45, 2.55))
+    fig = plt.figure(figsize=(3.45, 2.05))
     gs = fig.add_gridspec(2, len(thumbs), height_ratios=[0.9, 2.2], hspace=0.12, wspace=0.04,
                           left=0.32, right=0.99, top=0.99, bottom=0.17)
     for k, (f, st, im) in enumerate(thumbs):

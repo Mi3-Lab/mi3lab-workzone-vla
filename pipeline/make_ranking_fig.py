@@ -27,7 +27,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
-    fig, ax = plt.subplots(figsize=(3.45, 2.05))
+    fig, ax = plt.subplots(figsize=(3.45, 1.6))
     for name, vals, col, mk in SYS:
         xs = [i for i, v in enumerate(vals) if v is not None]
         ys = [v for v in vals if v is not None]

@@ -5,7 +5,7 @@ Built from the authors' text in `../journal/main.tex`, cut to the ROADWork resul
 `../archive/iv2027_california/`.
 
 - Deadline: 15 Nov 2026, 23:59 AWST (PaperCept, its.papercept.net). Double-blind.
-- 7 pages incl. references (one paid page; decided 2026-10-08). Framing since 2026-10-08: calibration as the hidden variable ("The Hidden Variable in Embedded VLM Perception"); Fig. 2 timeline from `pipeline/make_timeline_fig.py`. IEEEtran `conference`. Abstract: 185 words (form limit 200).
+- 6 pages incl. references (condensed 2026-10-09; the 7-page version is commit 8f87200). Framing since 2026-10-08: calibration as the hidden variable ("The Hidden Variable in Embedded VLM Perception"); Fig. 2 timeline from `pipeline/make_timeline_fig.py`. IEEEtran `conference`. Abstract: 185 words (form limit 200).
 - Build: `./build.sh` (pdflatex + bibtex + Times, as IEEE builds it; TeX Live user-local in `~/texlive`). Do not use tectonic for page counts: its Times clone paginates differently. One paragraph per source line.
 
 ## New relative to the journal text
