@@ -74,3 +74,10 @@ Not done: fine-tuning hyper-parameters (A100 side); frame-level overlap check be
 | double-blind | Award note removed from the prior-system bib entry | `references.bib` |
 
 Not done (need GPU-hours or data not on this machine): counted filter on 2B evidence (~9 h), VLM search on all 312 videos (~3 h dump), fine-tuning/benchmark overlap check, time-based cascade windows, full F1-vs-FA curve figure (space).
+
+## Fourth round (2026-10-08/09)
+
+| point | change | evidence |
+|---|---|---|
+| replay vs live gap (20 videos: -0.07) | Live concurrent run on all 208 validation videos: joint 0.548 live vs 0.546 replay (+0.002 [-0.011, +0.020], drive-level), detector-only 0.522 vs 0.524. The 20-video gap was sampling noise. Partial mechanism seen on 20 videos: the 1.5 s age-bucket edge sits at the C3E answer period (7.6% of replay observations vs 0% live in the 1.5-4 s bucket); masking age gives the same full-set result (0.552 live vs 0.547 replay) | `pipeline/concurrent_vs_replay.py --live ~/eval_cache/concurrent_full` |
+| fine-tuning / benchmark overlap | ROADWork samples annotated images from the same drives as its videos (README of the dataset); text states this and why calibration effects are not inflated by it | `pipeline/check_finetune_overlap.py` (run on the A100 side with the fine-tuning manifest) |
