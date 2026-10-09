@@ -127,6 +127,11 @@ G.~Melis, C.~Dyer, and P.~Blunsom, ``On the state of the art of evaluation in
 {NVIDIA}, ``{Cosmos-Reason2-2B} model card,''
   \url{https://huggingface.co/nvidia/Cosmos-Reason2-2B}, 2025.
 
+\bibitem{mutcd2009}
+{Federal Highway Administration}, ``Manual on uniform traffic control devices
+  for streets and highways ({MUTCD}), part 6: Temporary traffic control,'' U.S.
+  Department of Transportation, 2009.
+
 \bibitem{farha2019mstcn}
 Y.~A. Farha and J.~Gall, ``{MS-TCN}: Multi-stage temporal convolutional network
   for action segmentation,'' in \emph{Proceedings of the IEEE/CVF Conference on
