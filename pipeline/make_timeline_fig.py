@@ -14,6 +14,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 import numpy as np
+import glob as _glob
+from matplotlib import font_manager
+for _f in _glob.glob("/usr/share/fonts/truetype/liberation/LiberationSerif-*.ttf"):
+    font_manager.fontManager.addfont(_f)
+plt.rcParams.update({"font.family": "serif", "font.serif": ["Liberation Serif", "DejaVu Serif"], "pdf.fonttype": 42})
 
 H = os.path.expanduser
 ST = ["outside", "approaching", "inside", "exiting"]
@@ -62,7 +67,7 @@ def main():
 
     fig = plt.figure(figsize=(3.45, 1.85))
     gs = fig.add_gridspec(2, len(thumbs), height_ratios=[0.9, 2.2], hspace=0.12, wspace=0.04,
-                          left=0.32, right=0.99, top=0.99, bottom=0.17)
+                          left=0.32, right=0.99, top=0.93, bottom=0.22)
     for k, (f, st, im) in enumerate(thumbs):
         ax = fig.add_subplot(gs[0, k])
         ax.imshow(im)
@@ -86,11 +91,11 @@ def main():
     ax.set_yticks([len(ROWS) - 1 - r + 0.5 for r in range(len(ROWS))])
     ax.set_yticklabels([n_ for n_, _ in ROWS], fontsize=6)
     ax.tick_params(axis="x", labelsize=6, pad=1)
-    ax.set_xlabel("time (s)", fontsize=6, labelpad=1)
+    ax.set_xlabel("time (s)", fontsize=6, labelpad=0)
     for sp in ("top", "right"):
         ax.spines[sp].set_visible(False)
     fig.legend(handles=[Patch(color=COL[s], label=s) for s in ST], loc="lower left",
-               ncol=4, fontsize=5.5, frameon=False, bbox_to_anchor=(0.0, -0.01), handlelength=1)
+               ncol=4, fontsize=5.5, frameon=False, bbox_to_anchor=(0.30, -0.015), handlelength=1)
     fig.savefig(args.out, dpi=300)
     print("wrote", args.out)
 

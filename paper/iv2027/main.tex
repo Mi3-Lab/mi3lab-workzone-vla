@@ -17,6 +17,8 @@
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalize]{cleveref}
+\let\oldtextsc\textsc
+\renewcommand{\textsc}[1]{\mbox{\oldtextsc{#1}}}
 
 \begin{document}
 \bstctlcite{IEEEexample:BSTcontrol}
@@ -27,7 +29,7 @@
 \maketitle
 
 \begin{abstract}
-Vision--language models (VLMs) are increasingly proposed as replacements for detector pipelines in driving perception, usually compared against the baseline's published temporal smoothing constants.  We show on embedded hardware that this hidden variable can decide the outcome.  We run an INT4 2B VLM fine-tuned on $\sim$46K work-zone question--answer pairs and $\sim$10K hard negatives and a zero-shot 4B physical-AI reasoner on a Jetson AGX Orin through an evidence-first prompt cascade, and compare them with a YOLO+CLIP pipeline under a latency-honest protocol in which measured latency drives frame dropping.  On 484K annotated frames of ROADWork driving, constants inherited from the 2B leave the 4B model at macro-F1 0.290; recalibrated, it reaches 0.515.  Recalibration lifts the detector baseline from 0.470 to 0.551, the best result, and no VLM-based system then beats it; a counted hidden-Markov filter on the detector score alone matches it without a threshold search.  These conclusions hold on drive-disjoint folds, at matched false-alarm rates and with matched search budgets, and live concurrent execution on the Orin reproduces them.  On a DRIVE AGX Thor, constants counted in cycles degrade while the counted filter holds.
+Vision--language models (VLMs) are increasingly proposed to replace detector pipelines in driving perception, usually against the baseline's published temporal smoothing constants.  We show on embedded hardware that this hidden variable can decide the outcome.  We run an INT4 2B VLM fine-tuned on $\sim$46K work-zone question--answer pairs and $\sim$10K hard negatives and a zero-shot 4B physical-AI reasoner on a Jetson AGX Orin through an evidence-first prompt cascade, and compare them with a YOLO+CLIP pipeline under a latency-honest protocol in which measured latency drives frame dropping.  On 484K annotated frames of ROADWork driving, constants inherited from the 2B leave the 4B model at macro-F1 0.290; recalibrated, it reaches 0.515.  Recalibration lifts the detector baseline from 0.470 to 0.551, the best result, and no VLM-based system then beats it; a counted hidden-Markov filter on the detector score alone is statistically tied with it without a threshold search.  These results hold on drive-disjoint folds and at matched false-alarm rates and search budgets, and live concurrent execution reproduces the replay; on a DRIVE AGX Thor, cycle-counted constants degrade while the counted filter holds.
 \end{abstract}
 
 \section{Introduction}
@@ -42,14 +44,14 @@ Meanwhile, fine-tuned VLMs describe work-zone scenes well offline~\cite{ghosh202
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{fig_ranking.pdf}
-\caption{The hidden variable.  Validation macro-F1 (208 videos) under three comparison regimes.  Left: every VLM runs the 2B's temporal constants and the detector pipeline its published ones; the zero-shot 4B reasoner (C3E) looks useless.  Middle: the VLM systems are calibrated and the baseline is not, as in a typical comparison; C3E and the joint estimator beat the detector pipeline.  Right: the baseline is calibrated by the same procedure and becomes the best system.}
+\caption{The hidden variable.  Validation macro-F1 (208 videos) under three comparison regimes.  Left: every VLM runs the 2B's temporal constants and the detector pipeline its published ones; the zero-shot 4B reasoner (C3E) looks useless.  Middle: the VLM systems are calibrated and the baseline is not, as in a typical comparison; C3E and the joint estimator beat the detector pipeline.  Right: the baseline is calibrated by the same procedure and becomes the best system.  Grey: the detector-only counted filter, which carries most of the joint estimator's lead.}
 \label{fig:ranking}
 \end{figure}
 
-The answer is: mostly the temporal constants (\cref{fig:ranking}).  Against the hand-tuned detector pipeline our VLM-based systems look competitive or better, but constants inherited from one checkpoint leave a 4B reasoner at \textsc{inside} IoU 0.007, and its own calibration lifts it to 0.574.  The same calibration raises the detector pipeline from 0.470 to 0.551, after which no VLM-based system beats it.  A team choosing a perception stack from the usual comparison would adopt a costlier VLM stack for no measurable gain.
+The answer is: mostly the temporal constants (\cref{fig:ranking}).  Against the hand-tuned detector pipeline our VLM-based systems look competitive or better, but constants inherited from one checkpoint leave a 4B reasoner at \textsc{inside} IoU 0.007, and its own calibration lifts it to 0.574.  The same calibration raises the detector pipeline from 0.470 to 0.551, after which no VLM-based system beats it.  A team choosing a perception stack from the usual comparison would adopt a costlier VLM stack for no significant gain in macro-F1.
 
 
-Our contributions are three.  \textbf{(1) Evaluation:} a latency-honest protocol, confirmed by live concurrent execution, with per-model recalibration by evidence replay.  \textbf{(2) Findings:} temporal constants transfer neither between the systems we test nor to faster hardware, and calibrating the baseline reverses the ranking; this holds on drive-disjoint folds, at matched false alarms and with matched search budgets.  \textbf{(3) Systems:} a real-time evidence-first cascade for a quantized 2B VLM, an INT4 Cosmos3-Edge reasoner on the same Orin, and a counted hidden-Markov filter that matches the recalibrated baseline from the detector score alone, with an analysis that locates the residual VLM gap in ego-relevance.
+Our contributions are three.  \textbf{(1) Evaluation:} a latency-honest protocol, confirmed by live concurrent execution, with per-model recalibration by evidence replay.  \textbf{(2) Findings:} temporal constants transfer neither between the systems we test nor to faster hardware, and calibrating the baseline reverses the ranking; this holds on drive-disjoint folds, at matched false alarms and with matched search budgets.  \textbf{(3) Systems:} a real-time evidence-first cascade for a quantized 2B VLM, an INT4 Cosmos3-Edge reasoner on the same Orin, and a counted hidden-Markov filter that ties the recalibrated baseline from the detector score alone, with an analysis that locates the residual VLM gap in ego-relevance.
 
 \section{Related Work}
 \label{sec:related}
@@ -58,7 +60,7 @@ Our contributions are three.  \textbf{(1) Evaluation:} a latency-honest protocol
 
 \paragraph{VLMs and world models for driving.} VLMs support planning~\cite{hwang2024emma,tian2024drivevlm}, description~\cite{marcu2024lingoqa} and reasoning~\cite{nvidia2025cosmosreason}, and Cosmos world models plan at datacenter or automotive-SoC scale~\cite{nvidia2026cosmos3,alpamayo2026}; we estimate one safety-relevant state under an embedded latency budget.
 
-\paragraph{Efficient inference and cascades.} AWQ~\cite{lin2024awq} and embedded runtimes~\cite{trtedgellm} enable multi-Hz VLM inference on embedded GPUs.  Detection~\cite{viola2001rapid} and LLM~\cite{chen2023frugalgpt} cascades chain models of increasing cost and escalate on confidence; our stages share one model, and evidence semantics (transcribed text versus a binary answer) drive escalation.
+\paragraph{Cascades.} Detection~\cite{viola2001rapid} and LLM~\cite{chen2023frugalgpt} cascades chain models of increasing cost and escalate on confidence; our stages share one model, and evidence semantics (transcribed text versus a binary answer) drive escalation.
 
 \paragraph{Temporal filtering and fair comparison.} Our joint estimator is a discrete hidden Markov model~\cite{rabiner1989hmm} run as a Bayes forward filter~\cite{thrun2005probabilistic}; we claim no novelty for it.  That baselines deserve the proposed method's tuning budget is known~\cite{melis2018state}; we measure how much it changes conclusions for embedded temporal estimators.
 
@@ -68,24 +70,24 @@ Our contributions are three.  \textbf{(1) Evaluation:} a latency-honest protocol
 \subsection{Two embedded deployments}
 \label{sec:deployment}
 
-We deploy \emph{two} models on the same Jetson AGX Orin 64\,GB, which shares its SoC with the automotive DRIVE AGX Orin, adapted in the two ways such a model admits: one by task fine-tuning, one by quantization and per-model calibration alone.  Both run the identical prompt channels, cascade, protocol and splits, so every comparison in this paper varies the model and its adaptation, never the pipeline around it.
+We deploy \emph{two} models on the same Jetson AGX Orin 64\,GB, which shares its SoC with the automotive DRIVE AGX Orin, adapted in two common ways: one by task fine-tuning, one by quantization and per-model calibration alone.  Both run the same prompt channels, cascade structure, protocol and splits; only the model, its input size and its calibrated constants differ.
 
 \textbf{Fine-tuned 2B.}  A 2B-parameter VLM (Qwen3-VL architecture~\cite{qwen3vl}, initialized from Cosmos-Reason2-2B~\cite{nvidia2025cosmosreason2}), used for perception only, fine-tuned through a curriculum derived from ROADWork~\cite{ghosh2025roadwork}, whose imagery spans 18 U.S.\ cities under one signing standard (MUTCD~\cite{mutcd2009}): work-zone VQA ($\sim$46K pairs), ego-state supervision, sign reading, a general-driving retention mix, and $\sim$10K work-zone-free BDD100K hard negatives.  The last stage brought the existence gate from 95\% to 0\% ``yes'' on clean BDD100K scenes (on ROADWork \textsc{outside} seconds, which include visible but irrelevant work, it is less selective, \cref{tab:bias}).
 
 The language backbone is quantized to INT4 (W4A16 AWQ, group size 128) and the vision tower kept in FP16, both as on-device TensorRT engines~\cite{trtedgellm} (1.38 + 0.83\,GB).  Decoding (10.4\,ms/token) dominates cost, followed by vision encoding (44.6\,ms at 720p, $\sim$20\,ms at our 480px).
 
-\textbf{Quantized 4B world model.}  Cosmos3-Edge (C3E)~\cite{nvidia2026cosmos3} pairs an autoregressive reasoner with a trajectory-generating diffusion transformer; we run only the reasoner, and ``world model'' below refers to it.  It is quantized to W4A16 INT4 (1.27\,GB) with an FP16 visual tower (983\,MB) on the same Orin; its frozen $26{\times}46$ patch grid fixes inputs at $736{\times}416$, and channel latencies are 162/182/488/556\,ms (\textsc{gate}/\textsc{ego}/\textsc{desc}/\textsc{sign}).  It has seen no work-zone training data.  Its engines required six patches to the embedded runtime, released with the code.
+\textbf{Quantized 4B world model.}  Cosmos3-Edge (C3E)~\cite{nvidia2026cosmos3} pairs an autoregressive reasoner with a trajectory-generating diffusion transformer; we run only the reasoner, and ``world model'' below refers to it.  It is quantized to W4A16 INT4 (1.27\,GB) with an FP16 visual tower (983\,MB) on the same Orin; its frozen $26{\times}46$ patch grid fixes inputs at $736{\times}416$, and channel latencies are 162/182/488/556\,ms (\textsc{gate}/\textsc{ego}/\textsc{desc}/\textsc{sign}).  It has seen no work-zone training data.  Its engines required six patches to the embedded runtime, released upon acceptance.
 
 \subsection{Prompt channels and their failure modes}
 \label{sec:prompts}
 
-We operate four fixed-prompt channels with fixed token budgets.  Because the first generated token is an answer-start token, the minimum useful budget is two tokens.
+We operate four fixed-prompt channels with fixed token budgets (the first generated token is an answer-start token).
 
-\paragraph{Affirmation bias.} The \textsc{gate} asks a neutral existence question, but binary prompts cannot be specialized by rephrasing: path-relevance variants all answered ``yes'' on \textsc{outside} probes and distance prompts ``close'' regardless of scene.  Binary outputs are therefore weak evidence requiring a temporal vote, never sole triggers.  At $\sim$10\,ms per output token, a two-token answer costs 75\,ms and a description $\sim$500\,ms, so evidence quality, not only confidence, gates smoothing.
+\paragraph{Affirmation bias.} The \textsc{gate} asks a neutral existence question, but binary prompts cannot be specialized by rephrasing: path-relevance variants all answered ``yes'' on \textsc{outside} probes and distance prompts ``close'' regardless of scene.  Binary outputs are therefore weak evidence requiring a temporal vote, never sole triggers.  At $\sim$10\,ms per output token, a three-token answer costs $\sim$85\,ms and a description $\sim$500\,ms, so evidence quality, not only confidence, gates smoothing.
 
 \paragraph{Faithful transcription.} The \textsc{sign} channel returns verbatim text such as ``\textsc{shoulder work}'' and correctly reports absence, while a binary rephrasing misses signs that transcription catches; we match transcripts against a work-zone lexicon.
 
-\paragraph{Structured corroboration.} \textsc{desc} often verbalizes disqualifying context (``barriers on right \emph{sidewalk}'', ``work vehicle \emph{parked}''), so corroboration requires a work-zone object without such a qualifier.  Prompts, budgets and lexicons are released with the code.
+\paragraph{Structured corroboration.} \textsc{desc} often verbalizes disqualifying context (``barriers on right \emph{sidewalk}'', ``work vehicle \emph{parked}''), so corroboration requires a work-zone object without such a qualifier.  Prompts, budgets and lexicons are released upon acceptance.
 
 \subsection{Evidence-first cascade}
 \label{sec:cascade}
@@ -93,7 +95,7 @@ We operate four fixed-prompt channels with fixed token budgets.  Because the fir
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\linewidth]{fig_cascade.pdf}
-\caption{Evidence-first cascade.  In \textsc{outside}, \textsc{gate} and \textsc{sign} run every cycle and candidate evidence invokes \textsc{desc}.  Entry requires a sustained, corroborated vote or high-confidence same-cycle evidence.  In active states, \textsc{ego} drives a Bayesian filter; sustained gate clearance returns to \textsc{outside}, while partial fading triggers \textsc{exiting}.  Constants are calibrated per model: $5/3/4/2$ for the 2B and $3/3/2/1$ for C3E, so the structure transfers but the numbers do not.  Diagram values are the 2B's, with rounded latencies (measured values in \cref{sec:cost}).}
+\caption{Evidence-first cascade.  In \textsc{outside}, \textsc{gate} and \textsc{sign} run every cycle and candidate evidence invokes \textsc{desc}.  Entry requires a sustained, corroborated vote or high-confidence same-cycle evidence.  In active states, \textsc{ego} drives a Bayesian filter; sustained gate clearance returns to \textsc{outside}, while partial fading triggers \textsc{exiting}.  Constants are calibrated per model: $5/3/4/2$ for the 2B and $3/3/2/1$ for C3E, so the structure transfers but the numbers do not.  Diagram values are the 2B's, with indicative latencies (measured values in \cref{sec:cost}).}
 \label{fig:cascade}
 \end{figure}
 
@@ -115,11 +117,11 @@ The detector runs at its native rate and is never blocked; the world model is re
 \section{Evaluation Protocol}
 \label{sec:protocol}
 
-\paragraph{Benchmark.} We use the detector baseline's 520-video ROADWork traversal benchmark~\cite{priorsystem2026}: 4.37\,h of 1920$\times$1080, 30\,fps driving from 25 drives, with 484K interval-labeled frames.  A state-stratified 60/40 split assigns all design choices to calibration (312 videos, 2.59\,h) and results to validation (208 videos, 192K frames, 1.78\,h, 13 pure-negative).  All 25 drives occur in both partitions, so \cref{sec:dd} repeats every replay-fitted comparison with drive-disjoint folds.  ROADWork samples its annotated images from the same drives as its videos, so the 2B's fine-tuning images, like the baseline detector's training images, may come from benchmark drives; C3E is zero-shot.  Every calibration effect we report compares a system with itself, perception fixed, and is not inflated by this overlap.
+\paragraph{Benchmark.} We use the detector baseline's 520-video ROADWork traversal benchmark~\cite{priorsystem2026}: 4.31\,h of 1920$\times$1080 driving from 25 drives (30\,fps except seven 120\,fps videos), with 484K interval-labeled frames.  A state-stratified 60/40 split assigns all design choices to calibration (312 videos, 2.59\,h) and results to validation (208 videos, 192K frames, 1.73\,h, 13 pure-negative).  All 25 drives occur in both partitions, so \cref{sec:dd} repeats every replay-fitted comparison with drive-disjoint folds.  ROADWork samples its annotated images from the same drives as its videos, so the 2B's fine-tuning images, like the baseline detector's training images, may come from benchmark drives; C3E is zero-shot.  Every calibration effect we report compares a system with itself, perception fixed, and is not inflated by this overlap.
 
 \paragraph{Latency-honest camera simulation.} After each measured inference cycle of duration $\Delta$ on the target hardware, the replay advances by $\Delta$ and drops intervening frames as a live camera would, so slower systems see sparser frames and pay latency inside the accuracy result.  Predictions are held between cycles and scored per frame.
 
-\paragraph{Metrics.} We adopt the baseline's suite~\cite{priorsystem2026}: frame accuracy and macro-F1; per-state IoU; event precision/recall (an interval is correct if it overlaps one of the same state); entry offsets (Entry MAE over all states, \textsc{in} entry med.\ for \textsc{inside}); and false alarms per hour (predicted active intervals overlapping no annotated one), plus a lead metric for timing (\cref{sec:vsdetector}).  Intervals are paired 95\% cluster-bootstrap intervals (10{,}000 replications) that resample drives.
+\paragraph{Metrics.} We adopt the baseline's suite~\cite{priorsystem2026}: frame accuracy and macro-F1; per-state IoU; event precision/recall (an interval is correct if it overlaps one of the same state); entry offsets (Entry MAE over all states, \textsc{in} entry med.\ for \textsc{inside}); and false alarms per hour (predicted active intervals overlapping no annotated one), plus a lead metric for timing (\cref{sec:vsdetector}).  Per-hour rates count frames at 30\,fps (validation time overstated by 3\%, for all systems alike).  Intervals are paired 95\% cluster-bootstrap intervals (10{,}000 replications) that resample drives.
 
 \section{The VLM Cascade Against the Published Baseline}
 \label{sec:results}
@@ -166,16 +168,16 @@ Both pipelines handle established \textsc{inside} intervals well and \textsc{exi
 \subsection{Operational false-alarm characterization}
 \label{sec:falsealarms}
 
-Over 1.78\,h the 2B raises 56.2 false active-state events per hour, against 30.9 for the detector pipeline; most are the ego-relevance errors of \cref{sec:analysis}, not clean-scene noise.  Of 156 matched \textsc{inside} entries, 80.8\% fire early (median 2.9\,s), which an advisory prefers.  \Cref{sec:dd} compares all systems at matched false alarms.
+On validation the 2B raises 56.2 false active-state events per hour, against 30.9 for the detector pipeline; most are the ego-relevance errors of \cref{sec:analysis}, not clean-scene noise.  Of 156 matched \textsc{inside} entries, 80.8\% fire early (median 2.9\,s), which an advisory prefers.  \Cref{sec:dd} compares all systems at matched false alarms.
 
 \subsection{Ablations and design validation}
 \label{sec:ablations}
 
-\Cref{tab:abl} toggles one component at a time; five of seven change macro-F1 by at most 0.02.  The sign channel must transcribe: an equal-cost binary question cuts accuracy from 62.5\% to 52.5\% and raises false alarms fivefold.  Greedy decoding costs 0.5 accuracy points but improves precision and alarms, so we use it as the reproducible default.  The qualifier filter adds 2.2 points and removes 9.6 alarms per hour.  Fast entry buys anticipation, 10 more points of onsets warned $\geq$2\,s ahead, for 26 more alarms per hour.  The base checkpoint collapses under the 2B's thresholds (\cref{sec:worldmodel}).
+\Cref{tab:abl} toggles one component at a time from the sampled cascade (first row); five of seven change macro-F1 by at most 0.02.  The sign channel must transcribe: an equal-cost binary question cuts accuracy from 62.5\% to 52.5\% and raises false alarms fivefold.  Greedy decoding costs 0.5 accuracy points but improves precision and alarms, so we use it as the reproducible default.  The qualifier filter adds 2.2 points and removes 9.6 alarms per hour.  Fast entry buys anticipation, 10 more points of onsets warned $\geq$2\,s ahead, for 26 more alarms per hour.  The base checkpoint collapses under the 2B's thresholds (\cref{sec:worldmodel}).
 
 \begin{table}[t]
 \centering
-\caption{Single-toggle ablations of the 2B cascade (validation, 208 videos).  Lead: \textsc{inside} onsets preceded by $\geq$2\,s of active state.}
+\caption{Single-toggle ablations of the 2B cascade (validation, 208 videos; --: no \textsc{inside} event predicted).  Lead: \textsc{inside} onsets preceded by $\geq$2\,s of active state.}
 \label{tab:abl}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -198,7 +200,7 @@ Cascade, sampled & 62.5 & 0.464 & 54.1 & 60.1 & 79.4 \\
 \subsection{Operational cost}
 \label{sec:cost}
 
-At 480px, p50/p95 latency is 83/90\,ms (\textsc{gate}), 136/149 (\textsc{ego}), 155/169 (\textsc{sign}) and 468/508\,ms (\textsc{desc}); patrol and active cycles run at p95 259\,ms (3.9\,Hz) and 239\,ms (4.2\,Hz), the heaviest path at 768\,ms.  ``Real time'' here means keeping pace with a live camera (a 259\,ms cycle is 7.8\,m at 30\,m/s), not meeting an alert deadline.  Above idle, the VLM draws 28.6\,W and 3--26\,J per cycle, the detector 22.4\,W and 0.8\,J at 24\,ms.
+At 480px, p50/p95 latency is 83/90\,ms (\textsc{gate}), 136/149 (\textsc{ego}), 155/169 (\textsc{sign}) and 468/508\,ms (\textsc{desc}); patrol and active cycles run at p95 259\,ms (3.9\,Hz) and 239\,ms (4.2\,Hz), the heaviest path at 768\,ms.  ``Real time'' means keeping pace with a live camera (259\,ms is 7.8\,m at 30\,m/s), not an alert deadline.  Above idle, the VLM draws 28.6\,W and 3--26\,J per cycle, the detector 22.4\,W and 0.5\,J at 24\,ms.
 
 \section{Calibrating Every System}
 \label{sec:worldmodel}
@@ -212,11 +214,11 @@ At 480px, p50/p95 latency is 83/90\,ms (\textsc{gate}), 136/149 (\textsc{ego}), 
 \label{fig:timeline}
 \end{figure}
 
-\paragraph{Temporal hyper-parameters do not transfer.}  With the 2B's constants, the zero-shot C3E almost never reaches \textsc{inside} (IoU 0.007, recall 3.8\%) and looks useless.  Recalibrating the same four integers lifts it to macro-F1 0.515 and \textsc{inside} IoU 0.574, with model, prompts and videos unchanged (\cref{fig:timeline}).  The search covers $N\in\{3,5,7,9\}$, $K_\ast\in 1..N$ and the \textsc{ego}/\textsc{sign} switches (4{,}896 configurations, later extended to $N\in\{1,2,4\}$ without changing the optimum), selected on calibration macro-F1 over the 100 videos with recorded VLM evidence.  The optimum ($N{=}3$, $K{=}3/2/1$) is shorter and less hysteretic and disables \textsc{ego} (\cref{sec:analysis}).  Because each channel is recorded once and the state machine replayed, a sweep costs CPU-seconds instead of GPU-hours.
+\paragraph{Temporal hyper-parameters do not transfer.}  With the 2B's constants, the zero-shot C3E almost never reaches \textsc{inside} (IoU 0.007, recall 3.8\%) and looks useless.  Recalibrating the same four integers and two switches lifts it to macro-F1 0.515 and \textsc{inside} IoU 0.574, with model, prompts and videos unchanged (\cref{fig:timeline}).  The search covers $N\in\{3,5,7,9\}$, $K_\ast\in 1..N$ and the \textsc{ego}/\textsc{sign} switches (4{,}896 configurations, later extended to $N\in\{1,2,4\}$ without changing the optimum), selected on calibration macro-F1 over the 100 videos with recorded VLM evidence.  The optimum ($N{=}3$, $K{=}3/2/1$) is shorter and less hysteretic and disables \textsc{ego} (\cref{sec:analysis}).  Because each channel is recorded once and the state machine replayed, a sweep costs CPU-seconds instead of GPU-hours.
 
 The same search moves the fine-tuned 2B by only +0.006 (0.453$\to$0.459): it rescues a model whose constants were wrong rather than rewarding flexibility.
 
-\paragraph{The baseline too.}  The detector pipeline deserves the same treatment.  We record every component on every cycle of all 520 videos (detector counts before and after CLIP verification, global CLIP and colour-context scores) and replay the complete pipeline; its hand-tuned configuration reproduces the live run (0.473 vs.\ 0.470).  Searching its thresholds, EMA rate and duration limits on the 312 calibration videos (three grids of 4{,}800 configurations) raises validation macro-F1 from 0.470 to 0.551 ($+0.077$, $[+0.039,+0.108]$), with 92.5\% \textsc{inside} precision at 20.2 false alarms per hour: the strongest system we measure.  On the detector score alone, without CLIP, the same search gives 0.435$\to$0.530.
+\paragraph{The baseline too.}  The detector pipeline deserves the same treatment.  We record every component on every cycle of all 520 videos (detector counts before and after CLIP verification, global CLIP and colour-context scores) and replay the complete pipeline; its hand-tuned configuration reproduces the live run (0.473 vs.\ 0.470).  Searching its thresholds, EMA rate and duration limits on the 312 calibration videos (three grids of 4{,}800 configurations) raises validation macro-F1 from 0.470 to 0.551 ($+0.081$, $[+0.043,+0.111]$), with 92.5\% \textsc{inside} precision at 20.2 false alarms per hour: the strongest system we measure.  On the detector score alone, without CLIP, the same search gives 0.435$\to$0.530.
 
 The procedure also isolates what fine-tuning buys.  Recalibrated on its own evidence, the base checkpoint, identical except for the work-zone curriculum, reaches 0.383 on the search videos against 0.496 for the fine-tuned model: fine-tuning is worth $+0.113$ macro-F1, not the collapse (\textsc{inside} IoU 0.012) the base model shows under the fine-tuned model's thresholds.
 
@@ -227,7 +229,7 @@ Every choice is made on the 312 calibration videos and none on validation: promp
 \section{Combining the Detector and the World Model}
 \label{sec:joint}
 
-The joint estimator reaches 0.546 at 25.9 false alarms per hour.  It beats the hand-tuned pipeline ($+0.076$, $[+0.038,+0.104]$) and the calibrated world model ($+0.031$, $[+0.006,+0.058]$, with 38.8 fewer alarms per hour), and ties the recalibrated pipeline ($-0.005$, $[-0.046,+0.033]$), trading \textsc{inside} precision (66.8\% vs.\ 92.5\%) for recall (85.9\% vs.\ 77.8\%).
+The joint estimator reaches 0.546 at 25.9 false alarms per hour.  It beats the hand-tuned pipeline ($+0.076$, $[+0.038,+0.104]$) and the calibrated world model ($+0.031$, $[+0.006,+0.058]$, with 38.7 fewer alarms per hour), and ties the recalibrated pipeline ($-0.005$, $[-0.046,+0.033]$), trading \textsc{inside} precision (66.8\% vs.\ 92.5\%) for recall (85.9\% vs.\ 77.8\%).
 
 Its tables are counted on all 312 calibration videos (5-fold cross-validation: 0.535, s.d.\ 0.019), and its design choices behave predictably: $\tau$ trades accuracy for nuisance (0.538 at 44.7/h for $\tau{=}0.25$, 0.504 at 22.0/h for $\tau{=}1$; we keep 0.5), 20 of the 108 cells carry 97\% of the observations, and 3 or 10 detector buckets give 0.538 and 0.545.
 
@@ -242,11 +244,11 @@ Its tables are counted on all 312 calibration videos (5-fold cross-validation: 0
 \section{Do the Conclusions Hold?}
 \label{sec:dd}
 
-\paragraph{Unseen drives.}  Splitting the 25 drives into five folds of about 104 videos, we refit every replay-fitted system on four folds (each detector state machine with the full three-grid search) and replay it on the fifth, so no test video shares a drive with its fitting data (\cref{tab:dd}).  The conclusions hold: recalibration raises the detector+CLIP pipeline by 0.054 macro-F1 ($[+0.026,+0.078]$) and the detector-score state machine by 0.089 ($[+0.058,+0.114]$), and both counted filters tie the recalibrated pipeline ($-0.010$, $[-0.036,+0.017]$; $+0.002$).  On the validation videos, drive-disjoint fitting moves each system's macro-F1 by at most 0.010 from \cref{tab:main}.
+\paragraph{Unseen drives.}  Splitting the 25 drives into five folds of about 104 videos, we refit the detector state machines (full three-grid search) and the counted filters on four folds and replay them on the fifth (standalone VLM evidence covers only 100 videos), so no test video shares a drive with its fitting data (\cref{tab:dd}).  The conclusions hold: recalibration raises the detector+CLIP pipeline by 0.054 macro-F1 ($[+0.026,+0.078]$) and the detector-score state machine by 0.089 ($[+0.058,+0.114]$), and both counted filters tie the recalibrated pipeline ($-0.010$, $[-0.036,+0.017]$; $+0.002$).  On the validation videos, drive-disjoint fitting moves each system's macro-F1 by at most 0.010 from \cref{tab:main}.
 
 \paragraph{Matched nuisance.}  Systems operate between 18 and 65 false alarms per hour.  Passing each through the same causal persistence filter (an active interval is shown only after lasting $d$ seconds) until false alarms fall to 20/h (last column of \cref{tab:main,tab:dd}), the calibrated systems lead: on drive-disjoint folds the recalibrated detector+CLIP pipeline keeps 0.535 at $d{=}0$, the joint estimator 0.523 and the counted detector filter 0.520 at $d{\leq}0.75$\,s, against 0.42 for the hand-tuned pipeline.  Matching nuisance also reorders anticipation: at $\leq$30 false alarms per hour, C3E warns $\geq$2\,s before 58\% of \textsc{inside} onsets and the 2B before 54\%, against 73\% for the counted detector filter and 79\% for the recalibrated pipeline.
 
-\paragraph{Another platform.}  We reran the five validation systems on an NVIDIA DRIVE AGX Thor with the constants and tables fitted on the Orin.  The models' answers agree with the Orin's on 96--100\% of seconds, but every stage is faster (detector 16 vs.\ 24\,ms; C3E's \textsc{sign} 157 vs.\ 556\,ms), so constants counted in cycles now span less time.  The hand-tuned detector pipeline loses 0.031 macro-F1 ($[-0.037,-0.023]$) and C3E 0.042 ($[-0.055,-0.026]$), with 21 and 41 more false alarms per hour.  The joint estimator, whose rates are per second and whose evidence is weighted by $dt$, keeps its macro-F1 without recalibration (0.549 vs.\ 0.546, $[-0.018,+0.028]$).  New hardware is the same hidden variable as a new model.
+\paragraph{Another platform.}  We reran the hand-tuned detector+CLIP, both 2B decodings, C3E and the joint estimator on a DRIVE AGX Thor with Orin-fitted constants and tables.  Model answers agree with the Orin's on 96--100\% of identical frames, but every stage is faster (detector 16 vs.\ 24\,ms; C3E's \textsc{sign} 157 vs.\ 556\,ms), so cycle-counted constants span less time.  The hand-tuned detector pipeline loses 0.031 macro-F1 ($[-0.037,-0.023]$) and C3E 0.042 ($[-0.055,-0.026]$), with 21 and 41 more false alarms per hour; the decode-bound 2B loses little macro-F1 ($-0.007$), though its alarms also rise by 21 per hour.  The joint estimator, whose rates are per second and whose evidence is weighted by $dt$, keeps its macro-F1 without recalibration (0.549 vs.\ 0.546, $[-0.018,+0.028]$).  New hardware is the same hidden variable as a new model.
 
 \begin{table}[t]
 \centering
@@ -271,7 +273,7 @@ Det.+C3E, counted filter & 0.537 & 0.591 & 70.8 & 28.7 & 0.523 \\
 \section{Failure Analysis: the Ego-Relevance Gap}
 \label{sec:analysis}
 
-Nearly all residual false positives share one signature: correct descriptions of objects irrelevant to the vehicle's path, such as a parked work vehicle 60\,m away, sidewalk reconstruction behind barriers, or detour signs for another street.  The qualifier filter catches only what the model verbalizes, and binary or distance prompts do not recover the judgment.
+Nearly all residual false positives are correct descriptions of objects irrelevant to the vehicle's path (a parked work vehicle 60\,m away, sidewalk work behind barriers, detour signs for another street); the qualifier filter catches only what the model verbalizes, and binary or distance prompts do not recover the judgment.
 
 \begin{table}[t]
 \centering
@@ -292,7 +294,7 @@ C3E zero-shot & 29.4\% & 93.3\% & 94.0\% & 34.4\% & 0.82 & 35.7\% \\
 \end{tabular}
 \end{table}
 
-\paragraph{Response bias.}  Recording the three checkpoints on the same videos separates how often a model says ``yes'' from how well it tracks the state (\cref{tab:bias}).  The base 2B rarely says yes outside a zone and separates \textsc{inside} from \textsc{outside} best (balanced accuracy 0.84); fine-tuning moves the gate to 42.4\% and 0.75, since ROADWork's \textsc{outside} includes visible but irrelevant work.  The fine-tuned model's advantage comes from its description, which corroborates on 10.7\% of \textsc{outside} seconds against 31.3\% for the base model.
+\paragraph{Response bias.}  Recording the three checkpoints on the same videos separates how often a model says ``yes'' from how well it tracks the state (\cref{tab:bias}).  The base 2B rarely says yes outside a zone and separates \textsc{inside} from \textsc{outside} best (balanced accuracy 0.84); fine-tuning moves the gate to 42.4\% and 0.75, often correct perception without ego-relevance, as ROADWork's \textsc{outside} includes visible but irrelevant work.  The fine-tuned model's advantage comes from its description, which corroborates on 10.7\% of \textsc{outside} seconds against 31.3\% for the base model.
 
 C3E, never fine-tuned, transcribes signs correctly and emits plausible boxes, yet labels most verified \textsc{inside} frames ``off-road/sidewalk'' in ego-lane probes.
 
@@ -308,7 +310,7 @@ Our claims are bounded in four ways.  \emph{(i) Data:} all footage is ROADWork d
 \section{Conclusion}
 \label{sec:conclusion}
 
-Comparing an embedded VLM with a detector pipeline as published measures their temporal constants as much as their perception.  Inherited constants move \textsc{inside} IoU by 0.567; calibrating the baseline lifts it from 0.470 to 0.551, where no VLM-based system we built beats it, and a counted hidden-Markov filter on the detector score matches it without a search.  This holds on unseen drives, at matched nuisance and budgets and in live concurrent execution, and on a DRIVE AGX Thor cycle-counted constants break while the counted filter holds.  Embedded comparisons should recalibrate every system, the baseline included, on the target hardware, and compare at matched nuisance.  Upon acceptance we release the replay harness, prompts, metrics and baseline port.
+Comparing an embedded VLM with a detector pipeline as published measures their temporal constants as much as their perception.  Inherited constants move \textsc{inside} IoU by 0.567; calibrating the baseline lifts its macro-F1 from 0.470 to 0.551, where no VLM-based system we built beats it, and a counted hidden-Markov filter on the detector score ties it without a search.  This holds on unseen drives, at matched nuisance and budgets and in live concurrent execution, and on a DRIVE AGX Thor cycle-counted constants break while the counted filter holds.  Embedded comparisons should recalibrate every system, the baseline included, on the target hardware, and compare at matched nuisance.  Upon acceptance we release the replay harness, prompts, metrics and baseline port.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

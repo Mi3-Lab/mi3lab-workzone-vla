@@ -27,10 +27,11 @@ COLS = ["Constants\ninherited", "VLMs\ncalibrated", "All\ncalibrated"]
 SYS = [  # name, values per column (None = not defined), colour, marker, line width
     ("Detector+CLIP", [0.470, 0.470, 0.551], "#1f3a5f", "s", 2.2),
     ("Joint (Det.+C3E)", [None, 0.546, 0.546], "#7a5195", "D", 1.2),
+    ("Det. counted filter", [None, 0.524, 0.524], "#6b7b8c", "v", 1.0),
     ("C3E, 4B zero-shot", [0.290, 0.515, 0.515], "#b03a2e", "o", 1.2),
     ("2B fine-tuned", [0.453, 0.459, 0.459], "#d9883b", "^", 1.2),
 ]
-LABEL_DY = {"Detector+CLIP": 4.5, "Joint (Det.+C3E)": -4.5}
+LABEL_DY = {"Detector+CLIP": 5, "Joint (Det.+C3E)": -1.5, "Det. counted filter": -1, "C3E, 4B zero-shot": -6}
 
 
 def main():
@@ -59,7 +60,7 @@ def main():
     ax.annotate("1st", (2, 0.551), xytext=(0, 6), textcoords="offset points", ha="center", fontsize=6,
                 color=navy, fontweight="bold")
     ax.annotate("0.290", (0, 0.290), xytext=(6, 0), textcoords="offset points", va="center", fontsize=6,
-                color=SYS[2][2])
+                color="#b03a2e")
 
     ax.set_xticks(range(3))
     ax.set_xticklabels(COLS, fontsize=7)

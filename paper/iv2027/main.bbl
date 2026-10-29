@@ -22,8 +22,9 @@
 \BIBdecl
 
 \bibitem{nhtsa2023}
-{National Highway Traffic Safety Administration}, ``2023 fatality analysis
-  reporting system ({FARS}) annual report file,'' U.S. DOT, 2023.
+{National Highway Traffic Safety Administration}, ``Work zone crashes and
+  fatalities, 2023 ({FARS} and {CRSS}),'' via National Work Zone Safety
+  Information Clearinghouse, 2023.
 
 \bibitem{radford2021clip}
 A.~Radford \emph{et~al.}, ``Learning transferable visual models from natural
