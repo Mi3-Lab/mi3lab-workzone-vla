@@ -85,3 +85,10 @@ Not done (need GPU-hours or data not on this machine): counted filter on 2B evid
 ## DRIVE AGX Thor (2026-10-29)
 
 Five validation systems rerun on DRIVE AGX Thor (p3960-0010) with Orin-fitted constants and tables (`thor/06_run_experiments.sh`, results in `eval_cache/platforms/p3960-0010/`, compared by `thor/compare_platforms.py`). Model answers agree with the Orin on 96-100% of seconds; cycle-counted constants degrade (detector+CLIP -0.031 [-0.037, -0.023], C3E -0.042 [-0.055, -0.026], +21 and +41 FA/h) while the counted filter holds (+0.003 [-0.018, +0.028]). New paragraph "Another platform" in Sec. VIII.
+
+## Simulated IV reviews (2026-10-29): Sonnet and Opus 5.5, four rounds
+
+Round 1: Weak Accept (Sonnet) / Borderline (Opus). Round 4: both Weak Accept, confidence 4, both answer "ready to submit: yes".
+Resolved along the way: Thor claims scoped to the joint filter, TOST removed, 0.600 gap explained by the metric (published IoUs give 0.43 with our macro-F1), Thor table, Lead@20, fold scope, true durations (120 fps videos), cycle-shrink explanation for the Thor losses.
+Open (experiments): VLM cascades in drive-disjoint folds, recalibrated baseline and detector-only filter on the Thor (Thor GPU was busy), false alarms on work-zone-free driving, fine-tuning overlap count.
+Response letters: kept in the session scratchpad (response_r1..r3.md).
