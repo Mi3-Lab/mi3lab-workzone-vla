@@ -1,0 +1,266 @@
+Loading YOLO: /home/mi3thor/workzone/weights/yolo12s_hardneg_1280_960.engine
+Loading /home/mi3thor/workzone/weights/yolo12s_hardneg_1280_960.engine for TensorRT inference...
+[10/29/2026-14:11:17] [TRT] [I] Loaded engine size: 21 MiB
+[10/29/2026-14:11:17] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +86, now: CPU 0, GPU 105 (MiB)
+Loading CLIP (open_clip ViT-B-32, openai) for global fusion + per-cue verification...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+/home/mi3thor/workzone/venv/lib/python3.12/site-packages/open_clip/factory.py:450: UserWarning: QuickGELU mismatch between final model config (quick_gelu=False) and pretrained tag 'openai' (quick_gelu=True).
+  warnings.warn(
+Evaluating 208 video(s) with the YOLO+CLIP (full champion) pipeline...
+[1/208] boston_7b34288a75284083a1d9174adcf34be4_000010_08250_snippet.mp4  acc=69.8%  transitions=4  cycle=21ms  (34.0s)
+[2/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02220_snippet.mp4  acc=32.0%  transitions=7  cycle=23ms  (33.8s)
+[3/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_02160_snippet.mp4  acc=82.5%  transitions=4  cycle=22ms  (34.0s)
+[4/208] boston_4ac05b2379194b7a91e84368b8fd200d_000004_19860_snippet.mp4  acc=36.4%  transitions=8  cycle=22ms  (33.9s)
+[5/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000001_21180_snippet.mp4  acc=58.0%  transitions=5  cycle=21ms  (34.0s)
+[6/208] seattle_7922c49d982c424183c69b803d0208eb_000001_00750_snippet.mp4  acc=66.0%  transitions=6  cycle=22ms  (33.9s)
+[7/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_05250_snippet.mp4  acc=70.5%  transitions=4  cycle=22ms  (34.0s)
+[8/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_10800_snippet.mp4  acc=36.5%  transitions=6  cycle=21ms  (34.1s)
+[9/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02190_snippet.mp4  acc=36.9%  transitions=7  cycle=22ms  (33.8s)
+[10/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000002_13200_snippet.mp4  acc=69.7%  transitions=8  cycle=22ms  (33.9s)
+[11/208] boston_344db257af864142a18c582228d2920a_000003_00240_snippet.mp4  acc=76.7%  transitions=6  cycle=23ms  (33.8s)
+[12/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_04170_snippet.mp4  acc=83.4%  transitions=4  cycle=21ms  (34.0s)
+[13/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000000_19290_snippet.mp4  acc=43.8%  transitions=7  cycle=23ms  (33.8s)
+[14/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_04110_snippet.mp4  acc=87.7%  transitions=4  cycle=21ms  (34.0s)
+[15/208] boston_4ac05b2379194b7a91e84368b8fd200d_000004_14490_snippet.mp4  acc=43.2%  transitions=12  cycle=22ms  (33.9s)
+[16/208] boston_7b34288a75284083a1d9174adcf34be4_000006_16080_snippet.mp4  acc=54.1%  transitions=8  cycle=22ms  (33.9s)
+[17/208] boston_7b34288a75284083a1d9174adcf34be4_000001_02730_snippet.mp4  acc=51.3%  transitions=8  cycle=22ms  (33.9s)
+[18/208] boston_21cce96047dc491bb61f281b08c02569_000003_19230_snippet.mp4  acc=76.8%  transitions=6  cycle=22ms  (33.8s)
+[19/208] seattle_04cdadc91fc343c99670be0478aedff9_000001_16200_snippet.mp4  acc=75.0%  transitions=4  cycle=22ms  (34.0s)
+[20/208] boston_702b9cb0054549a08a50aadd7812a3d6_000000_10740_snippet.mp4  acc=64.0%  transitions=8  cycle=23ms  (33.8s)
+[21/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_02220_snippet.mp4  acc=71.1%  transitions=10  cycle=23ms  (33.8s)
+[22/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_17100_snippet.mp4  acc=74.9%  transitions=5  cycle=22ms  (33.8s)
+[23/208] boston_7b34288a75284083a1d9174adcf34be4_000000_06510_snippet.mp4  acc=80.8%  transitions=6  cycle=22ms  (33.9s)
+[24/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_10710_snippet.mp4  acc=45.1%  transitions=4  cycle=21ms  (34.1s)
+[25/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_15360_snippet.mp4  acc=24.5%  transitions=4  cycle=21ms  (34.1s)
+[26/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_03420_snippet.mp4  acc=54.2%  transitions=9  cycle=23ms  (33.8s)
+[27/208] boston_344db257af864142a18c582228d2920a_000003_05910_snippet.mp4  acc=62.3%  transitions=11  cycle=24ms  (33.7s)
+[28/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_02280_snippet.mp4  acc=71.7%  transitions=10  cycle=23ms  (33.7s)
+[29/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000001_21270_snippet.mp4  acc=59.5%  transitions=6  cycle=22ms  (33.9s)
+[30/208] boston_21cce96047dc491bb61f281b08c02569_000002_09990_snippet.mp4  acc=81.5%  transitions=4  cycle=23ms  (33.7s)
+[31/208] boston_41d35d7ce585406aad2c2b1c8043e340_000000_07290_snippet.mp4  acc=75.4%  transitions=6  cycle=22ms  (33.9s)
+[32/208] boston_2bdb5a72602342a5991b402beb8b7ab4_000000_23160_snippet.mp4  acc=81.2%  transitions=6  cycle=22ms  (34.0s)
+[33/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000000_18180_snippet.mp4  acc=74.0%  transitions=8  cycle=23ms  (33.7s)
+[34/208] boston_4ac05b2379194b7a91e84368b8fd200d_000004_14670_snippet.mp4  acc=53.8%  transitions=12  cycle=21ms  (33.9s)
+[35/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000000_10770_snippet.mp4  acc=59.5%  transitions=6  cycle=22ms  (34.0s)
+[36/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02160_snippet.mp4  acc=38.9%  transitions=7  cycle=22ms  (33.8s)
+[37/208] seattle_04cdadc91fc343c99670be0478aedff9_000001_15930_snippet.mp4  acc=83.4%  transitions=6  cycle=21ms  (34.1s)
+[38/208] boston_344db257af864142a18c582228d2920a_000002_15030_snippet.mp4  acc=75.7%  transitions=4  cycle=22ms  (33.8s)
+[39/208] boston_344db257af864142a18c582228d2920a_000003_00270_snippet.mp4  acc=74.8%  transitions=6  cycle=23ms  (33.8s)
+[40/208] boston_21cce96047dc491bb61f281b08c02569_000003_19200_snippet.mp4  acc=77.1%  transitions=6  cycle=23ms  (33.8s)
+[41/208] boston_41d35d7ce585406aad2c2b1c8043e340_000000_07320_snippet.mp4  acc=77.9%  transitions=6  cycle=22ms  (33.9s)
+[42/208] seattle_058413b03fa54cf9b28ddc89dda3bca5_000002_23640_snippet.mp4  acc=49.9%  transitions=6  cycle=22ms  (30.3s)
+[43/208] seattle_3bbd7b04f14c40a68c82daeb81d5e492_000002_02850_snippet.mp4  acc=63.2%  transitions=8  cycle=22ms  (33.9s)
+[44/208] boston_344db257af864142a18c582228d2920a_000002_00840_snippet.mp4  acc=27.2%  transitions=9  cycle=22ms  (34.0s)
+[45/208] seattle_04cdadc91fc343c99670be0478aedff9_000003_07230_snippet.mp4  acc=53.6%  transitions=6  cycle=24ms  (33.6s)
+[46/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000000_19170_snippet.mp4  acc=41.7%  transitions=8  cycle=22ms  (33.8s)
+[47/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_03300_snippet.mp4  acc=47.1%  transitions=10  cycle=24ms  (33.7s)
+[48/208] boston_344db257af864142a18c582228d2920a_000002_00900_snippet.mp4  acc=32.1%  transitions=10  cycle=22ms  (33.9s)
+[49/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000001_20220_snippet.mp4  acc=43.7%  transitions=6  cycle=23ms  (33.8s)
+[50/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000000_19260_snippet.mp4  acc=46.2%  transitions=8  cycle=22ms  (33.9s)
+[51/208] boston_042e1caf93114d3286c11ba14ddaa759_000001_00210_snippet.mp4  acc=76.2%  transitions=4  cycle=22ms  (33.9s)
+[52/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02280_snippet.mp4  acc=32.7%  transitions=9  cycle=23ms  (34.0s)
+[53/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_07800_snippet.mp4  acc=78.6%  transitions=6  cycle=22ms  (33.9s)
+[54/208] boston_4ac05b2379194b7a91e84368b8fd200d_000003_03030_snippet.mp4  acc=76.9%  transitions=4  cycle=22ms  (33.9s)
+[55/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000002_17760_snippet.mp4  acc=80.1%  transitions=4  cycle=22ms  (34.0s)
+[56/208] boston_4ac05b2379194b7a91e84368b8fd200d_000000_12990_snippet.mp4  acc=85.9%  transitions=4  cycle=21ms  (34.0s)
+[57/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000004_05490_snippet.mp4  acc=58.4%  transitions=4  cycle=22ms  (34.0s)
+[58/208] boston_7b34288a75284083a1d9174adcf34be4_000009_12600_snippet.mp4  acc=66.9%  transitions=8  cycle=22ms  (33.9s)
+[59/208] boston_7b34288a75284083a1d9174adcf34be4_000001_02670_snippet.mp4  acc=58.8%  transitions=7  cycle=22ms  (33.9s)
+[60/208] boston_7b34288a75284083a1d9174adcf34be4_000010_08340_snippet.mp4  acc=69.2%  transitions=4  cycle=21ms  (34.0s)
+[61/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000002_12780_snippet.mp4  acc=68.4%  transitions=6  cycle=22ms  (33.9s)
+[62/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_02100_snippet.mp4  acc=77.9%  transitions=4  cycle=22ms  (34.2s)
+[63/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000001_11220_snippet.mp4  acc=83.1%  transitions=4  cycle=21ms  (34.2s)
+[64/208] boston_6f6b6d546957437fbb153b7e78c4514a_000000_07710_snippet.mp4  acc=42.7%  transitions=6  cycle=23ms  (33.7s)
+[65/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000000_04620_snippet.mp4  acc=63.3%  transitions=6  cycle=23ms  (33.8s)
+[66/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_17160_snippet.mp4  acc=66.4%  transitions=4  cycle=23ms  (33.8s)
+[67/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000002_17730_snippet.mp4  acc=78.7%  transitions=4  cycle=22ms  (34.0s)
+[68/208] boston_21cce96047dc491bb61f281b08c02569_000003_19170_snippet.mp4  acc=75.7%  transitions=6  cycle=23ms  (33.8s)
+[69/208] boston_042e1caf93114d3286c11ba14ddaa759_000001_13350_snippet.mp4  acc=64.1%  transitions=4  cycle=22ms  (33.9s)
+[70/208] boston_042e1caf93114d3286c11ba14ddaa759_000001_13380_snippet.mp4  acc=60.8%  transitions=4  cycle=22ms  (33.9s)
+[71/208] boston_4ac05b2379194b7a91e84368b8fd200d_000000_18270_snippet.mp4  acc=72.3%  transitions=4  cycle=22ms  (34.0s)
+[72/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000002_07830_snippet.mp4  acc=72.5%  transitions=8  cycle=22ms  (33.9s)
+[73/208] boston_21cce96047dc491bb61f281b08c02569_000003_19140_snippet.mp4  acc=77.6%  transitions=6  cycle=22ms  (33.8s)
+[74/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000001_21120_snippet.mp4  acc=57.2%  transitions=4  cycle=21ms  (34.0s)
+[75/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000001_11100_snippet.mp4  acc=76.9%  transitions=4  cycle=21ms  (34.1s)
+[76/208] boston_7b34288a75284083a1d9174adcf34be4_000006_14160_snippet.mp4  acc=93.1%  transitions=2  cycle=22ms  (33.8s)
+[77/208] boston_21cce96047dc491bb61f281b08c02569_000005_04410_snippet.mp4  acc=86.6%  transitions=4  cycle=22ms  (33.9s)
+[78/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_13800_snippet.mp4  acc=63.6%  transitions=4  cycle=22ms  (33.9s)
+[79/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000000_13800_snippet.mp4  acc=74.7%  transitions=4  cycle=21ms  (33.9s)
+[80/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000003_17070_snippet.mp4  acc=36.2%  transitions=4  cycle=22ms  (33.9s)
+[81/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000006_02850_snippet.mp4  acc=49.7%  transitions=12  cycle=23ms  (33.6s)
+[82/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_02250_snippet.mp4  acc=36.7%  transitions=9  cycle=22ms  (33.8s)
+[83/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_14490_snippet.mp4  acc=29.4%  transitions=9  cycle=23ms  (33.6s)
+[84/208] boston_042e1caf93114d3286c11ba14ddaa759_000001_03570_snippet.mp4  acc=63.0%  transitions=2  cycle=21ms  (34.1s)
+[85/208] boston_2bdb5a72602342a5991b402beb8b7ab4_000000_23010_snippet.mp4  acc=81.8%  transitions=6  cycle=22ms  (33.8s)
+[86/208] boston_7b34288a75284083a1d9174adcf34be4_000000_06570_snippet.mp4  acc=74.0%  transitions=6  cycle=22ms  (33.9s)
+[87/208] seattle_7922c49d982c424183c69b803d0208eb_000000_23250_snippet.mp4  acc=71.3%  transitions=8  cycle=22ms  (33.8s)
+[88/208] seattle_3bbd7b04f14c40a68c82daeb81d5e492_000000_21360_snippet.mp4  acc=84.0%  transitions=4  cycle=22ms  (33.9s)
+[89/208] seattle_7922c49d982c424183c69b803d0208eb_000000_18270_snippet.mp4  acc=28.4%  transitions=13  cycle=22ms  (33.8s)
+[90/208] seattle_7922c49d982c424183c69b803d0208eb_000003_20910_snippet.mp4  acc=3.4%  transitions=9  cycle=23ms  (33.8s)
+[91/208] seattle_04cdadc91fc343c99670be0478aedff9_000002_20970_snippet.mp4  acc=88.2%  transitions=4  cycle=22ms  (33.8s)
+[92/208] seattle_04eaf53df027407cb8f4c3a7aa806442_000001_06720_snippet.mp4  acc=90.1%  transitions=2  cycle=24ms  (33.5s)
+[93/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_08730_snippet.mp4  acc=79.1%  transitions=7  cycle=23ms  (33.7s)
+[94/208] boston_4ac05b2379194b7a91e84368b8fd200d_000001_07530_snippet.mp4  acc=6.0%  transitions=15  cycle=25ms  (33.5s)
+[95/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_21930_snippet.mp4  acc=29.0%  transitions=9  cycle=26ms  (33.3s)
+[96/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000000_15420_snippet.mp4  acc=86.6%  transitions=2  cycle=24ms  (33.6s)
+[97/208] boston_344db257af864142a18c582228d2920a_000003_03030_snippet.mp4  acc=42.7%  transitions=12  cycle=23ms  (33.8s)
+[98/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_22320_snippet.mp4  acc=42.9%  transitions=10  cycle=25ms  (33.4s)
+[99/208] seattle_04cdadc91fc343c99670be0478aedff9_000001_08910_snippet.mp4  acc=65.8%  transitions=9  cycle=22ms  (34.0s)
+[100/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_18780_snippet.mp4  acc=71.7%  transitions=6  cycle=21ms  (34.1s)
+[101/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_12720_snippet.mp4  acc=81.9%  transitions=6  cycle=21ms  (34.0s)
+[102/208] seattle_04cdadc91fc343c99670be0478aedff9_000000_21120_snippet.mp4  acc=34.2%  transitions=10  cycle=22ms  (34.0s)
+[103/208] boston_6f6b6d546957437fbb153b7e78c4514a_000001_14670_snippet.mp4  acc=71.4%  transitions=6  cycle=23ms  (33.7s)
+[104/208] boston_344db257af864142a18c582228d2920a_000001_20100_snippet.mp4  acc=75.4%  transitions=2  cycle=22ms  (33.9s)
+[105/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21630_snippet.mp4  acc=77.0%  transitions=2  cycle=22ms  (33.9s)
+[106/208] boston_4d91f8efe4d44a4694ecb0e440c74dc4_000000_05970_snippet.mp4  acc=84.2%  transitions=5  cycle=21ms  (34.1s)
+[107/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000000_21270_snippet.mp4  acc=83.0%  transitions=8  cycle=21ms  (34.1s)
+[108/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000003_05670_snippet.mp4  acc=71.7%  transitions=6  cycle=21ms  (33.9s)
+[109/208] seattle_04cdadc91fc343c99670be0478aedff9_000001_23850_snippet.mp4  acc=22.4%  transitions=4  cycle=21ms  (22.4s)
+[110/208] seattle_3bbd7b04f14c40a68c82daeb81d5e492_000003_04020_snippet.mp4  acc=65.3%  transitions=10  cycle=22ms  (33.9s)
+[111/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_12900_snippet.mp4  acc=86.4%  transitions=6  cycle=22ms  (33.8s)
+[112/208] boston_2bdb5a72602342a5991b402beb8b7ab4_000001_18390_snippet.mp4  acc=67.8%  transitions=4  cycle=21ms  (34.0s)
+[113/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_16350_snippet.mp4  acc=71.3%  transitions=4  cycle=23ms  (33.6s)
+[114/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000002_09720_snippet.mp4  acc=49.8%  transitions=4  cycle=21ms  (34.1s)
+[115/208] boston_6f6b6d546957437fbb153b7e78c4514a_000001_14850_snippet.mp4  acc=47.6%  transitions=6  cycle=23ms  (33.6s)
+[116/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21570_snippet.mp4  acc=76.1%  transitions=4  cycle=22ms  (33.9s)
+[117/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_18420_snippet.mp4  acc=32.0%  transitions=10  cycle=24ms  (33.7s)
+[118/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000004_00810_snippet.mp4  acc=88.2%  transitions=4  cycle=22ms  (34.0s)
+[119/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_08520_snippet.mp4  acc=0.0%  transitions=2  cycle=25ms  (33.5s)
+[120/208] boston_21cce96047dc491bb61f281b08c02569_000001_19170_snippet.mp4  acc=26.0%  transitions=8  cycle=24ms  (33.5s)
+[121/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_15960_snippet.mp4  acc=76.6%  transitions=4  cycle=21ms  (34.0s)
+[122/208] seattle_04cdadc91fc343c99670be0478aedff9_000001_01500_snippet.mp4  acc=42.3%  transitions=4  cycle=20ms  (34.2s)
+[123/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_23640_snippet.mp4  acc=29.8%  transitions=5  cycle=23ms  (30.2s)
+[124/208] boston_3d896c9c53dd4852b3f4d9bff20602df_000000_13920_snippet.mp4  acc=26.5%  transitions=8  cycle=23ms  (33.7s)
+[125/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_15570_snippet.mp4  acc=47.8%  transitions=6  cycle=23ms  (33.8s)
+[126/208] boston_344db257af864142a18c582228d2920a_000003_00780_snippet.mp4  acc=82.2%  transitions=4  cycle=22ms  (33.9s)
+[127/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_17820_snippet.mp4  acc=43.8%  transitions=8  cycle=24ms  (33.6s)
+[128/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000004_15540_snippet.mp4  acc=51.3%  transitions=13  cycle=23ms  (33.7s)
+[129/208] seattle_04cdadc91fc343c99670be0478aedff9_000002_00360_snippet.mp4  acc=59.8%  transitions=10  cycle=21ms  (34.0s)
+[130/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_03930_snippet.mp4  acc=75.8%  transitions=7  cycle=21ms  (34.0s)
+[131/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21780_snippet.mp4  acc=66.5%  transitions=4  cycle=22ms  (33.9s)
+[132/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000003_04560_snippet.mp4  acc=89.5%  transitions=2  cycle=20ms  (34.3s)
+[133/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000003_23340_snippet.mp4  acc=53.3%  transitions=16  cycle=23ms  (33.7s)
+[134/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21690_snippet.mp4  acc=77.1%  transitions=3  cycle=22ms  (33.9s)
+[135/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_17700_snippet.mp4  acc=50.1%  transitions=4  cycle=23ms  (33.7s)
+[136/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000002_00210_snippet.mp4  acc=86.8%  transitions=4  cycle=21ms  (34.1s)
+[137/208] seattle_7922c49d982c424183c69b803d0208eb_000002_19470_snippet.mp4  acc=72.0%  transitions=12  cycle=23ms  (33.8s)
+[138/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000010_05040_snippet.mp4  acc=59.4%  transitions=7  cycle=24ms  (33.7s)
+[139/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000003_03870_snippet.mp4  acc=49.2%  transitions=2  cycle=21ms  (34.1s)
+[140/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000001_23610_snippet.mp4  acc=32.5%  transitions=5  cycle=23ms  (31.3s)
+[141/208] seattle_51db45759c024d419f21fc0d33840c5e_000000_02400_snippet.mp4  acc=24.4%  transitions=2  cycle=22ms  (34.0s)
+[142/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_07620_snippet.mp4  acc=58.6%  transitions=2  cycle=22ms  (33.9s)
+[143/208] boston_6f6b6d546957437fbb153b7e78c4514a_000001_14700_snippet.mp4  acc=67.4%  transitions=6  cycle=23ms  (33.7s)
+[144/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_12420_snippet.mp4  acc=86.0%  transitions=3  cycle=21ms  (34.0s)
+[145/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000003_18390_snippet.mp4  acc=44.0%  transitions=12  cycle=23ms  (33.8s)
+[146/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21660_snippet.mp4  acc=77.8%  transitions=2  cycle=22ms  (33.9s)
+[147/208] boston_7b34288a75284083a1d9174adcf34be4_000007_05550_snippet.mp4  acc=34.1%  transitions=2  cycle=22ms  (33.9s)
+[148/208] seattle_3bbd7b04f14c40a68c82daeb81d5e492_000003_05010_snippet.mp4  acc=69.5%  transitions=10  cycle=22ms  (33.8s)
+[149/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000009_00240_snippet.mp4  acc=32.3%  transitions=15  cycle=23ms  (33.8s)
+[150/208] boston_344db257af864142a18c582228d2920a_000001_22260_snippet.mp4  acc=96.8%  transitions=4  cycle=22ms  (34.0s)
+[151/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000001_05130_snippet.mp4  acc=77.8%  transitions=5  cycle=22ms  (33.9s)
+[152/208] seattle_04cdadc91fc343c99670be0478aedff9_000001_15870_snippet.mp4  acc=78.6%  transitions=6  cycle=21ms  (34.2s)
+[153/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000006_01680_snippet.mp4  acc=44.2%  transitions=8  cycle=22ms  (33.9s)
+[154/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_14250_snippet.mp4  acc=61.9%  transitions=6  cycle=23ms  (33.8s)
+[155/208] boston_042e1caf93114d3286c11ba14ddaa759_000000_07800_snippet.mp4  acc=45.6%  transitions=5  cycle=24ms  (33.5s)
+[156/208] seattle_51db45759c024d419f21fc0d33840c5e_000001_07050_snippet.mp4  acc=56.8%  transitions=8  cycle=22ms  (33.9s)
+[157/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000002_09570_snippet.mp4  acc=67.0%  transitions=8  cycle=21ms  (34.0s)
+[158/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000003_00030_snippet.mp4  acc=99.9%  transitions=2  cycle=21ms  (34.1s)
+[159/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_16320_snippet.mp4  acc=69.6%  transitions=4  cycle=23ms  (33.6s)
+[160/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000001_18090_snippet.mp4  acc=85.3%  transitions=4  cycle=21ms  (34.1s)
+[161/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000005_04200_snippet.mp4  acc=93.0%  transitions=4  cycle=21ms  (34.1s)
+[162/208] boston_344db257af864142a18c582228d2920a_000003_00810_snippet.mp4  acc=90.1%  transitions=4  cycle=22ms  (33.9s)
+[163/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_03540_snippet.mp4  acc=65.5%  transitions=4  cycle=22ms  (33.9s)
+[164/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_16380_snippet.mp4  acc=74.3%  transitions=4  cycle=23ms  (33.6s)
+[165/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000003_05970_snippet.mp4  acc=52.3%  transitions=4  cycle=23ms  (33.9s)
+[166/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000006_00660_snippet.mp4  acc=88.5%  transitions=8  cycle=22ms  (34.0s)
+[167/208] seattle_058413b03fa54cf9b28ddc89dda3bca5_000002_12570_snippet.mp4  acc=40.1%  transitions=6  cycle=22ms  (34.0s)
+[168/208] boston_7fc8c152a8714a31ad7fbf41db2adead_000003_21810_snippet.mp4  acc=69.9%  transitions=4  cycle=22ms  (33.9s)
+[169/208] boston_21cce96047dc491bb61f281b08c02569_000004_03390_snippet.mp4  acc=55.4%  transitions=12  cycle=23ms  (33.8s)
+[170/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000000_05940_snippet.mp4  acc=85.0%  transitions=4  cycle=22ms  (34.0s)
+[171/208] seattle_04eaf53df027407cb8f4c3a7aa806442_000002_11430_snippet.mp4  acc=99.9%  transitions=2  cycle=20ms  (34.2s)
+[172/208] boston_4ac05b2379194b7a91e84368b8fd200d_000003_11340_snippet.mp4  acc=45.1%  transitions=18  cycle=24ms  (33.6s)
+[173/208] boston_6f6b6d546957437fbb153b7e78c4514a_000000_05520_snippet.mp4  acc=26.6%  transitions=12  cycle=23ms  (33.7s)
+[174/208] boston_10cb4a5e9c0740c8a6ff092bae0d4873_000001_22020_snippet.mp4  acc=72.9%  transitions=4  cycle=21ms  (34.2s)
+[175/208] boston_2bdb5a72602342a5991b402beb8b7ab4_000000_02640_snippet.mp4  acc=50.6%  transitions=11  cycle=24ms  (33.5s)
+[176/208] boston_4ac05b2379194b7a91e84368b8fd200d_000005_12360_snippet.mp4  acc=84.9%  transitions=2  cycle=21ms  (34.1s)
+[177/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000001_05190_snippet.mp4  acc=73.7%  transitions=5  cycle=22ms  (33.8s)
+[178/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000002_17670_snippet.mp4  acc=24.9%  transitions=11  cycle=22ms  (33.9s)
+[179/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000000_00030_snippet.mp4  acc=99.9%  transitions=2  cycle=20ms  (34.4s)
+[180/208] boston_344db257af864142a18c582228d2920a_000001_21840_snippet.mp4  acc=99.9%  transitions=2  cycle=21ms  (34.0s)
+[181/208] boston_21cce96047dc491bb61f281b08c02569_000000_05400_snippet.mp4  acc=37.2%  transitions=8  cycle=22ms  (33.9s)
+[182/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000003_20730_snippet.mp4  acc=36.9%  transitions=10  cycle=22ms  (34.0s)
+[183/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000003_04290_snippet.mp4  acc=56.6%  transitions=6  cycle=21ms  (34.0s)
+[184/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000006_01470_snippet.mp4  acc=67.9%  transitions=8  cycle=21ms  (34.1s)
+[185/208] boston_344db257af864142a18c582228d2920a_000002_16080_snippet.mp4  acc=49.2%  transitions=6  cycle=22ms  (33.9s)
+[186/208] seattle_3bbd7b04f14c40a68c82daeb81d5e492_000003_06750_snippet.mp4  acc=76.2%  transitions=10  cycle=23ms  (33.7s)
+[187/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_04740_snippet.mp4  acc=70.5%  transitions=10  cycle=22ms  (34.0s)
+[188/208] boston_344db257af864142a18c582228d2920a_000001_20310_snippet.mp4  acc=74.0%  transitions=2  cycle=22ms  (34.1s)
+[189/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000008_10140_snippet.mp4  acc=58.7%  transitions=4  cycle=21ms  (34.0s)
+[190/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000002_09210_snippet.mp4  acc=52.9%  transitions=14  cycle=23ms  (33.7s)
+[191/208] seattle_83d7f710e54b48f5a7730576be90ddfc_000003_04200_snippet.mp4  acc=72.4%  transitions=2  cycle=20ms  (34.3s)
+[192/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_14220_snippet.mp4  acc=68.3%  transitions=6  cycle=23ms  (33.8s)
+[193/208] boston_3a1d0e6ad25b4f5c8312639dc01c88da_000000_13500_snippet.mp4  acc=21.1%  transitions=8  cycle=23ms  (33.7s)
+[194/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000005_07050_snippet.mp4  acc=26.5%  transitions=6  cycle=22ms  (33.9s)
+[195/208] boston_6f6b6d546957437fbb153b7e78c4514a_000001_14880_snippet.mp4  acc=49.6%  transitions=6  cycle=23ms  (33.7s)
+[196/208] seattle_04cdadc91fc343c99670be0478aedff9_000003_12030_snippet.mp4  acc=71.7%  transitions=4  cycle=23ms  (33.7s)
+[197/208] boston_2bdb5a72602342a5991b402beb8b7ab4_000001_18420_snippet.mp4  acc=68.8%  transitions=4  cycle=21ms  (34.1s)
+[198/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11820_snippet.mp4  acc=29.9%  transitions=6  cycle=24ms  (33.7s)
+[199/208] boston_2bdb5a72602342a5991b402beb8b7ab4_000001_00480_snippet.mp4  acc=70.1%  transitions=6  cycle=23ms  (33.8s)
+[200/208] seattle_11a6d1c0ae1944ec9bfe1ef71377be7a_000004_05190_snippet.mp4  acc=31.7%  transitions=4  cycle=21ms  (34.2s)
+[201/208] seattle_04eaf53df027407cb8f4c3a7aa806442_000002_10590_snippet.mp4  acc=75.5%  transitions=6  cycle=22ms  (34.0s)
+[202/208] seattle_058413b03fa54cf9b28ddc89dda3bca5_000001_22680_snippet.mp4  acc=0.1%  transitions=6  cycle=22ms  (33.9s)
+[203/208] boston_7b34288a75284083a1d9174adcf34be4_000007_08100_snippet.mp4  acc=64.0%  transitions=10  cycle=22ms  (33.9s)
+[204/208] seattle_0cd5195bd3784d9eada8e8bbcccfef1f_000001_10020_snippet.mp4  acc=37.6%  transitions=4  cycle=23ms  (33.7s)
+[205/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11550_snippet.mp4  acc=43.6%  transitions=8  cycle=23ms  (33.7s)
+[206/208] boston_2d8e13b1a8304d8395dcf6479ca61814_000004_11460_snippet.mp4  acc=45.2%  transitions=7  cycle=24ms  (33.7s)
+[207/208] boston_2dacdcbcc3bf42c28eeb08592fc2c325_000002_14190_snippet.mp4  acc=64.4%  transitions=6  cycle=23ms  (33.7s)
+[208/208] seattle_04eaf53df027407cb8f4c3a7aa806442_000000_22620_snippet.mp4  acc=63.1%  transitions=4  cycle=22ms  (33.9s)
+
+=== RESUMO (YOLO champion, YOLO+CLIP (full champion)) ===
+Acuracia por-frame agregada: 61.2%  (192135 frames em 208 videos)
+Ciclo medio de inferencia: 22ms
+
+--- Matriz de confusao (linha=verdade, coluna=previsto) ---
+GT\PRED          outside  approach    inside   exiting
+outside            57156     12104      6128       530
+approaching         4910      5822     24216       348
+inside              9498      5428     53758      1911
+exiting             6404      1476      1518       928
+
+--- Atraso de deteccao de transicao (frames a 30fps) ---
+approaching    media=202.3f (6.74s)  min=0  max=2257  perdidas=48/149
+inside         media=238.5f (7.95s)  min=7  max=638  perdidas=121/160
+exiting        media=33.8f (1.13s)  min=0  max=350  perdidas=65/119
+outside        media=98.4f (3.28s)  min=1  max=370  perdidas=67/96
+
+=== METRICAS NO FORMATO DO PAPER (arXiv:2606.08860) ===
+
+Acuracia por-frame (todos os 4 estados): 61.2%
+Macro F1: 0.439
+
+--- IoU por estado (Sec V.A) ---
+outside        IoU=0.591
+approaching    IoU=0.107
+inside         IoU=0.525
+exiting        IoU=0.071
+
+--- Precisao/Recall a nivel de EVENTO (Eq. 5-7) ---
+outside        precision=  61.7%  recall=  98.0%  (n_pred_events=514, n_gt_events=246)
+approaching    precision=  37.2%  recall=  69.2%  (n_pred_events=427, n_gt_events=182)
+inside         precision=  74.9%  recall=  96.2%  (n_pred_events=279, n_gt_events=185)
+exiting        precision=  30.1%  recall=  55.5%  (n_pred_events=226, n_gt_events=119)
+
+--- Erro de timing de entrada Delta_t (Eq. 8, frames a 30fps) ---
+outside        MAE=55.2f (1.84s)  mediana=35.0f (1.17s)  n=94
+approaching    MAE=46.5f (1.55s)  mediana=34.0f (1.13s)  n=95
+inside         MAE=140.6f (4.69s)  mediana=110.5f (3.68s)  n=154
+exiting        MAE=19.7f (0.66s)  mediana=10.5f (0.35s)  n=66
+overall        MAE=79.6f (2.65s)  mediana=45.0f (1.50s)  n=409
+
+--- Matching de transicao por janela de tolerancia (Table I) ---
+Tolerancia (f)    Precision     Recall   Accuracy
+               0     0.0057     0.0134     0.0040
+               5     0.0557     0.1317     0.0408
+              15     0.1236     0.2920     0.0951
+              30     0.1890     0.4466     0.1531

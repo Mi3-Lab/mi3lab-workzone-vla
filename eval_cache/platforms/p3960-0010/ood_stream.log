@@ -1,0 +1,19 @@
+WARNING ⚠️ Unable to automatically guess model task, assuming 'task=detect'. Explicitly define task for your model, i.e. 'task=detect', 'segment', 'classify','pose' or 'obb'.
+Loading /home/mi3thor/workzone/weights/yolo12s_hardneg_1280_960.engine for TensorRT inference...
+[10/29/2026-08:19:19] [TRT] [I] Loaded engine size: 21 MiB
+[10/29/2026-08:19:19] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +86, now: CPU 0, GPU 105 (MiB)
+CA50_Day_01: 180 s recorded, 1 approaches (123s)
+CA50_Day_02: 160 s recorded, 1 approaches (106s)
+CA99_Day_01: 78 s recorded, 1 approaches (51s)
+CA99_Day_02: 180 s recorded, 5 approaches (119s)
+CA99_Evening_01: 108 s recorded, 2 approaches (72s)
+CA99_Night_01: 180 s recorded, 2 approaches (120s)
+CA99_Night_02: 180 s recorded, 2 approaches (119s)
+CA99_Night_03: 62 s recorded, 4 approaches (42s)
+CA99_Night_04: 180 s recorded, 1 approaches (120s)
+Fresno_Sunset_01: 316 s recorded, 4 approaches (213s)
+Merced_Day_01: 360 s recorded, 5 approaches (236s)
+Merced_Day_02: 180 s recorded, 2 approaches (119s)
+Merced_NightRain_01: 540 s recorded, 4 approaches (352s)
+Merced_NightFog_01: 360 s recorded, 5 approaches (238s)
+done

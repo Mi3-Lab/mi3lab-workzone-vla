@@ -81,3 +81,7 @@ Not done (need GPU-hours or data not on this machine): counted filter on 2B evid
 |---|---|---|
 | replay vs live gap (20 videos: -0.07) | Live concurrent run on all 208 validation videos: joint 0.548 live vs 0.546 replay (+0.002 [-0.011, +0.020], drive-level), detector-only 0.522 vs 0.524. The 20-video gap was sampling noise. Partial mechanism seen on 20 videos: the 1.5 s age-bucket edge sits at the C3E answer period (7.6% of replay observations vs 0% live in the 1.5-4 s bucket); masking age gives the same full-set result (0.552 live vs 0.547 replay) | `pipeline/concurrent_vs_replay.py --live ~/eval_cache/concurrent_full` |
 | fine-tuning / benchmark overlap | ROADWork samples annotated images from the same drives as its videos (README of the dataset); text states this and why calibration effects are not inflated by it | `pipeline/check_finetune_overlap.py` (run on the A100 side with the fine-tuning manifest) |
+
+## DRIVE AGX Thor (2026-10-29)
+
+Five validation systems rerun on DRIVE AGX Thor (p3960-0010) with Orin-fitted constants and tables (`thor/06_run_experiments.sh`, results in `eval_cache/platforms/p3960-0010/`, compared by `thor/compare_platforms.py`). Model answers agree with the Orin on 96-100% of seconds; cycle-counted constants degrade (detector+CLIP -0.031 [-0.037, -0.023], C3E -0.042 [-0.055, -0.026], +21 and +41 FA/h) while the counted filter holds (+0.003 [-0.018, +0.028]). New paragraph "Another platform" in Sec. VIII.

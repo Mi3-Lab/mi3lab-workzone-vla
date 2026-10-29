@@ -43,3 +43,5 @@ __pycache__/
 /eval_cache/concurrent_smoke/
 /eval_cache/concurrent_preds.pkl
 /eval_cache/concurrent_tegra.marks
+/eval_cache/platforms/*/_invalid_*/
+/eval_cache/concurrent_full_preds.pkl

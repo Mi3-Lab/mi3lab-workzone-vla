@@ -1,0 +1,85 @@
+{
+ "checks": {
+  "2b_desc": "TTC sign on right sidewalk. Scene: Urban environment in boston, Sunny conditions, Light lighting. Lane status: partially blocked. Detected objects: 2 Temporary Traffic Control Sign(s). Overall",
+  "c3e_gate": "Yes."
+ },
+ "host": "tegra-ubuntu",
+ "device": "p3960-0010",
+ "date": "2026-10-29T07:17:24",
+ "latency_2b": {
+  "GATE": {
+   "p50_ms": 85.88549,
+   "p95_ms": 88.2209792
+  },
+  "SIGN": {
+   "p50_ms": 98.207982,
+   "p95_ms": 99.3939328
+  },
+  "EGO": {
+   "p50_ms": 84.76781,
+   "p95_ms": 85.0349263
+  },
+  "DESC": {
+   "p50_ms": 303.91218,
+   "p95_ms": 305.5475921
+  }
+ },
+ "latency_c3e": {
+  "GATE": {
+   "p50_ms": 83.042228,
+   "p95_ms": 84.1441865
+  },
+  "SIGN": {
+   "p50_ms": 156.783893,
+   "p95_ms": 163.6333514
+  },
+  "EGO": {
+   "p50_ms": 89.139835,
+   "p95_ms": 89.3138275
+  },
+  "DESC": {
+   "p50_ms": 310.55314,
+   "p95_ms": 312.7071697
+  }
+ },
+ "regression_c3e": {
+  "seconds": 78,
+  "empty_replies": 0,
+  "agreement": {
+   "gate": 1.0,
+   "sign": 1.0,
+   "desc_corr": 0.9871794871794872
+  },
+  "wall_s": 49.11684182216413
+ },
+ "regression_yolo": {
+  "mean_abs_diff": 0.00012820512820512902,
+  "same_bucket": 1.0
+ },
+ "latency_yolo": {
+  "p50_ms": 16.371349105611444,
+  "p95_ms": 17.617422714829445
+ },
+ "status": [
+  [
+   "2B resposta",
+   "PASS",
+   "descreve elementos de obra"
+  ],
+  [
+   "C3E resposta",
+   "PASS",
+   "responde 'Yes' num frame com obra"
+  ],
+  [
+   "regress\u00e3o C3E",
+   "PASS",
+   "GATE concorda 100%"
+  ],
+  [
+   "regress\u00e3o detector",
+   "PASS",
+   "mesmo bucket em 100%"
+  ]
+ ]
+}
