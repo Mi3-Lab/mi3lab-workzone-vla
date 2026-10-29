@@ -59,6 +59,8 @@ def main():
                 color=navy, fontweight="bold")
     ax.annotate("1st", (2, 0.551), xytext=(0, 6), textcoords="offset points", ha="center", fontsize=6,
                 color=navy, fontweight="bold")
+    ax.annotate("0.453", (0, 0.453), xytext=(0, -8), textcoords="offset points", ha="center", fontsize=6,
+                color="#d9883b")
     ax.annotate("0.290", (0, 0.290), xytext=(6, 0), textcoords="offset points", va="center", fontsize=6,
                 color="#b03a2e")
 
