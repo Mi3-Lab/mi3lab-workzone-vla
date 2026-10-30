@@ -97,16 +97,16 @@ We operate four fixed-prompt channels with fixed token budgets (the first genera
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.85\linewidth]{fig_cascade.pdf}
-\caption{Evidence-first cascade.  In \textsc{outside}, \textsc{gate} and \textsc{sign} run every cycle and candidate evidence invokes \textsc{desc}.  Entry requires a sustained, corroborated vote or high-confidence same-cycle evidence.  In active states, \textsc{ego} drives a Bayesian filter; sustained gate clearance returns to \textsc{outside}, while partial fading triggers \textsc{exiting}.  Constants are calibrated per model: $5/3/4/2$ for the 2B and $3/3/2/1$ for C3E, so the structure transfers but the numbers do not.  Diagram values are the 2B's, with indicative latencies (measured values in \cref{sec:cost}).}
+\includegraphics[width=\linewidth]{fig_cascade.pdf}
+\caption{Evidence-first cascade.  In \textsc{outside}, \textsc{gate} and \textsc{sign} run every cycle and candidate evidence invokes \textsc{desc}.  Entry requires a sustained, corroborated vote or high-confidence same-cycle evidence.  In active states, \textsc{ego} drives a Bayesian filter; sustained gate clearance returns to \textsc{outside}, while partial fading triggers \textsc{exiting}.  The constants $N$, $K_\text{enter}$, $K_\text{exit}$, $K_\text{fade}$ are calibrated per model ($5/3/4/2$ for the 2B, $3/3/2/1$ for C3E): the structure transfers, the numbers do not.  Latencies are the 2B's measured p50 at 480px.}
 \label{fig:cascade}
 \end{figure}
 
-The cascade (\cref{fig:cascade}) allocates compute by state.
+The cascade (\cref{fig:cascade}) allocates compute by state.  In \textsc{outside}, \textsc{gate} and \textsc{sign} run every cycle (p95 259\,ms, 3.9\,Hz for the 2B) and either can invoke \textsc{desc}; fast entry on a transcribed ``\textsc{road work ahead}'' avoids a voting delay of up to $N$ cycles ($\sim$1.3\,s).  In active states, \textsc{ego} updates a Bayesian filter whose argmax is restricted to the active states, so one ``outside'' reply right after a sign-triggered entry cannot erase it; only sustained gate clearance returns to \textsc{outside}, and partial fading triggers \textsc{exiting}, which \textsc{ego} never produced.  The 2B's constants were fixed on calibration data; with \textsc{ego} disabled, as selected for C3E, \textsc{approaching} becomes \textsc{inside} on the transition prior, 13 cycles after entry.
 
-\textbf{Outside (patrol).}  \textsc{gate} and \textsc{sign} run every cycle (2B at 480px: p95 259\,ms, 3.9\,Hz), and either can invoke \textsc{desc}.  \textsc{approaching} is entered by vote (gate active in $K_\text{enter}$ of the last $N$ cycles plus one corroboration) or by fast entry on a lexicon-matching sign or same-cycle gate+\textsc{desc} agreement, which avoids a delay of up to $N$ cycles ($\sim$1.3\,s for the 2B) for evidence such as ``\textsc{road work ahead}.''
 
-\textbf{Active states.}  \textsc{ego} updates a Bayesian filter whose argmax is restricted to the active states, so that one ``outside'' reply right after a sign-triggered entry cannot erase it.  Only sustained gate clearance returns to \textsc{outside}; partial fading triggers \textsc{exiting}, which \textsc{ego} never produced.  \textsc{desc} refreshes every 1.5\,s.  The 2B's thresholds ($N{=}5$, $K_\text{enter}{=}3$, $K_\text{exit}{=}4$, $K_\text{fade}{=}2$) were fixed on calibration data; C3E gets its own (\cref{sec:worldmodel}).  With \textsc{ego} disabled, as selected for C3E, \textsc{approaching} becomes \textsc{inside} on the transition prior alone, 13 cycles after entry.
+
+
 
 \subsection{Joint estimator over both evidence streams}
 \label{sec:jointdesign}
@@ -172,7 +172,7 @@ Lead@20 & 28.7 & 60.6 & \textbf{71.9} & 42.5 & 45.6 & 61.9 \\
 \subsection{Ablations and design validation}
 \label{sec:ablations}
 
-\Cref{tab:abl} toggles one component at a time from the sampled cascade (first row); five of seven change macro-F1 by at most 0.02.  The sign channel must transcribe: an equal-cost binary question cuts accuracy from 62.5\% to 52.5\% and raises false alarms fivefold.  Greedy decoding costs 0.5 accuracy points but improves precision and alarms, so we use it as the reproducible default.  The qualifier filter adds 2.2 points and removes 9.6 alarms per hour.  Fast entry buys anticipation, 10 more points of onsets warned $\geq$2\,s ahead, for 26 more alarms per hour.  The base checkpoint collapses under the 2B's thresholds (\cref{sec:worldmodel}).
+\Cref{tab:abl} toggles one component at a time from the sampled cascade (first row); only binary \textsc{sign}, the qualifier filter and the unrestricted filter change macro-F1 significantly (drive-level 95\% CIs), and none by more than 0.06.  The sign channel must transcribe: an equal-cost binary question cuts accuracy from 62.5\% to 52.5\% and raises false alarms fivefold.  Greedy decoding costs 0.5 accuracy points but improves precision and alarms, so we use it as the reproducible default.  Fast entry buys anticipation, 10 more points of onsets warned $\geq$2\,s ahead, for 26 more alarms per hour.  The base checkpoint collapses under the 2B's thresholds (\cref{sec:worldmodel}).
 
 \begin{table}[t]
 \centering
@@ -219,7 +219,7 @@ The same search moves the fine-tuned 2B by only +0.006 (0.453$\to$0.459): it res
 
 \paragraph{The baseline too.}  The detector pipeline deserves the same treatment.  We record every component on every cycle of all 520 videos (detector counts before and after CLIP verification, global CLIP and colour-context scores) and replay the complete pipeline; its hand-tuned configuration reproduces the live run (0.473 vs.\ 0.470).  Searching its thresholds, EMA rate and duration limits on the 312 calibration videos (three grids of 4{,}800 configurations) raises validation macro-F1 from 0.470 to 0.551 ($+0.081$, $[+0.043,+0.111]$), with 92.5\% \textsc{inside} precision at 20.2 false alarms per hour: the strongest system we measure.  On the detector score alone, without CLIP, the same search gives 0.435$\to$0.530.
 
-The procedure also isolates what fine-tuning buys: recalibrated on its own evidence, the base checkpoint reaches 0.383 on the search videos against 0.496 for the fine-tuned model, not the collapse it shows under the fine-tuned model's thresholds.
+The procedure also isolates what fine-tuning buys: recalibrated on its own evidence and scored on held-out drives of the search videos, the base checkpoint reaches 0.377 against 0.493 for the fine-tuned model ($+0.117$, $[+0.039,+0.185]$), not its collapse under the fine-tuned thresholds.
 
 All choices are made on calibration data, VLM thresholds on the 100 videos with recorded VLM evidence and detector thresholds and counted tables on all 312, so the budgets favour the detector.  Given the VLM's budget (one grid, the same 100 videos), the recalibrated pipeline still reaches 0.522, $+0.052$ over its hand-tuned version ($[+0.038,+0.070]$) and level with C3E.
 
