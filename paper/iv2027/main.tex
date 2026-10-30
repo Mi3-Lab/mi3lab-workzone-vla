@@ -180,6 +180,7 @@ C3E: 2B's$\to$own & 0.290$\to$0.515 & & \\
 \quad held-out drives$^a$ & 0.268$\to$0.485 & $+0.217^\dagger$ {\tiny$[+0.190,+0.244]$} & $+12.9^\dagger$ \\
 2B base$\to$fine-tuned$^b$ & 0.377$\to$0.493 & $+0.117^\dagger$ {\tiny$[+0.039,+0.185]$} & \\
 2B original$\to$recal. & 0.453$\to$0.459 & $+0.006$ & \\
+\quad held-out drives$^a$ & 0.464$\to$0.490 & $+0.025^\dagger$ {\tiny$[+0.001,+0.049]$} & $+6.3$ \\
 \midrule
 \multicolumn{4}{@{}l}{\emph{Baseline}} \\
 Det.+CLIP hand$\to$recal. & 0.470$\to$0.551 & $+0.081^\dagger$ {\tiny$[+0.043,+0.111]$} & \\
@@ -292,7 +293,7 @@ The joint estimator ties the recalibrated pipeline, trading precision for recall
 
 \paragraph{Unseen drives.}  The conclusions hold on drives a system was never fitted on.  Splitting the 25 drives into five folds of about 104 videos, we refit the detector state machines (full three-grid search) and the counted filters on four folds and replay them on the fifth (\cref{tab:paired}).  Recalibration still raises the detector+CLIP pipeline and the detector-score state machine significantly, by 0.054 and 0.089 macro-F1, and both counted filters tie the recalibrated pipeline.
 
-The model finding holds on unseen drives too.  With per-channel evidence now recorded for all 312 calibration videos, we search C3E's constants on four of the same drive folds and replay them on the fifth (60--68 test videos).  Every fold selects this paper's constants, except the \textsc{sign} switch in one fold.  On held-out drives they lift C3E significantly over the 2B's constants, from 0.268 to 0.485 macro-F1, at 12.9 more false alarms per hour (\cref{tab:paired}).
+The model finding holds on unseen drives too.  With per-channel evidence now recorded for all 312 calibration videos, we search each VLM's constants on four of the same drive folds and replay them on the fifth (60--68 test videos).  For C3E, every fold selects this paper's constants, except the \textsc{sign} switch in one fold; on held-out drives they lift it significantly over the 2B's constants, from 0.268 to 0.485 macro-F1, at 12.9 more false alarms per hour.  The same search moves the fine-tuned 2B only slightly over its own constants ($+0.025$, from 0.464 to 0.490): constants matter most when inherited from another model (\cref{tab:paired}).
 
 \paragraph{Matched nuisance.}  The calibrated systems also lead when all systems run at the same false-alarm rate.  Their native rates differ widely (\cref{tab:main}), so we apply the persistence filter of \cref{sec:protocol} to all, until false alarms fall to 20 per hour.  On unseen drives, the recalibrated pipeline, the joint estimator and the counted detector filter then keep 0.52--0.54 macro-F1, against 0.42 for the hand-tuned pipeline (F1@20 on validation: \cref{tab:main}).  Matching nuisance also reorders anticipation (Lead@20 in \cref{tab:main}).  The VLM systems and the recalibrated pipeline need a longer persistence, which delays their warnings, while the counted detector filter needs the shortest one and most often warns early.
 
@@ -319,7 +320,7 @@ C3E, never fine-tuned (gate ``yes'' on 29.4\% of \textsc{outside} seconds, balan
 \section{Limitations}
 \label{sec:limitations}
 
-Two limits bound our claims.  \emph{(i)} All footage is ROADWork daytime driving; the 2B cascade is not refit per drive fold, and its fine-tuning images may share drives with the benchmark (\cref{sec:protocol}).  \emph{(ii)} Replay is open-loop: we show computational feasibility, not safety readiness.
+Two limits bound our claims.  \emph{(i)} All footage is ROADWork daytime driving, and the 2B's fine-tuning images may share drives with the benchmark (\cref{sec:protocol}).  \emph{(ii)} Replay is open-loop: we show computational feasibility, not safety readiness.
 
 \section{Conclusion}
 \label{sec:conclusion}

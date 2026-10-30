@@ -97,6 +97,10 @@ L.~Chen, M.~Zaharia, and J.~Zou, ``{FrugalGPT}: How to use large language
   models while reducing cost and improving performance,'' \emph{arXiv preprint
   arXiv:2305.05176}, 2023.
 
+\bibitem{melis2018state}
+G.~Melis, C.~Dyer, and P.~Blunsom, ``On the state of the art of evaluation in
+  neural language models,'' in \emph{Proc. ICLR}, 2018.
+
 \bibitem{rabiner1989hmm}
 L.~R. Rabiner, ``A tutorial on hidden {Markov} models and selected applications
   in speech recognition,'' \emph{Proceedings of the IEEE}, vol.~77, no.~2, pp.
@@ -105,10 +109,6 @@ L.~R. Rabiner, ``A tutorial on hidden {Markov} models and selected applications
 \bibitem{thrun2005probabilistic}
 S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic Robotics}.\hskip 1em plus
   0.5em minus 0.4em\relax MIT Press, 2005.
-
-\bibitem{melis2018state}
-G.~Melis, C.~Dyer, and P.~Blunsom, ``On the state of the art of evaluation in
-  neural language models,'' in \emph{Proc. ICLR}, 2018.
 
 \bibitem{qwen3vl}
 {Qwen Team}, ``{Qwen3-VL}: A versatile vision-language model series,''
