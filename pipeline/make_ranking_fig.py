@@ -55,7 +55,7 @@ def main():
 
     # the detector's rank among the systems in each regime
     navy = SYS[0][2]
-    ax.annotate("4th", (1, 0.470), xytext=(0, 5), textcoords="offset points", ha="center", fontsize=6,
+    ax.annotate("4th", (1, 0.470), xytext=(-6, 4), textcoords="offset points", ha="right", fontsize=6,
                 color=navy, fontweight="bold")
     ax.annotate("1st", (2, 0.551), xytext=(0, 6), textcoords="offset points", ha="center", fontsize=6,
                 color=navy, fontweight="bold")

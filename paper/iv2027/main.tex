@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-Temporal smoothing constants are a hidden variable that decides comparisons between embedded perception models and between platforms, yet comparisons usually keep each system's published constants.  We run a fine-tuned 2B vision-language model (VLM), a zero-shot 4B reasoner (C3E) and a detector+CLIP pipeline on ROADWork work-zone driving on a Jetson AGX Orin and a DRIVE AGX Thor, letting measured latency drop camera frames.  First, constants do not transfer between models: inherited from the fine-tuned VLM, they leave C3E at macro-F1 0.290; recalibrated, it reaches 0.515, and the gap holds on unseen drives.  Second, the baseline needs the same treatment: recalibrated, it rises from 0.470 to 0.551, no VLM-based system beats it, and a counted hidden-Markov filter on its detector score alone is not significantly worse.  Third, constants do not reliably transfer between platforms: on the Thor, carried-over constants cost the hand-tuned pipeline and C3E 0.03--0.04 macro-F1.  The recalibrated pipeline and the per-second counted filters keep their macro-F1 there, but the pipeline gains 15 false alarms per hour while the detector-only filter loses 4.  The first two findings hold on drive-disjoint folds and at matched false-alarm rates, and live runs reproduce the replay.
+Temporal smoothing constants are a hidden variable that decides comparisons between embedded perception models and between platforms, yet comparisons usually keep each system's published constants.  We run a fine-tuned 2B vision-language model (VLM), a zero-shot 4B reasoner (C3E) and a detector+CLIP pipeline on ROADWork work-zone driving on a Jetson AGX Orin and a DRIVE AGX Thor, letting measured latency drop camera frames.  First, constants do not transfer between models: inherited from the fine-tuned VLM, they leave C3E at macro-F1 0.290; recalibrated, it reaches 0.515, and the gap holds on unseen drives.  Second, the baseline needs the same treatment: recalibrated, it rises from 0.470 to 0.551, no VLM-based system beats it, and a counted hidden-Markov filter on its detector score alone is not significantly worse.  Third, constants do not reliably transfer between platforms: on the Thor, carried-over constants cost the hand-tuned pipeline and C3E 0.03--0.04 macro-F1.  The recalibrated pipeline and the per-second counted filters keep their macro-F1 there, but the pipeline raises 15 more false alarms per hour while the detector-only filter raises 4 fewer.  The first two findings hold on drive-disjoint folds and at matched false-alarm rates, and live runs reproduce the replay.
 \end{abstract}
 
 \section{Introduction}
@@ -51,7 +51,7 @@ Whether VLMs should replace detector pipelines is usually judged by comparing sy
 \label{fig:ranking}
 \end{figure}
 
-The answer is: mostly the temporal constants (\cref{fig:ranking}).  Against the hand-tuned detector pipeline our VLM-based systems look competitive or better, but calibrating the baseline by the same procedure reverses the ranking.  A team choosing a perception stack from the usual comparison would adopt a costlier VLM stack for a gain that disappears once the baseline is calibrated.  The VLM-based systems' edge shows on sign-led onsets: the joint estimator and C3E warned $\geq$2\,s ahead on all ten in validation, the recalibrated pipeline on eight; across all onsets at matched nuisance, the detector-only counted filter warns early most often.  Running C3E beside the detector adds only 5.5\,W.  A per-second counted filter on the detector score alone is not significantly worse than the best system in macro-F1, keeps it across platforms and raises the fewest false alarms on the Thor.
+The answer is: mostly the temporal constants (\cref{fig:ranking}).  Against the hand-tuned detector pipeline our VLM-based systems look competitive or better, but calibrating the baseline by the same procedure reverses the ranking.  A team choosing a perception stack from the usual comparison would adopt a costlier VLM stack for a gain that disappears once the baseline is calibrated.  On the ten sign-led validation onsets, the joint estimator and C3E warned $\geq$2\,s ahead on all ten and the recalibrated pipeline on eight; across all onsets at matched nuisance, the detector-only counted filter warns early most often.  Running C3E beside the detector adds only 5.5\,W.  A per-second counted filter on the detector score alone is not significantly worse than the best system in macro-F1, keeps it across platforms and raises the fewest false alarms on the Thor.
 
 The same variable decides comparisons between platforms.  On the faster Thor, constants counted in cycles span less time and can lose macro-F1; the recalibrated pipeline and per-second counted filters keep it, but their false alarms change in ways a macro-F1 search does not see.
 
@@ -202,16 +202,6 @@ Score recal.$\to$Det.\ cnt. & & & $-11.2^\dagger$ {\tiny$[-24.6,-2.1]$} \\
 \toprule
 A $\to$ B & F1 & $\Delta$F1 & $\Delta$FA/h \\
 \midrule
-\multicolumn{4}{@{}l}{\emph{2B cascade ablations}} \\
-Binary \textsc{sign} & 0.464$\to$0.407 & $-0.057^\dagger$ {\tiny$[-0.092,-0.026]$} & 60.1$\to$305.8 \\
-No qualifier filter & 0.464$\to$0.447 & $-0.017^\dagger$ {\tiny$[-0.029,-0.009]$} & \\
-Unrestricted filter & 0.464$\to$0.445 & $-0.019^\dagger$ {\tiny$[-0.043,-0.001]$} & \\
-\midrule
-\multicolumn{4}{@{}l}{\emph{Replay $\to$ live}} \\
-Joint, Orin & 0.546$\to$0.548 & $+0.002$ {\tiny$[-0.011,+0.020]$} & $+0.6$ {\tiny$[-4.7,+5.6]$} \\
-Det.+CLIP, hand, Orin & 0.473$\to$0.470 & & \\
-Det.+CLIP, hand, Thor & 0.442$\to$0.439 & & \\
-\midrule
 \multicolumn{4}{@{}l}{\emph{Orin $\to$ Thor, Orin constants}} \\
 Det.+CLIP, hand & 0.470$\to$0.439 & $-0.031^\dagger$ {\tiny$[-0.037,-0.023]$} & \\
 2B & 0.453$\to$0.446 & $-0.007$ {\tiny$[-0.021,+0.008]$} & \\
@@ -221,6 +211,17 @@ Joint & 0.546$\to$0.549 & $+0.003$ {\tiny$[-0.018,+0.028]$} & \\
 Det.\ counted$^r$ & 0.524$\to$0.522 & $-0.002$ {\tiny$[-0.005,0.000]$} & $-3.9^\dagger$ {\tiny$[-7.1,-1.4]$} \\
 Thor hand$\to$recal.$^r$ & 0.442$\to$0.541 & $+0.099^\dagger$ {\tiny$[+0.072,+0.119]$} & $-15.2$ \\
 Thor recal.$\to$Det.\ cnt.$^r$ & 0.541$\to$0.522 & $-0.019$ {\tiny$[-0.045,+0.007]$} & $-14.1^\dagger$ {\tiny$[-24.1,-3.6]$} \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Replay $\to$ live}} \\
+Joint, Orin & 0.546$\to$0.548 & $+0.002$ {\tiny$[-0.011,+0.020]$} & $+0.6$ {\tiny$[-4.7,+5.6]$} \\
+Det.\ counted, Orin & 0.524$\to$0.522 & & \\
+Det.+CLIP, hand, Orin & 0.473$\to$0.470 & & \\
+Det.+CLIP, hand, Thor & 0.442$\to$0.439 & & \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{2B cascade ablations}} \\
+Binary \textsc{sign} & 0.464$\to$0.407 & $-0.057^\dagger$ {\tiny$[-0.092,-0.026]$} & 60.1$\to$305.8 \\
+No qualifier filter & 0.464$\to$0.447 & $-0.017^\dagger$ {\tiny$[-0.029,-0.009]$} & \\
+Unrestricted filter & 0.464$\to$0.445 & $-0.019^\dagger$ {\tiny$[-0.043,-0.001]$} & \\
 \bottomrule
 \end{tabular}}
 \end{minipage}
@@ -263,7 +264,7 @@ Calibrating every system by the same replay procedure reverses the ranking of \c
 
 
 
-\paragraph{Temporal hyper-parameters do not transfer.}  With the 2B's constants, the zero-shot C3E almost never reaches \textsc{inside} (IoU 0.007, recall 3.8\%) and looks useless.  Recalibrating the same four integers and two switches lifts its \textsc{inside} IoU to 0.574 and its macro-F1 from 0.290 to 0.515, with model, prompts and videos unchanged (\cref{fig:timeline,tab:paired}).  The search covers $N\in\{3,5,7,9\}$, $K_\ast\in 1..N$ and the \textsc{ego}/\textsc{sign} switches (4{,}896 configurations on the 100 calibration videos with recorded VLM evidence; extending it to $N\in\{1,2,4\}$ leaves the optimum unchanged).  The optimum ($N{=}3$, $K{=}3/2/1$) is shorter and less hysteretic than the 2B's and disables \textsc{ego} (\cref{sec:analysis}).  Because each channel is recorded once and the state machine replayed, a sweep costs CPU-seconds instead of GPU-hours.
+\paragraph{Temporal hyper-parameters do not transfer.}  With the 2B's constants, the zero-shot C3E almost never reaches \textsc{inside} (IoU 0.007, recall 3.8\%) and looks useless.  Recalibrating the same four integers and two switches lifts its \textsc{inside} IoU to 0.574 and its macro-F1 from 0.290 to 0.515, with model, prompts and videos unchanged (\cref{fig:timeline,tab:paired}).  The search covers $N\in\{3,5,7,9\}$, $K_\ast\in 1..N$ and the \textsc{ego}/\textsc{sign} switches (4{,}896 configurations on the 100 calibration videos with recorded VLM evidence; extending it to $N\in\{1,2,4\}$ leaves the optimum unchanged).  The optimum ($N{=}3$, $K{=}3/2/1$) is shorter and less hysteretic than the 2B's and disables \textsc{ego}, and that switch carries most of the gain: on the 312 calibration videos, the 2B's integers with \textsc{ego} off already lift C3E from 0.268 to 0.459, while converting them to seconds of C3E's slower cycle leaves it at 0.28.  C3E's ego-lane answers are what fail (\cref{sec:analysis}), so the hidden variable is which evidence the temporal machinery trusts, not only how long it waits.  Because each channel is recorded once and the state machine replayed, a sweep costs CPU-seconds instead of GPU-hours.
 
 The same search moves the fine-tuned 2B by only +0.006: it rescues a model whose constants were wrong rather than rewarding flexibility.
 
@@ -295,7 +296,7 @@ The joint estimator ties the recalibrated pipeline, trading precision for recall
 
 The model finding holds on unseen drives too.  With per-channel evidence now recorded for all 312 calibration videos, we search each VLM's constants on four of the same drive folds and replay them on the fifth (60--68 test videos).  For C3E, every fold selects this paper's constants, except the \textsc{sign} switch in one fold; on held-out drives they lift it significantly over the 2B's constants, from 0.268 to 0.485 macro-F1, at 12.9 more false alarms per hour.  The same search moves the fine-tuned 2B only slightly over its own constants ($+0.025$, from 0.464 to 0.490): constants matter most when inherited from another model (\cref{tab:paired}).
 
-\paragraph{Matched nuisance.}  The calibrated systems also lead when all systems run at the same false-alarm rate.  Their native rates differ widely (\cref{tab:main}), so we apply the persistence filter of \cref{sec:protocol} to all, until false alarms fall to 20 per hour.  On unseen drives, the recalibrated pipeline, the joint estimator and the counted detector filter then keep 0.52--0.54 macro-F1, against 0.42 for the hand-tuned pipeline (F1@20 on validation: \cref{tab:main}).  Matching nuisance also reorders anticipation (Lead@20 in \cref{tab:main}).  The VLM systems and the recalibrated pipeline need a longer persistence, which delays their warnings, while the counted detector filter needs the shortest one and most often warns early.
+\paragraph{Matched nuisance.}  The calibrated systems also lead when all systems run at the same false-alarm rate.  Their native rates differ widely (\cref{tab:main}), so we apply the persistence filter of \cref{sec:protocol} to all, until false alarms fall to 20 per hour.  On unseen drives, the recalibrated pipeline, the joint estimator and the counted detector filter then keep F1@20 of 0.535, 0.523 and 0.520, against 0.417 for the hand-tuned pipeline (validation values in \cref{tab:main}).  Matching nuisance also reorders anticipation (Lead@20 in \cref{tab:main}).  The VLM systems and the recalibrated pipeline need a longer persistence, which delays their warnings, while the counted detector filter needs the shortest one and most often warns early.
 
 \section{Moving to a New Platform}
 \label{sec:thor}
@@ -327,7 +328,7 @@ Two limits bound our claims.  \emph{(i)} All footage is ROADWork daytime driving
 
 This study yields three insights.  First, temporal constants belong to a model, not to a task: inherited across models they move \textsc{inside} IoU by 0.567, an effect that holds on unseen drives.  Second, the baseline must be calibrated like the proposed system: doing so lifts it from 0.470 to 0.551 and removes the VLM-based systems' lead, and a counted filter on its score alone is not significantly different from it on unseen drives.  Third, temporal constants also belong to a platform: on the faster Thor, carried-over constants cost up to 0.04 macro-F1.  The recalibrated pipeline, whose optimum is the same on both devices, and the per-second filters keep their macro-F1 there, but false alarms change unseen by a macro-F1 search.
 
-Teams should recalibrate every system on the target platform, or state its constants in seconds, compare at matched nuisance, and recheck false alarms after a platform change.  The VLM-based systems' edge is earlier warning on sign-led onsets, at a modest power cost (+5.5\,W for C3E); at matched nuisance the per-second detector-only counted filter warns early most often and is the efficient alternative on both platforms.  The VLMs' remaining gap is ego-relevance, which trajectory-grounded supervision may close; night and adverse-weather evaluation is the next step.  Upon acceptance we release the replay harness, prompts, budgets, lexicons, metrics, runtime patches and baseline port.
+Teams should recalibrate every system on the target platform, or state its constants in seconds, compare at matched nuisance, and recheck false alarms after a platform change.  The VLM-based systems warned earlier on the ten sign-led onsets, at a modest power cost (+5.5\,W for C3E); at matched nuisance the per-second detector-only counted filter warns early most often and is the efficient alternative on both platforms.  The VLMs' remaining gap is ego-relevance, which trajectory-grounded supervision may close; night and adverse-weather evaluation is the next step.  Upon acceptance we release the replay harness, prompts, budgets, lexicons, metrics, runtime patches and baseline port.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
